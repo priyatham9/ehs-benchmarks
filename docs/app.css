@@ -83,6 +83,132 @@ a:hover { border-bottom-color: var(--green); }
 
 .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
 
+/* ---------- crumb bar: back to the portfolio ---------- */
+
+.crumbbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--paper);
+  border-bottom: 2px solid var(--rule);
+}
+.crumbbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 20px;
+}
+.crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 0;
+}
+.crumb:hover { border-bottom: 0; }
+.crumb .brand-dot { width: 12px; height: 12px; background: var(--green); flex: none; }
+.crumb-back { color: var(--ink-2); transition: color 0.15s; }
+.crumb:hover .crumb-back { color: var(--green); }
+.crumb-sep { color: var(--ink-3); }
+.crumb-here { color: var(--ink); }
+
+.crumb-right { display: flex; align-items: center; gap: 10px; }
+
+.data-chip {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green);
+  border: 2px solid var(--green);
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+/* Theme toggle: shows the mode it will switch TO, so the icon is an action
+   rather than a status. Sun means "go light", moon means "go dark". */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  border-radius: 0;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.toggle:hover { background: var(--green); border-color: var(--green); color: var(--paper); }
+:root[data-theme='dark'] .toggle:hover { color: #06120C; }
+.toggle svg { width: 15px; height: 15px; }
+
+/* Light is the default, so offer the moon. */
+.icon-sun { display: none; }
+.icon-moon { display: block; }
+/* System dark with no explicit choice: offer the sun. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .icon-sun { display: block; }
+  :root:not([data-theme='light']) .icon-moon { display: none; }
+}
+/* An explicit choice always wins over the system preference. */
+:root[data-theme='dark'] .icon-sun { display: block; }
+:root[data-theme='dark'] .icon-moon { display: none; }
+:root[data-theme='light'] .icon-sun { display: none; }
+:root[data-theme='light'] .icon-moon { display: block; }
+
+/* ---------- series nav: previous report / back home ---------- */
+
+.series-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 2px solid var(--rule);
+  margin: 8px 0 32px;
+}
+.sn-item {
+  display: block;
+  padding: 18px 20px;
+  border-bottom: 0;
+  border-right: 2px solid var(--rule-soft);
+  transition: background 0.15s;
+}
+.sn-item:last-child { border-right: 0; }
+.sn-item:hover { background: var(--green-soft); border-bottom: 0; }
+.sn-home { text-align: right; }
+.sn-dir {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+.sn-t {
+  display: block;
+  font-family: Archivo, system-ui, sans-serif;
+  font-variation-settings: 'wdth' 125, 'wght' 900;
+  font-size: 17px;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+@media (max-width: 560px) {
+  .series-nav { grid-template-columns: 1fr; }
+  .sn-item { border-right: 0; border-bottom: 2px solid var(--rule-soft); }
+  .sn-item:last-child { border-bottom: 0; }
+  .sn-home { text-align: left; }
+  .data-chip { display: none; }
+}
+
 /* ---------- masthead ---------- */
 
 header.masthead {
@@ -104,20 +230,6 @@ header.masthead {
   letter-spacing: 0.08em;
   margin-top: 6px;
 }
-
-button.theme {
-  font-family: inherit;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  background: transparent;
-  color: var(--ink);
-  border: 2px solid var(--rule);
-  border-radius: 0;
-  padding: 7px 12px;
-  cursor: pointer;
-}
-button.theme:hover { background: var(--ink); color: var(--paper); }
 
 /* ---------- nav ---------- */
 

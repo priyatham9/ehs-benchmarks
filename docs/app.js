@@ -681,12 +681,29 @@ window.addEventListener('hashchange', () => show(location.hash.slice(1)));
 (function boot() {
   const stored = localStorage.getItem('ehs-theme');
   if (stored) document.documentElement.dataset.theme = stored;
-  $('#theme-toggle').addEventListener('click', () => {
-    const now = document.documentElement.dataset.theme;
-    const isDark = now ? now === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-    const next = isDark ? 'light' : 'dark';
+
+  const toggle = $('#theme-toggle');
+  const isDark = () => {
+    const set = document.documentElement.dataset.theme;
+    return set ? set === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  };
+  // The icon shows the destination, so the label must say the action too —
+  // "Theme" tells a screen-reader user nothing about what the button does.
+  const labelToggle = () => {
+    const to = isDark() ? 'light' : 'dark';
+    toggle.setAttribute('aria-label', `Switch to ${to} mode`);
+    toggle.setAttribute('title', `Switch to ${to} mode`);
+  };
+  labelToggle();
+  toggle.addEventListener('click', () => {
+    const next = isDark() ? 'light' : 'dark';
     document.documentElement.dataset.theme = next;
     localStorage.setItem('ehs-theme', next);
+    labelToggle();
+  });
+  // Follow the system if the visitor has never made an explicit choice.
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (!document.documentElement.dataset.theme) labelToggle();
   });
 
   load('findings.json').then((f) => {
