@@ -35,16 +35,28 @@ const cache = new Map();
  * shard layout changes whenever the underlying data does. findings.json is
  * fetched once with a live timestamp to obtain that stamp.
  */
-let buildStamp = null;
-async function version() {
-  if (buildStamp === null) {
-    const r = await fetch(`${DATA}/findings.json?t=${Date.now()}`);
-    if (!r.ok) throw new Error(`findings.json: ${r.status}`);
-    const f = await r.json();
-    buildStamp = f.generated ?? 'dev';
-    cache.set('findings.json', Promise.resolve(f));
+let versionPromise = null;
+function version() {
+  // Memoise the in-flight promise, not just the resolved value. Callers race on
+  // first paint — boot() and the initial view both call load() before any fetch
+  // settles — and guarding on the result alone refetches findings.json once per
+  // concurrent caller.
+  if (versionPromise === null) {
+    versionPromise = fetch(`${DATA}/findings.json?t=${Date.now()}`)
+      .then((r) => {
+        if (!r.ok) throw new Error(`findings.json: ${r.status}`);
+        return r.json();
+      })
+      .then((f) => {
+        cache.set('findings.json', Promise.resolve(f));
+        return f.generated ?? 'dev';
+      })
+      .catch((err) => {
+        versionPromise = null;          // let a later call retry rather than wedge the page
+        throw err;
+      });
   }
-  return buildStamp;
+  return versionPromise;
 }
 
 async function load(path) {
