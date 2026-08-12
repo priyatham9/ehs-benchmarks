@@ -48,8 +48,10 @@ This is why `rankAgainst()` reports a zero rate at the *midpoint of the zero mas
 
 ## The library
 
+Not published to npm yet. Install straight from the repository:
+
 ```bash
-npm install ehs-metrics
+npm install github:priyatham9/ehs-benchmarks
 ```
 
 ```ts
