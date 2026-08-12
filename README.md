@@ -1,4 +1,4 @@
-# ehs-benchmarks
+﻿# ehs-benchmarks
 
 **Open OSHA injury-rate benchmarks, built from 1.18 million public establishment filings.**
 
@@ -136,7 +136,7 @@ node scripts/build-benchmarks.mjs <rawDataDir>
 
 `<rawDataDir>` should contain the OSHA files listed in `SUMMARY_FILES` / `CASE_FILE` at the top of the script, downloaded from [OSHA's establishment-specific data page](https://www.osha.gov/Establishment-Specific-Injury-and-Illness-Data). They are not committed here — they are ~700 MB and freely redistributable from the source.
 
-The pipeline emits everything under `site/data/`.
+The pipeline emits everything under `docs/data/`.
 
 ### Two problems worth knowing about if you use this data
 

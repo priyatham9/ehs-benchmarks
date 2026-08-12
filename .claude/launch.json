@@ -1,10 +1,10 @@
-{
+﻿{
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "site",
+      "name": "docs",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["--yes", "http-server", "site", "-p", "8099", "-c-1", "--silent"],
+      "runtimeArgs": ["--yes", "http-server", "docs", "-p", "8099", "-c-1", "--silent"],
       "port": 8099
     }
   ]

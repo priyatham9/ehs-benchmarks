@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Build the static JSON the site loads, from OSHA ITA raw CSVs.
  *
  * All aggregation happens here, at build time. The browser never sees a raw
@@ -21,7 +21,7 @@ import {
 } from '../dist/index.js';
 
 const RAW = process.argv[2] ?? resolve('data/raw');
-const OUT = resolve('site/data');
+const OUT = resolve('docs/data');
 const MIN_GROUP = 30;          // smallest peer group we will publish a distribution for
 const YEARS = ['2023', '2024', '2025'];
 
@@ -722,7 +722,7 @@ sizes['company-shards.json'] = write('company-shards.json', [...shards.keys()].s
 // The site imports the compiled library itself rather than reimplementing the
 // rate maths in browser JavaScript. If they ever disagreed, the published
 // benchmark and the on-page calculator would silently diverge.
-const LIB_OUT = resolve('site/lib');
+const LIB_OUT = resolve('docs/lib');
 mkdirSync(LIB_OUT, { recursive: true });
 let copied = 0;
 for (const f of readdirSync(resolve('dist'))) {
@@ -731,7 +731,7 @@ for (const f of readdirSync(resolve('dist'))) {
     copied++;
   }
 }
-log(`\n[site] copied ${copied} compiled library files into site/lib/`);
+log(`\n[site] copied ${copied} compiled library files into docs/lib/`);
 
 log('\n--- OUTPUT SIZES ---');
 for (const [f, b] of Object.entries(sizes)) log(`  ${f.padEnd(26)} ${(b / 1024).toFixed(0).padStart(7)} KB`);
