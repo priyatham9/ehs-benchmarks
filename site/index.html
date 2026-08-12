@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EHS Benchmarks — open OSHA injury-rate benchmarks from public data</title>
+<meta name="description" content="Establishment-level OSHA injury benchmarks built from 1.18 million public Injury Tracking Application records. Percentile lookup, company search, and OIICS injury-pattern analysis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap masthead-row">
+    <div>
+      <h1><span class="brand-mark">EHS</span> Benchmarks</h1>
+      <p class="tagline">
+        Open injury-rate benchmarks built from OSHA's public Injury Tracking Application
+        data — 1.18&nbsp;million establishment filings and 688,367 individual injury cases.
+        Every figure here is computed from primary records, not copied from a summary table.
+      </p>
+      <p class="meta-strip" id="meta-strip">Loading…</p>
+    </div>
+    <button class="theme" id="theme-toggle" type="button">Theme</button>
+  </div>
+</header>
+
+<nav class="tabs wrap" id="tabs" style="max-width:1180px">
+  <a href="#findings" data-view="findings">Findings</a>
+  <a href="#benchmark" data-view="benchmark">Benchmark my site</a>
+  <a href="#company" data-view="company">Company search</a>
+  <a href="#patterns" data-view="patterns">Injury patterns</a>
+  <a href="#sectors" data-view="sectors">Sectors</a>
+  <a href="#method" data-view="method">Method</a>
+</nav>
+
+<main class="wrap">
+
+<!-- ================= FINDINGS ================= -->
+<section class="view" id="view-findings">
+  <div class="section-head">
+    <h2>What the raw data actually says</h2>
+    <span class="section-note">CY2023–CY2025</span>
+  </div>
+  <div class="prose">
+    <p>
+      OSHA publishes establishment-level injury data every year. It is the only public source
+      granular enough to answer "is our rate any good?" — and it is close to unusable straight
+      out of the download. These are the things we found that change the answer.
+    </p>
+  </div>
+
+  <div id="findings-tiles"></div>
+
+  <div class="section-head"><h2>Finding 1 — the 200,000-hour trap</h2></div>
+  <div id="finding-hours"></div>
+
+  <div class="section-head"><h2>Finding 2 — zero is not excellence</h2></div>
+  <div id="finding-zero"></div>
+
+  <div class="section-head"><h2>Finding 3 — injuries cluster inside the shift</h2></div>
+  <div id="finding-shift"></div>
+</section>
+
+<!-- ================= BENCHMARK ================= -->
+<section class="view" id="view-benchmark">
+  <div class="section-head">
+    <h2>Benchmark my site</h2>
+    <span class="section-note">percentile against real peers</span>
+  </div>
+  <div class="prose">
+    <p>
+      Enter one establishment's numbers. You are compared against establishments in the same
+      NAICS industry and size band that filed for CY2025 — not against a national average.
+      <strong>A lower percentile is better.</strong>
+    </p>
+  </div>
+
+  <div class="form-grid" style="margin-top:18px">
+    <label class="field"><span>Sector</span>
+      <select id="bm-sector"></select>
+    </label>
+    <label class="field"><span>Industry (NAICS)</span>
+      <select id="bm-naics"></select>
+    </label>
+    <label class="field"><span>Size band (employees)</span>
+      <select id="bm-band"></select>
+    </label>
+    <label class="field"><span>Hours worked</span>
+      <input id="bm-hours" type="number" min="0" step="1000" value="400000" inputmode="numeric">
+    </label>
+    <label class="field"><span>Recordable cases</span>
+      <input id="bm-cases" type="number" min="0" step="1" value="8" inputmode="numeric">
+    </label>
+    <label class="field"><span>Avg. employees (optional)</span>
+      <input id="bm-emp" type="number" min="0" step="1" placeholder="for data-quality check" inputmode="numeric">
+    </label>
+  </div>
+  <p style="margin-top:16px"><button class="action" id="bm-run" type="button">Compute percentile</button></p>
+
+  <div id="bm-result"></div>
+</section>
+
+<!-- ================= COMPANY ================= -->
+<section class="view" id="view-company">
+  <div class="section-head">
+    <h2>Company search</h2>
+    <span class="section-note" id="company-count"></span>
+  </div>
+  <div class="prose">
+    <p>
+      Every employer that filed a 300A summary is here, resolved to a corporate entity by EIN
+      where the filed names agree. Search by name — results show the rolled-up rate across all
+      that company's establishments, with a per-state and per-industry breakdown underneath.
+    </p>
+  </div>
+
+  <div class="form-grid" style="margin-top:18px; grid-template-columns: 1fr auto;">
+    <label class="field"><span>Company name</span>
+      <input id="co-q" type="search" placeholder="e.g. Costco, Tyson, Georgia-Pacific" autocomplete="off">
+    </label>
+  </div>
+  <div id="co-results"></div>
+
+  <div class="section-head"><h2>Largest filers by reported hours</h2></div>
+  <div id="co-top"></div>
+</section>
+
+<!-- ================= PATTERNS ================= -->
+<section class="view" id="view-patterns">
+  <div class="section-head">
+    <h2>How people actually get hurt</h2>
+    <span class="section-note">688,367 OIICS-coded cases</span>
+  </div>
+  <div class="prose">
+    <p>
+      Rates tell you how much. Case detail tells you what. Every case below is coded to the
+      Occupational Injury and Illness Classification System — event, body part, nature, source.
+      Expand any row to see what it breaks down into and how many days it cost.
+    </p>
+  </div>
+
+  <div class="section-head"><h2>Event — what happened</h2></div>
+  <div id="pt-events"></div>
+
+  <div class="section-head"><h2>Body part injured</h2></div>
+  <div id="pt-parts"></div>
+
+  <div class="section-head"><h2>Hours into the shift</h2></div>
+  <div id="pt-shift"></div>
+
+  <div class="section-head"><h2>Month of incident</h2></div>
+  <div id="pt-month"></div>
+</section>
+
+<!-- ================= SECTORS ================= -->
+<section class="view" id="view-sectors">
+  <div class="section-head">
+    <h2>Sector rates and trend</h2>
+    <span class="section-note">hours-weighted, 2023–2025</span>
+  </div>
+  <div class="prose">
+    <p>
+      Hours-weighted aggregate rates by NAICS sector. Expand a sector to see the industries
+      inside it — sector averages hide enormous spread, and the sub-industry view is where
+      the actionable comparison lives.
+    </p>
+  </div>
+  <div id="sec-table"></div>
+</section>
+
+<!-- ================= METHOD ================= -->
+<section class="view" id="view-method">
+  <div class="section-head"><h2>Method and limitations</h2></div>
+  <div class="prose" id="method-body"></div>
+</section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p>
+      Source: U.S. OSHA Injury Tracking Application, establishment-specific 300A summary and
+      case detail files (CY2023–CY2025), retrieved from osha.gov. Public domain data.
+      Analysis code MIT licensed —
+      <a href="https://github.com/priyatham9/ehs-benchmarks">github.com/priyatham9/ehs-benchmarks</a>.
+    </p>
+    <p>
+      Not affiliated with or endorsed by OSHA. Figures are derived from self-reported employer
+      filings and inherit their errors; see Method.
+    </p>
+  </div>
+</footer>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

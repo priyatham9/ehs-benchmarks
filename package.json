@@ -1,0 +1,38 @@
+{
+  "name": "ehs-metrics",
+  "version": "0.1.0",
+  "description": "Tested OSHA incident-rate calculations (TRIR, DART, LTIR, severity) plus open industry benchmarks derived from OSHA's public Injury Tracking Application data.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md", "LICENSE"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "pipeline": "node scripts/build-benchmarks.mjs"
+  },
+  "keywords": [
+    "osha", "ehs", "trir", "dart", "safety", "incident-rate",
+    "benchmarking", "occupational-health", "esg", "injury-tracking"
+  ],
+  "author": "Priyatham Chimmani",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/priyatham9/ehs-benchmarks.git"
+  },
+  "homepage": "https://priyatham9.github.io/ehs-benchmarks",
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.5"
+  },
+  "engines": { "node": ">=18" }
+}
