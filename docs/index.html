@@ -3,14 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EHS Benchmarks — open OSHA injury-rate benchmarks from public data</title>
+<title>EHS Benchmarks - open OSHA injury-rate benchmarks from public data</title>
 <meta name="description" content="Establishment-level OSHA injury benchmarks built from 1.18 million public Injury Tracking Application records. Percentile lookup, company search, and OIICS injury-pattern analysis.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="app.css">
+<link rel="canonical" href="https://priyatham9.github.io/ehs-benchmarks/" />
 </head>
 <body>
+<nav class="pgm" aria-label="Programme">
+<style>.pgm{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;gap:2px;align-items:center;padding:8px 16px;background:#F7F7F3;color:#101311;border-bottom:2px solid #101311;font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.pgm a{color:#101311;text-decoration:none;padding:6px 9px}.pgm a:hover{background:#EFEFE9}.pgm .x::after{content:"\2197";margin-left:3px;opacity:.7}.pgm .cur{color:#0F7A52;font-weight:700;border-bottom:2px solid #0F7A52}.pgm .t{color:#666D68;margin-left:6px}.pgm .brand{font-weight:700;display:flex;align-items:center;gap:8px;margin-right:6px}.pgm .brand i{width:11px;height:11px;background:#0F7A52;display:inline-block}@media(prefers-color-scheme:dark){.pgm{background:#0A0D0B;color:#EAEFEA;border-color:#EAEFEA}.pgm a{color:#EAEFEA}.pgm a:hover{background:#171D18}.pgm .cur{color:#3FCB88;border-color:#3FCB88}.pgm .brand i{background:#3FCB88}}</style>
+<span class="brand"><i></i>ehs-benchmarks</span>
+<a class="x" href="https://priyatham9.github.io/">Priyatham Chimmani</a><a href="https://priyatham9.github.io/grounded/">Grounded</a><a href="https://priyatham9.github.io/grounded/paper.html">Paper</a>
+<span class="t">Projects</span><a href="https://priyatham9.github.io/ehs-osha-analysis/">OSHA data quality</a><a href="https://priyatham9.github.io/ehs-ai-grounding-eval/">Grounding eval</a><a href="https://priyatham9.github.io/ehs-human-factors-ontology/">Ontology</a><a href="https://priyatham9.github.io/ehs-risk-sem/">Risk SEM</a><a href="https://priyatham9.github.io/ehs-capitals-calculator/">Calculator</a><a class="cur" aria-current="page" href="https://priyatham9.github.io/ehs-benchmarks/">Benchmarks</a>
+</nav>
 
 <div class="crumbbar">
   <div class="wrap crumbbar-inner">
@@ -33,7 +40,7 @@
       <h1><span class="brand-mark">EHS</span> Benchmarks</h1>
       <p class="tagline">
         Open injury-rate benchmarks built from OSHA's public Injury Tracking Application
-        data — 1.18&nbsp;million establishment filings and 688,367 individual injury cases.
+        data - 1.18&nbsp;million establishment filings and 688,367 individual injury cases.
         Every figure here is computed from primary records, not copied from a summary table.
       </p>
       <p class="meta-strip" id="meta-strip">Loading…</p>
@@ -61,20 +68,20 @@
   <div class="prose">
     <p>
       OSHA publishes establishment-level injury data every year. It is the only public source
-      granular enough to answer "is our rate any good?" — and it is close to unusable straight
+      granular enough to answer "is our rate any good?" - and it is close to unusable straight
       out of the download. These are the things we found that change the answer.
     </p>
   </div>
 
   <div id="findings-tiles"></div>
 
-  <div class="section-head"><h2>Finding 1 — the 200,000-hour trap</h2></div>
+  <div class="section-head"><h2>Finding 1 - the 200,000-hour trap</h2></div>
   <div id="finding-hours"></div>
 
-  <div class="section-head"><h2>Finding 2 — zero is not excellence</h2></div>
+  <div class="section-head"><h2>Finding 2 - zero is not excellence</h2></div>
   <div id="finding-zero"></div>
 
-  <div class="section-head"><h2>Finding 3 — injuries cluster inside the shift</h2></div>
+  <div class="section-head"><h2>Finding 3 - injuries cluster inside the shift</h2></div>
   <div id="finding-shift"></div>
 </section>
 
@@ -87,7 +94,7 @@
   <div class="prose">
     <p>
       Enter one establishment's numbers. You are compared against establishments in the same
-      NAICS industry and size band that filed for CY2025 — not against a national average.
+      NAICS industry and size band that filed for CY2025 - not against a national average.
       <strong>A lower percentile is better.</strong>
     </p>
   </div>
@@ -126,7 +133,7 @@
   <div class="prose">
     <p>
       Every employer that filed a 300A summary is here, resolved to a corporate entity by EIN
-      where the filed names agree. Search by name — results show the rolled-up rate across all
+      where the filed names agree. Search by name - results show the rolled-up rate across all
       that company's establishments, with a per-state and per-industry breakdown underneath.
     </p>
   </div>
@@ -151,12 +158,12 @@
   <div class="prose">
     <p>
       Rates tell you how much. Case detail tells you what. Every case below is coded to the
-      Occupational Injury and Illness Classification System — event, body part, nature, source.
+      Occupational Injury and Illness Classification System - event, body part, nature, source.
       Expand any row to see what it breaks down into and how many days it cost.
     </p>
   </div>
 
-  <div class="section-head"><h2>Event — what happened</h2></div>
+  <div class="section-head"><h2>Event - what happened</h2></div>
   <div id="pt-events"></div>
 
   <div class="section-head"><h2>Body part injured</h2></div>
@@ -178,7 +185,7 @@
   <div class="prose">
     <p>
       Hours-weighted aggregate rates by NAICS sector. Expand a sector to see the industries
-      inside it — sector averages hide enormous spread, and the sub-industry view is where
+      inside it - sector averages hide enormous spread, and the sub-industry view is where
       the actionable comparison lives.
     </p>
   </div>
@@ -211,7 +218,7 @@
     <p>
       Source: U.S. OSHA Injury Tracking Application, establishment-specific 300A summary and
       case detail files (CY2023–CY2025), retrieved from osha.gov. Public domain data.
-      Analysis code MIT licensed —
+      Analysis code MIT licensed - 
       <a href="https://github.com/priyatham9/ehs-benchmarks">github.com/priyatham9/ehs-benchmarks</a>.
     </p>
     <p>
@@ -222,5 +229,6 @@
 </footer>
 
 <script type="module" src="app.js"></script>
+<nav aria-label="Programme navigation" style="display:grid;grid-template-columns:1fr 1fr;max-width:1180px;margin:32px auto 48px;border:2px solid currentColor;font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace"><a href="https://priyatham9.github.io/ehs-capitals-calculator/" style="padding:20px 24px;color:inherit;text-decoration:none"><span style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.7">Previous</span><strong>&larr; Cost-benefit calculator</strong></a><a href="https://priyatham9.github.io/grounded/" style="padding:20px 24px;color:inherit;text-decoration:none;text-align:right;border-left:2px solid currentColor"><span style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.7">Next</span><strong>Grounded &rarr;</strong></a></nav>
 </body>
 </html>
