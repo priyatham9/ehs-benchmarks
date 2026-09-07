@@ -1,4 +1,15 @@
-﻿# ehs-benchmarks
+# ehs-benchmarks
+
+> **Superseded panel.** The figures in this README come from the CY2023-2025 ITA files
+> under a 100-4,000 hours-per-employee screen. The successor repository,
+> [ehs-osha-analysis](https://github.com/priyatham9/ehs-osha-analysis), pools CY2016-2024
+> (2,801,064 filings, 120-4,500 screen) and reports an aggregate TRIR of 0.134 unscreened
+> against 3.983 screened, a 29.7x ratio driven mostly by the 2019 file. Recomputing this
+> repository's panel with that pipeline (CY2023 and CY2024 files only, 100-4,000 screen)
+> gives 0.473 / 3.374 / 7.14x against the 0.45 / 3.41 / 7.58x below: the screened rate
+> reproduces within about 1%, the ratio within 6%. Both multipliers are panel-specific.
+> See the "Relationship to ehs-benchmarks" section of that README and its
+> `outputs/tables/reconciliation_panels.csv`.
 
 **Open OSHA injury-rate benchmarks, built from 1.18 million public establishment filings.**
 
