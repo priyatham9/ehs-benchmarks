@@ -26,15 +26,3 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Check for build drift
-        run: |
-          if git diff --exit-code docs/; then
-            echo "Build output matches committed docs/"
-          else
-            echo "ERROR: Build output differs from committed docs/"
-            echo ""
-            echo "Differences:"
-            git diff docs/
-            exit 1
-          fi

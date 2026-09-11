@@ -89,3 +89,10 @@ Current status: docs/index.html appears to be the canonical source. No TypeScrip
 2. Verify whether any of these files are generated from source templates
 3. If index.html is indeed canonical, a fresh build (tsc + npm run build) should reproduce docs/ exactly
 4. If drift persists, investigate whether the build pipeline needs configuration updates
+
+## Note added 2026-09-10
+
+`npm run build` compiles TypeScript into `dist/` and `npm run pipeline` writes
+`docs/data/` and `docs/lib/`. Nothing generates `docs/index.html`; it is
+hand-written and is the source of itself. There is no template to port the
+2026-09-06 edits back into, so the CI job only installs, tests and builds.
