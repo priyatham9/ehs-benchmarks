@@ -1,5 +1,7 @@
 # ehs-benchmarks
 
+📊 **[priyatham9.github.io/ehs-benchmarks](https://priyatham9.github.io/ehs-benchmarks)**: percentile lookup, company search, and injury-pattern analysis.
+
 > **Superseded panel.** The figures in this README come from the CY2023-2025 ITA files
 > under a 100-4,000 hours-per-employee screen. The successor repository,
 > [ehs-osha-analysis](https://github.com/priyatham9/ehs-osha-analysis), pools CY2016-2024
@@ -11,9 +13,9 @@
 > See the "Relationship to ehs-benchmarks" section of that README and its
 > `outputs/tables/reconciliation_panels.csv`.
 
-**Open OSHA injury-rate benchmarks, built from 1.18 million public establishment filings.**
+Part of the Grounded research programme: https://priyatham9.github.io/grounded/
 
-📊 **[priyatham9.github.io/ehs-benchmarks](https://priyatham9.github.io/ehs-benchmarks)** — percentile lookup, company search, and injury-pattern analysis.
+**Open OSHA injury-rate benchmarks, built from 1.18 million public establishment filings.**
 
 Two things live here:
 
@@ -21,6 +23,14 @@ Two things live here:
 2. **A published benchmark dataset** — TRIR and DART percentiles for 3,842 NAICS × size-band peer groups, derived from OSHA's Injury Tracking Application, plus a static site that makes them usable.
 
 MIT licensed. No API keys, no server, no database.
+
+**At a glance**
+
+- Status: superseded (see panel above); MIT licensed, no API keys, no server, no database
+- Data: real, from OSHA's Injury Tracking Application (public establishment filings, CY2023-2025)
+- Tests: `npm test`, 104 tests (vitest)
+- Quickstart: `npm install github:priyatham9/ehs-benchmarks`
+- Licence: MIT (see [LICENSE](LICENSE))
 
 ---
 
