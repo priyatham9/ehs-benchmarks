@@ -1,0 +1,2507 @@
+<!doctype html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compared with whom - EHS Benchmarks</title>
+<meta name="description" content="A TRIR of 3.20 beats the national average and sits in the worst decile of its own peer group. A scrollable walkthrough of how the peer group decides the verdict, built on 1.18 million OSHA establishment filings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<link rel="canonical" href="https://priyatham9.github.io/ehs-benchmarks/story.html" />
+<meta property="og:type" content="article">
+<meta property="og:title" content="Compared with whom - EHS Benchmarks">
+<meta property="og:description" content="The same injury rate scores 76th percentile against one peer group and 93rd against another. Which one you pick is the finding.">
+<meta property="og:url" content="https://priyatham9.github.io/ehs-benchmarks/story.html">
+
+<style>/*STORY_CSS_START*/
+/* ============================================================
+   story.css  -  shared storytelling engine styles
+   Depends on tokens defined in tools/shared.css:
+   --paper --surface --surface-2 --ink --ink-2 --muted --rule
+   --rule-soft --accent --accent-2 --accent-ink --accent-wash
+   --warn --warn-wash --font-sans --font-mono
+   ============================================================ */
+
+/* ---------- orb ---------- */
+.st-orb{display:block;width:100%;height:100%;touch-action:manipulation}
+.st-orb-wrap{position:relative;display:block;line-height:0}
+
+/* ---------- scenes ---------- */
+.st-scene{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:0 46px;align-items:start}
+.st-scene[data-side="left"]{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}
+.st-scene[data-side="left"] .st-stage{order:2}
+.st-scene[data-side="left"] .st-steps{order:1}
+.st-stage{position:sticky;top:0;height:100vh;height:100svh;display:flex;flex-direction:column;justify-content:center;min-width:0;padding:24px 0}
+.st-stage-inner{position:relative;width:100%;min-width:0;max-height:100%}
+.st-steps{min-width:0}
+.st-step{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:34px 0;opacity:.34;transition:opacity .45s ease}
+.st-step.is-active{opacity:1}
+.st-step:last-child{min-height:64vh}
+.st-step h3{font-size:clamp(1.18rem,2.4vw,1.6rem);margin-bottom:12px;letter-spacing:-.01em}
+.st-step p{font-size:1rem;color:var(--ink-2);max-width:46ch}
+.st-step .label{display:block;margin-bottom:10px}
+/* scroll progress rail drawn from the scene's --p (0..1) */
+.st-scene-rail{position:absolute;left:-18px;top:0;bottom:0;width:2px;background:var(--rule-soft)}
+.st-scene-rail::after{content:"";position:absolute;left:0;top:0;width:2px;height:calc(var(--p,0) * 100%);background:var(--accent)}
+@media(max-width:800px){
+  .st-scene,.st-scene[data-side="left"]{grid-template-columns:1fr;gap:0}
+  .st-scene .st-stage,.st-scene[data-side="left"] .st-stage{order:0;position:sticky;top:var(--st-top,58px);height:50vh;height:50svh;background:var(--paper);z-index:2;padding:12px 0;border-bottom:2px solid var(--rule-soft)}
+  .st-scene .st-steps,.st-scene[data-side="left"] .st-steps{order:1}
+  .st-step{min-height:80vh;padding:26px 0}
+  .st-scene-rail{display:none}
+}
+
+/* ---------- charts ---------- */
+.st-chart{display:block;width:100%;overflow:visible;font-family:var(--font-sans)}
+.st-chart text{font-family:var(--font-mono);font-size:12px;fill:var(--muted);font-variant-numeric:tabular-nums}
+.st-chart .st-axis-line{stroke:var(--rule-soft);stroke-width:1}
+.st-chart .st-grid{stroke:var(--rule-soft);stroke-width:1;stroke-dasharray:2 4}
+.st-chart .st-label-direct{fill:var(--ink);font-weight:700;font-size:12px}
+.st-chart .st-caption{fill:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.st-chart .st-series-line{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.st-chart .st-gap{fill:var(--accent);opacity:.14}
+.st-chart .st-bar{transition:none}
+.st-chart .st-region{fill:var(--warn);opacity:.12}
+.st-chart .st-region-edge{stroke:var(--warn);stroke-width:1;stroke-dasharray:4 4;fill:none}
+.st-chart .st-marker{stroke:var(--warn);stroke-width:2}
+.st-chart .st-node{stroke:var(--paper);stroke-width:1.5}
+.st-chart .st-link{stroke:var(--rule-soft);stroke-width:1.2;fill:none}
+.st-chart .st-link.is-hot{stroke:var(--accent);stroke-width:2.6}
+.st-chart .st-path-edge{stroke:var(--ink-2);fill:none;marker-end:url(#st-arrow)}
+.st-canvas{display:block;width:100%}
+.st-figure{margin:0}
+.st-figure figcaption{margin-top:10px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- reveal ---------- */
+.st-reveal{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.22,.7,.2,1),transform .6s cubic-bezier(.22,.7,.2,1)}
+.st-reveal.is-in{opacity:1;transform:none}
+
+/* ---------- progress bar ---------- */
+.st-progress{position:fixed;top:0;left:0;height:3px;width:100%;z-index:60;background:transparent;pointer-events:none}
+.st-progress i{display:block;height:100%;width:0;background:var(--accent);transform-origin:0 50%}
+
+/* ---------- presenter mode ---------- */
+.st-presenting .st-hide-on-present,.st-presenting header.banner,.st-presenting .footer,.st-presenting .skip{display:none!important}
+.st-presenting body,body.st-presenting{font-size:19px}
+.st-presenting .st-step{opacity:1;min-height:0}
+.st-present-dots{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:8px;z-index:70;padding:9px 13px;border:2px solid var(--rule);background:var(--surface)}
+.st-present-dots b{display:block;width:8px;height:8px;background:var(--rule-soft);border-radius:50%}
+.st-present-dots b.is-on{background:var(--accent)}
+.st-present-hint{position:fixed;right:18px;bottom:24px;z-index:70;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  .st-reveal{opacity:1;transform:none;transition:none}
+  .st-step{opacity:1;transition:none}
+}
+/*STORY_CSS_END*/</style>
+
+<style>
+/* Token bridge: the story engine speaks --accent/--muted/--surface/--font-*;
+   app.css speaks --green/--ink-3/--paper-2. Map one onto the other. */
+:root{
+  --accent: var(--green);
+  --muted: var(--ink-3);
+  --surface: var(--paper-2);
+  --font-sans: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+
+/* Fallback layout for the story primitives. tools/story.css, once inlined
+   above, restates these; identical values, so either order is safe. */
+.st-orb{display:block;width:100%;height:100%}
+.st-orb-wrap{position:relative;display:block;line-height:0}
+.st-scene{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:0 46px;align-items:start}
+.st-scene[data-side="left"]{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}
+.st-scene[data-side="left"] .st-stage{order:2}
+.st-scene[data-side="left"] .st-steps{order:1}
+.st-stage{position:sticky;top:0;height:100vh;height:100svh;display:flex;flex-direction:column;justify-content:center;min-width:0;padding:24px 0}
+.st-stage-inner{position:relative;width:100%;min-width:0}
+.st-steps{min-width:0}
+.st-step{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:34px 0;opacity:.34;transition:opacity .45s ease}
+.st-step.is-active{opacity:1}
+.st-step:last-child{min-height:64vh}
+.st-step h3{font-size:clamp(1.18rem,2.4vw,1.6rem);margin:0 0 12px;letter-spacing:-.01em}
+.st-scene-rail{position:absolute;left:-18px;top:0;bottom:0;width:2px;background:var(--rule-soft)}
+.st-scene-rail::after{content:"";position:absolute;left:0;top:0;width:2px;height:calc(var(--p,0) * 100%);background:var(--accent)}
+.st-chart{display:block;width:100%;overflow:visible}
+.st-figure{margin:0}
+.st-reveal{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.22,.7,.2,1),transform .6s cubic-bezier(.22,.7,.2,1)}
+.st-reveal.is-in{opacity:1;transform:none}
+.st-progress{position:fixed;top:0;left:0;height:3px;width:100%;z-index:70;background:transparent;pointer-events:none}
+.st-progress i{display:block;height:100%;width:0;background:var(--accent)}
+.st-presenting .st-hide-on-present,.st-presenting .pgm,.st-presenting footer.site,.st-presenting .story-nav{display:none!important}
+.st-presenting .st-step{opacity:1;min-height:0}
+.st-presenting body,body.st-presenting{font-size:19px}
+.st-present-dots{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:8px;z-index:80;padding:9px 13px;border:2px solid var(--rule);background:var(--paper)}
+.st-present-dots b{display:block;width:8px;height:8px;background:var(--rule-soft);border-radius:50%}
+.st-present-dots b.is-on{background:var(--accent)}
+.st-present-hint{position:fixed;right:18px;bottom:24px;z-index:80;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+
+.story-hero{border-bottom:2px solid var(--rule);padding:44px 0 52px}
+.story-hero-row{display:grid;grid-template-columns:200px minmax(0,1fr);gap:34px;align-items:center}
+.story-kicker{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px}
+.story-hero h1{font-size:clamp(2rem,5.2vw,3.5rem);line-height:1.03;letter-spacing:-.025em;margin:0 0 18px;font-stretch:112%}
+.story-thesis{font-size:clamp(1.02rem,1.9vw,1.3rem);line-height:1.5;color:var(--ink-2);max-width:56ch;margin:0}
+.orb-box{width:200px;height:200px;max-width:100%}
+.orb-state{display:block;margin-top:10px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+
+.story-wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.scene-head{padding:64px 0 6px;border-top:2px solid var(--rule);margin-top:40px}
+.scene-head .label{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.scene-head h2{font-size:clamp(1.5rem,3.4vw,2.3rem);letter-spacing:-.02em;margin:10px 0 0}
+
+.st-scene{position:relative}
+.st-step h3{font-family:var(--font-sans);font-weight:700}
+.st-step .label{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.st-step p{font-size:1rem;line-height:1.55;color:var(--ink-2);max-width:46ch;margin:0 0 12px}
+.stage-card{border:2px solid var(--rule);background:var(--paper-2);padding:20px}
+.stage-card figcaption{margin-top:12px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);line-height:1.5}
+
+svg.st-chart text{font-family:var(--font-mono);font-size:12px;fill:var(--ink-3);font-variant-numeric:tabular-nums}
+svg.st-chart .v{fill:var(--ink);font-weight:600}
+svg.st-chart .axis{stroke:var(--rule-soft);stroke-width:1}
+svg.st-chart .gridline{stroke:var(--grid);stroke-width:1;stroke-dasharray:2 4}
+svg.st-chart .bar{fill:var(--green)}
+svg.st-chart .bar.warnbar{fill:var(--warn)}
+svg.st-chart .bar.badbar{fill:var(--bad)}
+svg.st-chart .dot{fill:var(--ink-3)}
+svg.st-chart .dot.zero{fill:var(--rule-soft)}
+svg.st-chart .you{stroke:var(--bad);stroke-width:2.5}
+svg.st-chart .youtx{fill:var(--bad);font-weight:600}
+
+.verdicts{display:grid;gap:2px;background:var(--rule);border:2px solid var(--rule)}
+.verdict{background:var(--paper);padding:14px 16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:baseline}
+.verdict b{font-family:var(--font-sans);font-size:.94rem}
+.verdict span{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-3);display:block;margin-top:3px}
+.verdict em{font-family:var(--font-mono);font-style:normal;font-size:1.28rem;font-weight:600;font-variant-numeric:tabular-nums}
+.verdict.good em{color:var(--green)} .verdict.mid em{color:var(--warn)} .verdict.bad em{color:var(--bad)}
+/* Dim the contents, never the row: the row is what covers the dark rule grid. */
+.verdict > *{transition:opacity .4s ease}
+.verdict.is-dim > *{opacity:.24}
+
+.picker{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.picker label{display:block;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px}
+.picker select,.picker input{width:100%;padding:8px 9px;border:2px solid var(--rule);background:var(--paper);color:var(--ink);font-family:var(--font-mono);font-size:.82rem}
+.readout{margin-top:14px;border-top:2px solid var(--rule);padding-top:12px;font-size:.95rem;line-height:1.55;color:var(--ink-2)}
+.readout strong{color:var(--ink)}
+
+.multiples{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2px;background:var(--rule);border:2px solid var(--rule)}
+.mult{background:var(--paper);padding:12px}
+.mult h4{margin:0 0 4px;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.mult .rk{font-family:var(--font-mono);font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums;display:block;line-height:1.1}
+.mult .n{font-family:var(--font-mono);font-size:.66rem;color:var(--ink-3)}
+
+.honesty{border:2px solid var(--warn);padding:22px 24px;margin:26px 0}
+.honesty h3{margin:0 0 12px;font-size:1.2rem}
+.honesty ul{margin:0;padding-left:20px;color:var(--ink-2);line-height:1.6}
+.honesty li{margin-bottom:8px}
+
+.monday{border:2px solid var(--rule);background:var(--green-soft);padding:26px 28px;margin:34px 0}
+.monday .label{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.monday h3{margin:10px 0 12px;font-size:clamp(1.25rem,2.8vw,1.8rem);letter-spacing:-.02em}
+.monday ol{margin:0;padding-left:22px;line-height:1.65;color:var(--ink-2);max-width:62ch}
+
+.story-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));border:2px solid var(--rule);margin:44px 0 56px;font-family:var(--font-mono)}
+.story-nav a{padding:20px 22px;color:inherit;text-decoration:none;border-right:2px solid var(--rule)}
+.story-nav a:last-child{border-right:0}
+.story-nav a:hover{background:var(--paper-2)}
+.story-nav span{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.story-nav strong{font-family:var(--font-sans);font-size:1rem}
+
+details.data-table{margin-top:12px;font-family:var(--font-mono);font-size:.72rem}
+details.data-table summary{cursor:pointer;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;font-size:.625rem}
+details.data-table table{border-collapse:collapse;margin-top:10px;width:100%}
+details.data-table th,details.data-table td{border:1px solid var(--rule-soft);padding:4px 7px;text-align:right}
+details.data-table th:first-child,details.data-table td:first-child{text-align:left}
+
+@media (max-width:860px){
+  .story-hero-row{grid-template-columns:1fr;gap:22px}
+  .orb-box{width:132px;height:132px}
+  .st-scene{display:block}
+  .st-stage{position:static;height:auto;padding:0 0 18px}
+  .st-step{min-height:0;opacity:1;padding:18px 0}
+  .st-scene-rail{display:none}
+  /* Stacked layout: the stage scrolls past before its steps, so nothing is dimmed. */
+  .verdict.is-dim > *{opacity:1}
+}
+@media (prefers-reduced-motion:reduce){
+  .st-reveal{opacity:1;transform:none}
+  .st-step{opacity:1}
+}
+</style>
+</head>
+<body>
+
+<nav class="pgm" aria-label="Programme">
+<style>.pgm{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;gap:2px;align-items:center;padding:8px 16px;background:#F7F7F3;color:#101311;border-bottom:2px solid #101311;font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.pgm a{color:#101311;text-decoration:none;padding:6px 9px}.pgm a:hover{background:#EFEFE9}.pgm .x::after{content:"\2197";margin-left:3px;opacity:.7}.pgm .cur{color:#0F7A52;font-weight:700;border-bottom:2px solid #0F7A52}.pgm .t{color:#666D68;margin-left:6px}.pgm .brand{font-weight:700;display:flex;align-items:center;gap:8px;margin-right:6px}.pgm .brand i{width:11px;height:11px;background:#0F7A52;display:inline-block}@media(prefers-color-scheme:dark){.pgm{background:#0A0D0B;color:#EAEFEA;border-color:#EAEFEA}.pgm a{color:#EAEFEA}.pgm a:hover{background:#171D18}.pgm .cur{color:#3FCB88;border-color:#3FCB88}.pgm .brand i{background:#3FCB88}}</style>
+<span class="brand"><i></i>ehs-benchmarks</span>
+<a class="x" href="https://priyatham9.github.io/">Priyatham Chimmani</a><a href="https://priyatham9.github.io/grounded/">Grounded</a><a href="https://priyatham9.github.io/grounded/paper.html">Paper</a>
+<span class="t">Projects</span><a href="https://priyatham9.github.io/ehs-osha-analysis/">OSHA data quality</a><a href="https://priyatham9.github.io/ehs-ai-grounding-eval/">Grounding eval</a><a href="https://priyatham9.github.io/ehs-human-factors-ontology/">Ontology</a><a href="https://priyatham9.github.io/ehs-risk-sem/">Risk SEM</a><a href="https://priyatham9.github.io/ehs-capitals-calculator/">Calculator</a><a class="cur" aria-current="page" href="https://priyatham9.github.io/ehs-benchmarks/">Benchmarks</a>
+</nav>
+
+<div class="crumbbar st-hide-on-present">
+  <div class="wrap crumbbar-inner">
+    <a class="crumb" href="index.html">
+      <span class="brand-dot"></span><span class="crumb-back">&larr;&nbsp;Benchmarks</span>&nbsp;<span class="crumb-sep">/</span>&nbsp;<span class="crumb-here">Story</span>
+    </a>
+    <div class="crumb-right">
+      <span class="data-chip">Real OSHA public data</span>
+      <button class="toggle" id="theme-toggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"></path></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<header class="story-hero">
+  <div class="story-wrap story-hero-row">
+    <div>
+      <div class="orb-box"><canvas id="hero-orb" class="st-orb" aria-label="Animated indicator showing the state of the comparison: searching for peers, then settling on a verdict."></canvas></div>
+      <span class="orb-state" id="orb-state">idle</span>
+    </div>
+    <div>
+      <p class="story-kicker">EHS Benchmarks &middot; Story 6 of 6</p>
+      <h1>Compared with whom</h1>
+      <p class="story-thesis">
+        A recordable rate of 3.20 beats the national average. In its own industry and size band
+        it sits in the worst decile. Nothing about the plant changed between those two sentences.
+        Only the peer group did.
+      </p>
+    </div>
+  </div>
+</header>
+
+<main class="story-wrap" id="story-main">
+
+<!-- ============ SCENE 1 ============ -->
+<div class="scene-head st-reveal">
+  <span class="label">Scene 1</span>
+  <h2>One rate, four verdicts</h2>
+</div>
+<section class="st-scene" data-scene="1" aria-label="One rate, four verdicts">
+  <div class="st-scene-rail" aria-hidden="true"></div>
+  <div class="st-stage"><div class="st-stage-inner">
+    <figure class="stage-card st-figure">
+      <div class="verdicts" id="v-list" role="img" aria-label="The same rate of 3.20 scores below the national average, above the sector aggregate, at the 76th percentile of its industry, and at the 93rd percentile among same-size peers."></div>
+      <figcaption id="v-cap">Source: docs/data/national.json, docs/data/sectors.json, docs/data/benchmarks/32.json. Percentile rank computed by docs/lib/benchmark.js.</figcaption>
+    </figure>
+  </div></div>
+  <div class="st-steps">
+    <div class="st-step" data-orb="idle" data-step="0">
+      <span class="label">The site</span>
+      <h3>One plastics resin plant, 300 employees</h3>
+      <p>NAICS 3252. 600,000 hours worked in CY2025, 10 recordable cases. That is a TRIR of 3.20. The question in the room is always the same: is that good?</p>
+    </div>
+    <div class="st-step" data-orb="searching" data-step="1">
+      <span class="label">Verdict 1</span>
+      <h3>Against the country: better than average</h3>
+      <p>Every establishment that filed a 300A for CY2025 averages 3.49 recordables per 200,000 hours, hours-weighted across 375,635 filings. 3.20 is under it. This is the number that usually gets into the board deck.</p>
+    </div>
+    <div class="st-step" data-orb="searching" data-step="2">
+      <span class="label">Verdict 2</span>
+      <h3>Against manufacturing: worse than average</h3>
+      <p>Narrow to NAICS sector 32 and the aggregate is 2.34 across 20,388 establishments. The same rate is now 37% above its own sector. The plant did not move. The denominator did.</p>
+    </div>
+    <div class="st-step" data-orb="connecting" data-step="3">
+      <span class="label">Verdict 3</span>
+      <h3>Against the industry: worst quartile</h3>
+      <p>Among the 478 establishments filing under NAICS 3252, the median rate is 0.57 and 45% reported no recordable case at all. 3.20 ranks at the 76th percentile. Three quarters of the industry did better.</p>
+    </div>
+    <div class="st-step" data-orb="wrong" data-step="4">
+      <span class="label">Verdict 4</span>
+      <h3>Against true peers: worst decile</h3>
+      <p>Hold industry and add size. Among the 34 NAICS 3252 establishments in the 250 to 499 employee band, the aggregate is 0.77 and 3.20 ranks at the 93rd percentile. The honest sentence is not "below the national average". It is "near the bottom of our peer group".</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCENE 2 ============ -->
+<div class="scene-head st-reveal">
+  <span class="label">Scene 2</span>
+  <h2>The distribution is not a bell</h2>
+</div>
+<section class="st-scene" data-scene="2" data-side="left" aria-label="The shape of the peer distribution">
+  <div class="st-scene-rail" aria-hidden="true"></div>
+  <div class="st-stage"><div class="st-stage-inner">
+    <figure class="stage-card st-figure">
+      <svg id="swarm-2" class="st-chart" viewBox="0 0 560 300" role="img" aria-label="Dot density of the NAICS 3252 peer distribution. A large mass sits at zero, the bulk sits below 3, and a long right tail runs past 14. The marked site at 3.20 sits inside that tail."></svg>
+      <figcaption>Each dot is one percent of the peer group, placed by interpolating the published percentile curve in docs/data/benchmarks/32.json. Dots at zero are drawn at the reported zero share, not interpolated. Dots are a reconstruction of the distribution's shape, not individual filings.</figcaption>
+    </figure>
+  </div></div>
+  <div class="st-steps">
+    <div class="st-step" data-orb="idle" data-step="0">
+      <span class="label">Shape</span>
+      <h3>Nearly half the peer group reported zero</h3>
+      <p>45% of NAICS 3252 establishments recorded no case in the filing year. An average taken over that mass describes almost nobody. The median rate for this industry is 0.57.</p>
+    </div>
+    <div class="st-step" data-orb="connecting" data-step="1">
+      <span class="label">Tail</span>
+      <h3>The mean lives in the tail</h3>
+      <p>The hours-weighted aggregate is 1.37 while the median is 0.57. That gap is the long right tail: p90 is 5.56 and p99 is 14.21. Quoting a mean against this shape flatters anyone above the median.</p>
+    </div>
+    <div class="st-step" data-orb="wrong" data-step="2">
+      <span class="label">Position</span>
+      <h3>Where 3.20 actually falls</h3>
+      <p>Between p75 at 3.01 and p90 at 5.56. Comfortably inside the worse half of a distribution whose better half is mostly zeros. A low percentile is the good direction here.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCENE 3 ============ -->
+<div class="scene-head st-reveal">
+  <span class="label">Scene 3</span>
+  <h2>Change the peer group, change the answer</h2>
+</div>
+<section class="st-scene" data-scene="3" aria-label="Interactive peer group picker">
+  <div class="st-scene-rail" aria-hidden="true"></div>
+  <div class="st-stage"><div class="st-stage-inner">
+    <figure class="stage-card st-figure">
+      <div class="picker">
+        <div><label for="p-sector">Sector</label><select id="p-sector"></select></div>
+        <div><label for="p-naics">Industry (NAICS)</label><select id="p-naics"></select></div>
+        <div><label for="p-band">Size band</label><select id="p-band"></select></div>
+        <div><label for="p-rate">Your TRIR</label><input id="p-rate" type="number" min="0" step="0.01" value="3.20" inputmode="decimal"></div>
+      </div>
+      <svg id="swarm-3" class="st-chart" viewBox="0 0 560 250" role="img" aria-label="Dot density of the selected peer group with the entered rate marked."></svg>
+      <div class="readout" id="p-readout">Choose a peer group.</div>
+      <figcaption>Live from docs/data/benchmarks/&lt;sector&gt;.json. Rank computed by the same rankAgainst() the Benchmark tab uses, imported from docs/lib/benchmark.js.</figcaption>
+    </figure>
+  </div></div>
+  <div class="st-steps">
+    <div class="st-step" data-orb="searching" data-step="0">
+      <span class="label">Try it</span>
+      <h3>Move the group, watch the rank</h3>
+      <p>Same rate on the left. Pick a different industry or size band and the percentile moves, sometimes by twenty points. If a benchmark can be moved by a dropdown, the dropdown has to be part of the reported number.</p>
+    </div>
+    <div class="st-step" data-orb="connecting" data-step="1">
+      <span class="label">Small n</span>
+      <h3>Watch the count, not only the rank</h3>
+      <p>The readout prints n for the group you chose. Some NAICS and size combinations have fewer than 50 establishments. A 93rd percentile out of 34 is one or two plants away from a different story, and should be reported with the n attached.</p>
+    </div>
+    <div class="st-step" data-orb="grounded" data-step="2">
+      <span class="label">Rule</span>
+      <h3>Pick the group before you see your rank</h3>
+      <p>Choose the industry code and size band your site genuinely belongs to, write it down, then compute. Choosing after you have seen four candidate ranks is how a safety number becomes a negotiation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCENE 4 ============ -->
+<div class="scene-head st-reveal">
+  <span class="label">Scene 4</span>
+  <h2>Size is not a detail</h2>
+</div>
+<section class="st-scene" data-scene="4" data-side="left" aria-label="The same rate across six size bands">
+  <div class="st-scene-rail" aria-hidden="true"></div>
+  <div class="st-stage"><div class="st-stage-inner">
+    <figure class="stage-card st-figure">
+      <div class="multiples" id="mult-4" role="img" aria-label="The same rate of 3.20 ranked against each published employee size band inside NAICS 3252: 20 to 49 scores p75, 50 to 99 scores p72, 100 to 249 scores p80, and 250 to 499 scores p93."></div>
+      <details class="data-table"><summary>Show the numbers</summary><div id="mult-table"></div></details>
+      <figcaption>Source: docs/data/benchmarks/32.json, keys 3252|&lt;band&gt;. Rank for TRIR 3.20 in each band.</figcaption>
+    </figure>
+  </div></div>
+  <div class="st-steps">
+    <div class="st-step" data-orb="searching" data-step="0">
+      <span class="label">Across bands</span>
+      <h3>The same 3.20, four times</h3>
+      <p>Hold the industry fixed and run the rate through every size band the file reports for NAICS 3252. Four bands have enough filers to publish. The rank swings 21 percentile points across them, and the harshest verdict lands in the band this plant actually sits in.</p>
+    </div>
+    <div class="st-step" data-orb="wrong" data-step="1">
+      <span class="label">Why</span>
+      <h3>Small sites report zero more often</h3>
+      <p>In the 20 to 49 band, 63% of NAICS 3252 establishments reported no case. Fewer exposure hours means more true zeros, which drags the whole lower half of the distribution to the floor. Comparing a 300-person plant against that group is not a comparison.</p>
+    </div>
+    <div class="st-step" data-orb="grounded" data-step="2">
+      <span class="label">Practice</span>
+      <h3>Benchmark at the establishment, not the enterprise</h3>
+      <p>A corporate roll-up mixes size bands and industries and produces a rate that matches no peer group in the file. Rank each site against its own band, then report the spread across sites.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HONESTY ============ -->
+<div class="scene-head st-reveal">
+  <span class="label">Scene 5</span>
+  <h2>What this does not establish</h2>
+</div>
+<div class="honesty st-reveal">
+  <h3>Limits, stated up front</h3>
+  <ul>
+    <li>These are self-reported employer filings. Under-reporting is not visible in this data and is not corrected for anywhere on this page.</li>
+    <li>The dots in the density charts are reconstructed from published percentile breakpoints, not individual establishment records. They show the shape of a distribution. They are not 478 real filings drawn one by one.</li>
+    <li>Percentile rank is interpolated between seven breakpoints with an explicit anchor at the zero mass. It is an approximation of a rank, not a computed order statistic on the full sample.</li>
+    <li>Several NAICS and size combinations have small n. The example group used through this page has n = 34. A rank on 34 establishments is unstable and should never be quoted without the n.</li>
+    <li>A percentile is a position, not a cause. Nothing here says why a rate is high, and nothing here supports a claim that one site is safer than another.</li>
+    <li>The 3.20 example site is an illustrative input, not a real establishment. Every figure it is compared against is real.</li>
+  </ul>
+</div>
+
+<!-- ============ MONDAY ============ -->
+<div class="monday st-reveal">
+  <span class="label">What a leader does Monday</span>
+  <h3>Fix the peer group before you fix the rate</h3>
+  <ol>
+    <li>For each site, write down its six-digit NAICS code and its employee size band. Do this before anyone computes a percentile.</li>
+    <li>Re-rank every site against that fixed group. Expect some sites that looked fine against the national average to move into the worst quartile.</li>
+    <li>Put n next to every percentile in the deck. Any group under about 50 establishments gets a caveat line, not a headline.</li>
+    <li>Stop reporting a single enterprise-wide rate against a national average. Report the distribution of site ranks instead.</li>
+  </ol>
+</div>
+
+<nav class="story-nav">
+  <a href="index.html"><span>This project</span><strong>&larr; Benchmark tools and data</strong></a>
+  <a href="https://priyatham9.github.io/grounded/"><span>Hub</span><strong>All six instruments</strong></a>
+  <a href="https://priyatham9.github.io/grounded/"><span>Next story</span><strong>Grounded &rarr;</strong></a>
+</nav>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p>
+      Source: U.S. OSHA Injury Tracking Application, establishment-specific 300A summary files
+      (CY2023&ndash;CY2025), retrieved from osha.gov. Public domain data. Analysis code MIT licensed -
+      <a href="https://github.com/priyatham9/ehs-benchmarks">github.com/priyatham9/ehs-benchmarks</a>.
+    </p>
+    <p>Not affiliated with or endorsed by OSHA. Press <kbd>P</kbd> for presenter mode.</p>
+  </div>
+</footer>
+
+<script>/*STORY_JS_START*/
+/* ============================================================
+   story.js  -  shared storytelling engine (stdlib only, no deps)
+   Exposes one global: Story
+   Pairs with tools/story.css and the tokens in tools/shared.css.
+   ============================================================ */
+(function (global) {
+  "use strict";
+
+  /* ---------------------------------------------------------
+     0. small utilities
+     --------------------------------------------------------- */
+  var mqReduce = global.matchMedia ? matchMedia("(prefers-reduced-motion: reduce)") : null;
+  function reduced() { return !!(mqReduce && mqReduce.matches); }
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function isEl(x) { return x && x.nodeType === 1; }
+  function el(sel, root) { return (root || document).querySelector(sel); }
+  function els(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  var NS = "http://www.w3.org/2000/svg";
+  function mk(tag, attrs, parent) {
+    var n = document.createElementNS(NS, tag);
+    if (attrs) for (var k in attrs) if (attrs[k] != null) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function html(tag, cls, parent) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function fmt(v, d) {
+    if (v == null || isNaN(v)) return "";
+    var n = d == null ? (Math.abs(v) >= 100 ? 0 : Math.abs(v) >= 10 ? 1 : 2) : d;
+    return Number(v).toFixed(n).replace(/\.0+$/, "").replace(/(\.\d*?)0+$/, "$1");
+  }
+  function extent(arr, f) {
+    var lo = Infinity, hi = -Infinity;
+    for (var i = 0; i < arr.length; i++) { var v = f ? f(arr[i], i) : arr[i]; if (v < lo) lo = v; if (v > hi) hi = v; }
+    if (!isFinite(lo)) { lo = 0; hi = 1; }
+    if (lo === hi) { hi = lo + 1; }
+    return [lo, hi];
+  }
+  function ticks(lo, hi, n) {
+    n = n || 5;
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log(span / n) / Math.LN10));
+    var err = (span / n) / step;
+    if (err >= 7.5) step *= 10; else if (err >= 3.5) step *= 5; else if (err >= 1.5) step *= 2;
+    var out = [], t = Math.ceil(lo / step) * step;
+    for (; t <= hi + step * 1e-6; t += step) out.push(Math.round(t / step) * step);
+    return out;
+  }
+
+  /* ---------------------------------------------------------
+     1. shared rAF ticker  (one loop, pauses when hidden)
+     --------------------------------------------------------- */
+  var subs = [], raf = 0, last = 0;
+  function frame(now) {
+    raf = 0;
+    var dt = last ? Math.min((now - last) / 1000, 0.05) : 0.016;
+    last = now;
+    for (var i = subs.length - 1; i >= 0; i--) {
+      var s = subs[i];
+      try { if (s(dt, now) === false) subs.splice(i, 1); }
+      catch (e) { subs.splice(i, 1); if (global.console) console.error(e); }
+    }
+    if (subs.length && !document.hidden) raf = requestAnimationFrame(frame);
+    else { raf = 0; last = 0; }
+  }
+  function tick(fn) {
+    subs.push(fn);
+    if (!raf && !document.hidden) { last = 0; raf = requestAnimationFrame(frame); }
+    return function () { var i = subs.indexOf(fn); if (i >= 0) subs.splice(i, 1); };
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = 0; last = 0; }
+    else if (subs.length && !raf) { last = 0; raf = requestAnimationFrame(frame); }
+  });
+
+  /* ---------------------------------------------------------
+     2. theme  -  live token values read from CSS
+     --------------------------------------------------------- */
+  var tokenNames = ["paper", "surface", "surface-2", "ink", "ink-2", "muted", "rule", "rule-soft",
+    "accent", "accent-2", "accent-ink", "accent-wash", "warn", "warn-wash"];
+  var themeListeners = [];
+  var Theme = {
+    tokens: {},
+    read: function () {
+      var cs = getComputedStyle(document.documentElement), t = {};
+      for (var i = 0; i < tokenNames.length; i++) {
+        t[tokenNames[i]] = (cs.getPropertyValue("--" + tokenNames[i]) || "").trim() || "#888";
+      }
+      t.dark = isDarkNow();
+      Theme.tokens = t;
+      return t;
+    },
+    get: function (name) { return Theme.tokens[name] || "#888"; },
+    rgb: function (name) { return parseColor(Theme.get(name)); },
+    onChange: function (fn) { themeListeners.push(fn); return function () { var i = themeListeners.indexOf(fn); if (i >= 0) themeListeners.splice(i, 1); }; },
+    get isDark() { return !!Theme.tokens.dark; }
+  };
+  function isDarkNow() {
+    var a = document.documentElement.getAttribute("data-theme");
+    if (a === "dark") return true;
+    if (a === "light") return false;
+    return !!(global.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
+  }
+  function themeChanged() {
+    Theme.read();
+    for (var i = 0; i < themeListeners.length; i++) { try { themeListeners[i](Theme.tokens); } catch (e) { } }
+  }
+  Theme.read();
+  new MutationObserver(themeChanged).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "class", "style"] });
+  if (global.matchMedia) {
+    var mqDark = matchMedia("(prefers-color-scheme: dark)");
+    (mqDark.addEventListener ? mqDark.addEventListener.bind(mqDark, "change") : mqDark.addListener.bind(mqDark))(themeChanged);
+  }
+
+  // colour parsing: #rgb, #rrggbb, rgb()/rgba(), otherwise resolved by the browser
+  var parseCache = {};
+  function parseColor(c) {
+    if (parseCache[c]) return parseCache[c];
+    var out = [136, 136, 136], m;
+    c = String(c).trim();
+    if (c.charAt(0) === "#") {
+      var h = c.slice(1);
+      if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+      if (h.length >= 6) out = [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+    } else if ((m = c.match(/rgba?\(([^)]+)\)/))) {
+      var p = m[1].split(/[ ,\/]+/).filter(Boolean);
+      out = [parseFloat(p[0]) | 0, parseFloat(p[1]) | 0, parseFloat(p[2]) | 0];
+    } else if (c) {
+      var probe = document.createElement("span");
+      probe.style.color = c; document.body && document.body.appendChild(probe);
+      var r = getComputedStyle(probe).color; probe.remove();
+      if (r && r !== c) return (parseCache[c] = parseColor(r));
+    }
+    parseCache[c] = out;
+    return out;
+  }
+  function rgba(rgb, a) { return "rgba(" + (rgb[0] | 0) + "," + (rgb[1] | 0) + "," + (rgb[2] | 0) + "," + a + ")"; }
+
+  /* ---------------------------------------------------------
+     3. motion primitives: spring, tween, flip, countUp, reveal
+     --------------------------------------------------------- */
+  // Critically damped by default: no overshoot on data.
+  function spring(from, to, cb, opts) {
+    opts = opts || {};
+    var k = opts.stiffness == null ? 170 : opts.stiffness;
+    var d = opts.damping == null ? 2 * Math.sqrt(k) : opts.damping; // critical
+    var prec = opts.precision == null ? 0.0008 : opts.precision;
+    var x = from, v = opts.velocity || 0, target = to, stopped = false, un = null;
+    if (reduced() && !opts.force) {
+      cb(to, true);
+      return { stop: function () { }, set: function (t) { cb(t, true); }, setTarget: function (t) { cb(t, true); }, get value() { return target; } };
+    }
+    function runner(dt) {
+      if (stopped) return false;
+      // fixed sub-steps keep the integration stable across dropped frames
+      var steps = Math.max(1, Math.min(6, Math.ceil(dt / 0.008))), h = dt / steps;
+      for (var i = 0; i < steps; i++) {
+        var a = -k * (x - target) - d * v;
+        v += a * h; x += v * h;
+      }
+      if (Math.abs(x - target) < prec * Math.max(1, Math.abs(target)) && Math.abs(v) < prec * 60) {
+        x = target; v = 0; cb(x, true);
+        if (opts.onDone) opts.onDone();
+        stopped = true; un = null; return false;
+      }
+      cb(x, false);
+    }
+    un = tick(runner);
+    function retarget(t) {
+      target = t;
+      if (stopped) { stopped = false; un = tick(runner); }
+    }
+    return {
+      stop: function () { stopped = true; if (un) { un(); un = null; } },
+      set: retarget,
+      setTarget: retarget,
+      get value() { return x; }
+    };
+  }
+  var EASE = {
+    out: function (t) { return 1 - Math.pow(1 - t, 3); },
+    inOut: function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; },
+    linear: function (t) { return t; }
+  };
+  function tween(from, to, cb, opts) {
+    opts = opts || {};
+    var dur = (opts.duration == null ? 700 : opts.duration);
+    var ease = typeof opts.ease === "function" ? opts.ease : (EASE[opts.ease] || EASE.out);
+    if (reduced() && !opts.force) { cb(to, true); if (opts.onDone) opts.onDone(); return { stop: function () { } }; }
+    var t0 = 0, un, stopped = false;
+    un = tick(function (dt, now) {
+      if (stopped) return false;
+      if (!t0) t0 = now - (opts.delay ? 0 : 0);
+      var p = clamp((now - t0 - (opts.delay || 0)) / dur, 0, 1);
+      if (now - t0 < (opts.delay || 0)) return;
+      cb(lerp(from, to, ease(p)), p >= 1);
+      if (p >= 1) { if (opts.onDone) opts.onDone(); return false; }
+    });
+    return { stop: function () { stopped = true; if (un) un(); } };
+  }
+  // FLIP: measure, mutate, invert, play.
+  function flip(nodes, mutate, opts) {
+    opts = opts || {};
+    nodes = Array.prototype.slice.call(nodes.length != null && !isEl(nodes) ? nodes : [nodes]);
+    var first = nodes.map(function (n) { return n.getBoundingClientRect(); });
+    mutate();
+    if (reduced()) return;
+    var dur = opts.duration || 480;
+    nodes.forEach(function (n, i) {
+      var a = first[i], b = n.getBoundingClientRect();
+      var dx = a.left - b.left, dy = a.top - b.top;
+      var sx = b.width ? a.width / b.width : 1, sy = b.height ? a.height / b.height : 1;
+      if (Math.abs(dx) < .5 && Math.abs(dy) < .5 && Math.abs(sx - 1) < .01 && Math.abs(sy - 1) < .01) return;
+      n.style.transformOrigin = "0 0";
+      n.style.transform = "translate(" + dx + "px," + dy + "px) scale(" + sx + "," + sy + ")";
+      n.style.transition = "none";
+      requestAnimationFrame(function () {
+        n.style.transition = "transform " + dur + "ms cubic-bezier(.22,.7,.2,1)";
+        n.style.transform = "";
+        setTimeout(function () { n.style.transition = ""; n.style.transformOrigin = ""; }, dur + 40);
+      });
+    });
+  }
+  // countUp: reads the target number from the element's text (or opts.to)
+  function countUp(node, opts) {
+    opts = opts || {};
+    var list = isEl(node) ? [node] : Array.prototype.slice.call(node);
+    list.forEach(function (n) {
+      if (n.__stCount) return;
+      n.__stCount = 1;
+      var raw = opts.to != null ? String(opts.to) : n.textContent.trim();
+      var m = raw.match(/-?[\d,]*\.?\d+/);
+      if (!m) return;
+      var target = parseFloat(m[0].replace(/,/g, ""));
+      var pre = raw.slice(0, m.index), post = raw.slice(m.index + m[0].length);
+      var dec = opts.decimals != null ? opts.decimals : (m[0].split(".")[1] || "").length;
+      var grp = m[0].indexOf(",") >= 0;
+      function paint(v) {
+        var s = Math.abs(target) >= 1000 && dec === 0 ? Math.round(v).toString() : v.toFixed(dec);
+        if (grp) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        n.textContent = pre + s + post;
+      }
+      var run = function () { tween(opts.from == null ? 0 : opts.from, target, function (v) { paint(v); }, { duration: opts.duration || 1100 }); };
+      if (opts.now) run(); else inView(n, run, { once: true });
+    });
+  }
+  // reveal: staggered entrance for [data-st-reveal] or opts.selector children
+  function reveal(root, opts) {
+    opts = opts || {};
+    var sel = opts.selector || "[data-st-reveal]";
+    if (!root || root.nodeType === 9) root = document.body;
+    var nodes = isEl(root) ? (root.matches && root.matches(sel) ? [root] : els(sel, root)) : Array.prototype.slice.call(root);
+    var step = opts.stagger == null ? 70 : opts.stagger;
+    nodes.forEach(function (n) { n.classList.add("st-reveal"); });
+    var groups = new Map();
+    nodes.forEach(function (n) {
+      var p = n.parentNode;
+      if (!groups.has(p)) groups.set(p, 0);
+      var i = groups.get(p); groups.set(p, i + 1);
+      inView(n, function () { setTimeout(function () { n.classList.add("is-in"); }, reduced() ? 0 : i * step); }, { once: true, margin: "0px 0px -8% 0px" });
+    });
+    return nodes;
+  }
+  // one-shot in-view helper
+  function inView(node, fn, opts) {
+    opts = opts || {};
+    if (!global.IntersectionObserver) { fn(); return function () { }; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { fn(e); if (opts.once !== false) io.disconnect(); } });
+    }, { rootMargin: opts.margin || "0px 0px -10% 0px", threshold: opts.threshold || 0 });
+    io.observe(node);
+    return function () { io.disconnect(); };
+  }
+  // page scroll progress bar
+  function progressBar(opts) {
+    opts = opts || {};
+    var bar = html("div", "st-progress"), fill = html("i", null, bar);
+    (opts.parent || document.body).appendChild(bar);
+    var target = opts.target || null, w = 0, cur = 0, un;
+    function measure() {
+      var p;
+      if (target) {
+        var r = target.getBoundingClientRect(), h = r.height - innerHeight;
+        p = h > 0 ? clamp(-r.top / h, 0, 1) : (r.top <= 0 ? 1 : 0);
+      } else {
+        var max = document.documentElement.scrollHeight - innerHeight;
+        p = max > 0 ? clamp(scrollY / max, 0, 1) : 0;
+      }
+      w = p;
+    }
+    function onScroll() { measure(); if (!un) un = tick(step); }
+    function step() {
+      cur = lerp(cur, w, reduced() ? 1 : 0.22);
+      fill.style.width = (cur * 100).toFixed(2) + "%";
+      if (Math.abs(cur - w) < 0.0006) { fill.style.width = (w * 100).toFixed(2) + "%"; un = null; return false; }
+    }
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll);
+    onScroll();
+    return { destroy: function () { removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll); if (un) un(); bar.remove(); } };
+  }
+
+  /* ---------------------------------------------------------
+     4. the thinking orb
+
+     Orb style adapted from thinking-orbs, MIT (c) Jakub Antalik
+     (github.com/Jakubantalik/thinking-orbs). Vanilla rewrite: dotted
+     monochrome spheres drawn with plain 2D canvas arcs - no filters, no
+     WebGL. Depth is carried by dot size and alpha alone, dots are z-sorted
+     far to near each frame, and every state writes into one shared dot
+     buffer so transitions morph the same dots instead of cutting.
+     --------------------------------------------------------- */
+
+  function hashD(a, b) { var h = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453; return h - Math.floor(h); }
+  function vnoise(x, y) {
+    var xi = Math.floor(x), yi = Math.floor(y), fx = x - xi, fy = y - yi;
+    fx = fx * fx * (3 - 2 * fx); fy = fy * fy * (3 - 2 * fy);
+    var a = hashD(xi, yi), b = hashD(xi + 1, yi), c = hashD(xi, yi + 1), d = hashD(xi + 1, yi + 1);
+    return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
+  }
+  function angleDelta(a, b) { return Math.atan2(Math.sin(a - b), Math.cos(a - b)); }
+
+  // canonical state names; both our vocabulary and the library's resolve here
+  var ORB_ALIAS = {
+    idle: "breathing", breathing: "breathing",
+    thinking: "working", working: "working",
+    retrieving: "searching", searching: "searching",
+    solving: "solving", connecting: "connecting", listening: "listening",
+    wrong: "wrong", grounded: "grounded", resolved: "resolved"
+  };
+  // colour token per state: monochrome ink everywhere except grounded/wrong
+  var ORB_TOKEN = {
+    breathing: "ink", working: "ink", searching: "ink", solving: "ink",
+    connecting: "ink", listening: "ink",
+    wrong: "warn", grounded: "accent", resolved: "accent"
+  };
+
+  function orb(canvas, opts) {
+    opts = opts || {};
+    if (!isEl(canvas)) throw new Error("Story.orb: first argument must be an element");
+    if (canvas.tagName.toLowerCase() !== "canvas") {
+      var host = canvas; canvas = document.createElement("canvas"); host.appendChild(canvas);
+    }
+    canvas.classList.add("st-orb");
+    if (!canvas.hasAttribute("role")) canvas.setAttribute("role", "img");
+    if (!canvas.getAttribute("aria-label")) canvas.setAttribute("aria-label", opts.label || "Animated orb showing the state of the system under review");
+    var ctx = canvas.getContext("2d");
+    var wrap = canvas.parentNode;
+    if (wrap && wrap.classList) wrap.classList.add("st-orb-wrap");
+
+    var state = ORB_ALIAS[opts.state] || "breathing";
+    var fromState = state, blend = 1, blendV = 0;     // spring-driven morph 0..1
+    var palette = opts.palette || null;
+
+    var W = 0, H = 0, S = 0, DPR = 1, N = 0, rs = 1;
+    // base geometry, rebuilt only when the dot count changes
+    var bx, by, bz, blon, blat, lax, lay, laz, idx, jit;
+    // evaluation buffers: A = outgoing state, B = incoming state
+    var Ax, Ay, Az, Ar, Aa, Bx, By, Bz, Br, Ba;
+    var fx, fy, fz, fr, fa;                            // final blended
+    var lines = [], linesW = 0;                        // connecting mode edges
+    var time = 0, yawOff = 0, tiltOff = 0, yawT = 0, tiltT = 0;
+    var targetEl = null, target = null, streamT = null;
+    var visible = false, un = null, io = null, ro = null, destroyed = false;
+
+    function alloc(n) {
+      N = n;
+      bx = new Float32Array(n); by = new Float32Array(n); bz = new Float32Array(n);
+      blon = new Float32Array(n); blat = new Float32Array(n); jit = new Float32Array(n);
+      lax = new Float32Array(n); lay = new Float32Array(n); laz = new Float32Array(n);
+      Ax = new Float32Array(n); Ay = new Float32Array(n); Az = new Float32Array(n);
+      Ar = new Float32Array(n); Aa = new Float32Array(n);
+      Bx = new Float32Array(n); By = new Float32Array(n); Bz = new Float32Array(n);
+      Br = new Float32Array(n); Ba = new Float32Array(n);
+      fx = new Float32Array(n); fy = new Float32Array(n); fz = new Float32Array(n);
+      fr = new Float32Array(n); fa = new Float32Array(n);
+      streamT = new Float32Array(n); for (var i = 0; i < n; i++) streamT[i] = -1;
+      idx = new Int32Array(n); for (var j = 0; j < n; j++) idx[j] = j;
+    }
+
+    // lat/long dot field: rings read as a globe, and the index order is
+    // stable so every state can address the same dot
+    function buildField(n) {
+      var rings = Math.max(4, Math.round(Math.sqrt(n / 1.75)));
+      var lonD = Math.max(4, Math.round(n / (0.64 * rings)));
+      var pts = [];
+      for (var li = 0; li <= rings; li++) {
+        var lat = -Math.PI / 2 + (li / rings) * Math.PI;
+        var cl = Math.cos(lat), sl = Math.sin(lat);
+        var lonCount = Math.max(1, Math.round(Math.abs(cl) * lonD));
+        for (var lj = 0; lj < lonCount; lj++) {
+          var lon = (lj / lonCount) * 2 * Math.PI;
+          pts.push([cl * Math.cos(lon), sl, cl * Math.sin(lon), lon, lat]);
+        }
+      }
+      alloc(pts.length);
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i];
+        bx[i] = p[0]; by[i] = p[1]; bz[i] = p[2]; blon[i] = p[3]; blat[i] = p[4];
+        jit[i] = hashD(i, 3.7);
+        // grounded/resolved target: direction quantised onto a coarse lattice
+        var q = 5;
+        var qx = Math.round(p[0] * q) / q, qy = Math.round(p[1] * q) / q, qz = Math.round(p[2] * q) / q;
+        var m = Math.sqrt(qx * qx + qy * qy + qz * qz) || 1;
+        lax[i] = qx / m; lay[i] = qy / m; laz[i] = qz / m;
+      }
+    }
+
+    /* ---- state evaluators ------------------------------------------
+       Each writes unit-sphere-space positions plus a radius multiplier and
+       an alpha multiplier for every dot. Positions stay in model space; the
+       projector applies spin, tilt and scale afterwards.               */
+
+    function evBreathing(t, X, Y, Z, Rr, Aa2) {
+      var pulse = 1 + 0.035 * Math.sin(t * 0.9);
+      for (var i = 0; i < N; i++) {
+        var w = 1 + 0.03 * Math.sin(t * 1.4 + blat[i] * 3.1);
+        var k = pulse * w;
+        X[i] = bx[i] * k; Y[i] = by[i] * k; Z[i] = bz[i] * k;
+        Rr[i] = 1; Aa2[i] = 1;
+      }
+    }
+    function evSearching(t, X, Y, Z, Rr, Aa2) {
+      var scan = t * 1.7;
+      for (var i = 0; i < N; i++) {
+        X[i] = bx[i]; Y[i] = by[i]; Z[i] = bz[i];
+        var d = angleDelta(blon[i], scan);
+        var boost = Math.exp(-(d * d) / 0.18);
+        Rr[i] = 1 + 1.15 * boost;
+        Aa2[i] = 0.42 + 0.58 * boost;      // un-scanned dots fade back
+      }
+    }
+    function evListening(t, X, Y, Z, Rr, Aa2) {
+      for (var i = 0; i < N; i++) {
+        var ri = (blat[i] + Math.PI / 2) * 4;
+        var w = 0.62 * Math.sin(t * 2.1 - ri * 0.52) + 0.38 * Math.sin(t * 1.27 + ri * 0.83);
+        var k = 0.94 + 0.12 * w;
+        X[i] = bx[i] * k; Y[i] = by[i] * k; Z[i] = bz[i] * k;
+        Rr[i] = 1 + 0.45 * Math.max(0, w); Aa2[i] = 1;
+      }
+    }
+    // rubik: bands twist in quarter turns, scramble then replay in reverse
+    var MOVES = null;
+    function moves() {
+      if (MOVES) return MOVES;
+      MOVES = [];
+      for (var i = 0; i < 12; i++) {
+        var axis = Math.min(2, Math.floor(hashD(i, 2.3) * 3));
+        var lo = -1 + 0.5 * Math.min(3, Math.floor(hashD(i, 5.9) * 4));
+        MOVES.push({ axis: axis, lo: lo, hi: lo + 0.5, ang: (hashD(i, 7.7) < 0.5 ? 1 : -1) * Math.PI / 2 });
+      }
+      return MOVES;
+    }
+    function evSolving(t, X, Y, Z, Rr, Aa2) {
+      var mv = moves(), cnt = mv.length, slot = 0.42, rest = 1.2;
+      var cyc = 2 * cnt * slot + rest, tc = t % cyc, amt = [], active = -1;
+      for (var a = 0; a < cnt; a++) amt.push(0);
+      if (tc < 2 * cnt * slot) {
+        var s = Math.floor(tc / slot), p = (tc - s * slot) / slot;
+        var ep = 1 - Math.pow(1 - Math.min(1, p / 0.7), 3);
+        if (s < cnt) { for (var i2 = 0; i2 < s; i2++) amt[i2] = 1; amt[s] = ep; active = s; }
+        else { var u = 2 * cnt - 1 - s; for (var i3 = 0; i3 < u; i3++) amt[i3] = 1; amt[u] = 1 - ep; active = u; }
+      }
+      for (var i = 0; i < N; i++) {
+        var x = bx[i], y = by[i], z = bz[i], hot = 0;
+        for (var m = 0; m < cnt; m++) {
+          if (amt[m] <= 0) continue;
+          var M = mv[m], co = M.axis === 0 ? x : M.axis === 1 ? y : z;
+          if (co < M.lo || co >= M.hi) continue;
+          if (m === active) hot = 1;
+          var ang = M.ang * amt[m], ca = Math.cos(ang), sa = Math.sin(ang), tmp;
+          if (M.axis === 0) { tmp = y * ca - z * sa; z = y * sa + z * ca; y = tmp; }
+          else if (M.axis === 1) { tmp = x * ca + z * sa; z = -x * sa + z * ca; x = tmp; }
+          else { tmp = x * ca - y * sa; y = x * sa + y * ca; x = tmp; }
+        }
+        X[i] = x; Y[i] = y; Z[i] = z; Rr[i] = 1 + hot * 0.3; Aa2[i] = 1;
+      }
+    }
+    // working: particles run tilted orbits over faint ghost paths
+    function evWorking(t, X, Y, Z, Rr, Aa2) {
+      var ORB = 12;
+      for (var o = 0; o < ORB; o++) {
+        var h1 = hashD(o, 1.7), h2 = hashD(o, 5.2), h3 = hashD(o, 8.9);
+        var ro = 0.45 + 0.52 * h1, th = h1 * 6.2832, phi = Math.acos(2 * h2 - 1);
+        var nx = Math.sin(phi) * Math.cos(th), ny = Math.cos(phi), nz = Math.sin(phi) * Math.sin(th);
+        var ux = -ny, uy = nx, uz = 0, ul = Math.max(1e-6, Math.sqrt(ux * ux + uy * uy));
+        ux /= ul; uy /= ul;
+        var vx = ny * uz - nz * uy, vy = nz * ux - nx * uz, vz = nx * uy - ny * ux;
+        var speed = (0.25 + 0.55 * h3) * (h3 > 0.5 ? 1 : -1);
+        for (var i = o; i < N; i += ORB) {
+          var k = Math.floor(i / ORB), per = Math.ceil(N / ORB);
+          var particle = (k % 6) === 0;                 // ~1 in 6 dots is live
+          var ang = particle ? t * speed + (k / per) * 12.566 + h2 * 6 : (k / per) * 6.2832;
+          var ca = Math.cos(ang), sa = Math.sin(ang);
+          X[i] = (ux * ca + vx * sa) * ro;
+          Y[i] = (uy * ca + vy * sa) * ro;
+          Z[i] = (uz * ca + vz * sa) * ro;
+          Rr[i] = particle ? 1.15 : 0.5;
+          Aa2[i] = particle ? 1 : 0.4;
+        }
+      }
+    }
+    // connecting: a subset drift as nodes and wire themselves together
+    function evConnecting(t, X, Y, Z, Rr, Aa2) {
+      var nodeN = clamp(Math.round(N * 0.09), 8, 40);
+      for (var i = 0; i < N; i++) {
+        if (i < nodeN) {
+          var g = Math.PI * (3 - Math.sqrt(5)), yy = 1 - (2 * (i + 0.5)) / nodeN;
+          var rad = Math.sqrt(Math.max(0, 1 - yy * yy)), aa = i * g;
+          var x = rad * Math.cos(aa) + 0.3 * (vnoise(i * 0.31 + 9, t * 0.24) - 0.5) * 2;
+          var y = yy + 0.3 * (vnoise(i * 0.53 + 27, t * 0.21) - 0.5) * 2;
+          var z = rad * Math.sin(aa) + 0.3 * (vnoise(i * 0.77 + 55, t * 0.27) - 0.5) * 2;
+          var l = Math.sqrt(x * x + y * y + z * z) || 1;
+          X[i] = x / l; Y[i] = y / l; Z[i] = z / l;
+          Rr[i] = 1.5 * (1 + 0.25 * Math.sin(t * 1.4 + i * 2.7)); Aa2[i] = 1;
+        } else {
+          X[i] = bx[i]; Y[i] = by[i]; Z[i] = bz[i]; Rr[i] = 0.4; Aa2[i] = 0.07;
+        }
+      }
+      X.__nodeN = nodeN;
+    }
+    // wrong: the field fractures into shells and scatters
+    function evWrong(t, X, Y, Z, Rr, Aa2) {
+      for (var i = 0; i < N; i++) {
+        var shell = ((i % 5) - 2) / 2;
+        var n = vnoise(bx[i] * 2.2 + t * 0.9, bz[i] * 2.2 - t * 0.6) - 0.5;
+        var k = 1 + shell * 0.30 * (0.6 + 0.4 * Math.sin(t * 3 + jit[i] * 6.28)) + n * 0.34;
+        X[i] = bx[i] * k; Y[i] = by[i] * k + n * 0.12; Z[i] = bz[i] * k;
+        Rr[i] = 0.85 + jit[i] * 0.7; Aa2[i] = 0.55 + 0.45 * jit[i];
+      }
+    }
+    // grounded / resolved: dots lock onto a stable quantised lattice
+    function evLattice(t, X, Y, Z, Rr, Aa2, calm) {
+      var pulse = 1 + (calm ? 0.02 : 0.012) * Math.sin(t * (calm ? 0.55 : 1.1));
+      for (var i = 0; i < N; i++) {
+        X[i] = lax[i] * pulse; Y[i] = lay[i] * pulse; Z[i] = laz[i] * pulse;
+        Rr[i] = calm ? 0.9 : 1.05; Aa2[i] = 1;
+      }
+    }
+
+    function evaluate(name, t, X, Y, Z, Rr, Aa2) {
+      X.__nodeN = 0;
+      switch (name) {
+        case "working": return evWorking(t, X, Y, Z, Rr, Aa2);
+        case "searching": return evSearching(t, X, Y, Z, Rr, Aa2);
+        case "solving": return evSolving(t, X, Y, Z, Rr, Aa2);
+        case "connecting": return evConnecting(t, X, Y, Z, Rr, Aa2);
+        case "listening": return evListening(t, X, Y, Z, Rr, Aa2);
+        case "wrong": return evWrong(t, X, Y, Z, Rr, Aa2);
+        case "grounded": return evLattice(t, X, Y, Z, Rr, Aa2, false);
+        case "resolved": return evLattice(t, X, Y, Z, Rr, Aa2, true);
+        default: return evBreathing(t, X, Y, Z, Rr, Aa2);
+      }
+    }
+
+    // spin rate per state, blended the same way as geometry
+    function spinOf(n) { return n === "working" ? 0.12 : n === "searching" ? 0.5 : n === "solving" ? 0.55 : n === "wrong" ? 0.62 : n === "resolved" ? 0.07 : n === "grounded" ? 0.14 : 0.16; }
+    function colorOf(n) {
+      if (palette && palette[n]) return parseColor(palette[n]);
+      if (palette && palette.core && ORB_TOKEN[n] === "ink") return parseColor(palette.core);
+      return Theme.rgb(ORB_TOKEN[n] || "ink");
+    }
+
+    function resize() {
+      var r = canvas.getBoundingClientRect();
+      var w = Math.max(1, Math.round(r.width || opts.size || 300));
+      var h = Math.max(1, Math.round(r.height || opts.size || w));
+      DPR = Math.min(global.devicePixelRatio || 1, 2);      // capped at 2
+      if (w === W && h === H && canvas.width === Math.round(w * DPR)) return;
+      W = w; H = h; S = Math.min(w, h);
+      canvas.width = Math.round(w * DPR); canvas.height = Math.round(h * DPR);
+      // dot count and dot size both scale with the rendered size, so a 20px
+      // inline orb and a 480px hero orb both read correctly
+      var want = clamp(Math.round(opts.density || S * 1.7), 40, 1100);
+      if (!N || Math.abs(want - N) > Math.max(24, N * 0.25)) buildField(want);
+      rs = Math.pow(S / 300, 0.6);
+      if (reduced()) renderStatic();
+    }
+
+    var PROJ = { cy: 0, sy: 0, ct: 0, st: 0, cx: 0, cyy: 0, sc: 0 };
+    function setProj(yaw, tilt) {
+      PROJ.cy = Math.cos(yaw); PROJ.sy = Math.sin(yaw);
+      PROJ.ct = Math.cos(tilt); PROJ.st = Math.sin(tilt);
+      PROJ.cx = W / 2; PROJ.cyy = H / 2; PROJ.sc = (S / 2) * 0.82;
+    }
+    function projX(x, y, z) { return PROJ.cx + (x * PROJ.cy + z * PROJ.sy) * PROJ.sc; }
+    function projY(x, y, z) { var z1 = -x * PROJ.sy + z * PROJ.cy; return PROJ.cyy - (y * PROJ.ct - z1 * PROJ.st) * PROJ.sc; }
+    function projZ(x, y, z) { var z1 = -x * PROJ.sy + z * PROJ.cy; return y * PROJ.st + z1 * PROJ.ct; }
+
+    function paint(t) {
+      if (!N || !W) return;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+
+      var morphing = blend < 0.999;
+      evaluate(state, t, Bx, By, Bz, Br, Ba);
+      if (morphing) evaluate(fromState, t, Ax, Ay, Az, Ar, Aa);
+      var bl = morphing ? blend : 1;
+      var i;
+      for (i = 0; i < N; i++) {
+        if (morphing) {
+          fx[i] = lerp(Ax[i], Bx[i], bl); fy[i] = lerp(Ay[i], By[i], bl); fz[i] = lerp(Az[i], Bz[i], bl);
+          fr[i] = lerp(Ar[i], Br[i], bl); fa[i] = lerp(Aa[i], Ba[i], bl);
+        } else { fx[i] = Bx[i]; fy[i] = By[i]; fz[i] = Bz[i]; fr[i] = Br[i]; fa[i] = Ba[i]; }
+      }
+
+      var spin = morphing ? lerp(spinOf(fromState), spinOf(state), bl) : spinOf(state);
+      setProj(t * spin + yawOff, 0.36 + 0.06 * Math.sin(t * 0.35) + tiltOff);
+
+      var cB = colorOf(state), cA = morphing ? colorOf(fromState) : cB;
+      var col = morphing ? [lerp(cA[0], cB[0], bl), lerp(cA[1], cB[1], bl), lerp(cA[2], cB[2], bl)] : cB;
+      var rgbPre = "rgba(" + (col[0] | 0) + "," + (col[1] | 0) + "," + (col[2] | 0) + ",";
+
+      // project in place, then z-sort far to near so near dots draw on top
+      for (i = 0; i < N; i++) {
+        var x = fx[i], y = fy[i], z = fz[i];
+        var X2 = projX(x, y, z), Y2 = projY(x, y, z), Z2 = projZ(x, y, z);
+        fx[i] = X2; fy[i] = Y2; fz[i] = Z2;
+      }
+      var order = idx;
+      order.sort(function (a, b) { return fz[a] - fz[b]; });
+
+      // streaming toward a target element (pointAt)
+      var streaming = target && (state === "searching" || fromState === "searching");
+
+      for (var q = 0; q < N; q++) {
+        i = order[q];
+        var depth = clamp((fz[i] + 1) / 2, 0, 1);
+        var r = (0.6 + 1.7 * depth) * fr[i] * rs;
+        var a = (0.16 + 0.84 * depth) * fa[i];
+        var px = fx[i], py = fy[i];
+        if (streaming) {
+          var st = streamT[i];
+          if (st < 0) { if (Math.random() < 0.012) streamT[i] = 0; }
+          else {
+            st += 0.02 + jit[i] * 0.02;
+            if (st >= 1) { streamT[i] = -1; }
+            else {
+              streamT[i] = st;
+              var e = st * st * (3 - 2 * st);
+              px = lerp(px, target.x, e); py = lerp(py, target.y, e);
+              a *= (1 - st);
+            }
+          }
+        }
+        if (a < 0.02) continue;
+        r = Math.max(0.3, r);
+        ctx.fillStyle = rgbPre + a.toFixed(3) + ")";
+        ctx.beginPath(); ctx.arc(px, py, r, 0, 6.2832); ctx.fill();
+      }
+
+      // connecting mode: wire the nodes (drawn under the dots is ideal, but
+      // a light stroke over the faint field reads the same and costs less)
+      var nn = (state === "connecting" ? (Bx.__nodeN || 0) : 0);
+      if (nn && bl > 0.05) {
+        ctx.lineWidth = Math.max(0.6, 0.8 * rs);
+        for (i = 0; i < nn; i++) {
+          for (var j = i + 1; j < nn; j++) {
+            var dx = Bx[i] - Bx[j], dy = By[i] - By[j], dz = Bz[i] - Bz[j];
+            var dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            if (dist >= 0.72) continue;
+            var la = (1 - dist / 0.72) * 0.35 * bl;
+            ctx.strokeStyle = rgbPre + la.toFixed(3) + ")";
+            ctx.beginPath(); ctx.moveTo(fx[i], fy[i]); ctx.lineTo(fx[j], fy[j]); ctx.stroke();
+          }
+        }
+      }
+    }
+
+    // reduced motion: one static, representative frame, no loop
+    function renderStatic() {
+      blend = 1;
+      paint(state === "solving" ? 1.05 : 1.2);
+    }
+
+    function step(dt) {
+      if (destroyed) return false;
+      if (!visible) return;
+      time += dt;
+      if (blend < 1) {
+        // critically damped morph between the two states
+        var k = 22, d = 2 * Math.sqrt(k);
+        var acc = -k * (blend - 1) - d * blendV;
+        blendV += acc * dt; blend += blendV * dt;
+        if (blend > 0.9995) { blend = 1; blendV = 0; fromState = state; }
+      }
+      yawOff = lerp(yawOff, yawT, 1 - Math.pow(0.002, dt));
+      tiltOff = lerp(tiltOff, tiltT, 1 - Math.pow(0.002, dt));
+      if (targetEl) recomputeTarget();
+      paint(time);
+    }
+    function recomputeTarget() {
+      var a = canvas.getBoundingClientRect(), b = targetEl.getBoundingClientRect();
+      if (!a.width) return;
+      target = { x: (b.left + b.width / 2) - a.left, y: (b.top + b.height / 2) - a.top };
+    }
+
+    function start() { if (!un && !destroyed && !reduced()) un = tick(step); }
+    function stop() { if (un) { un(); un = null; } }
+
+    if (global.IntersectionObserver) {
+      io = new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) start(); else stop(); }, { rootMargin: "120px" });
+      io.observe(canvas);
+    } else { visible = true; start(); }
+    if (global.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(canvas); }
+    else addEventListener("resize", resize);
+    resize();
+    if (reduced()) renderStatic(); else paint(0);
+
+    // pointer parallax: small yaw/tilt offset that eases back to centre
+    function onMove(e) {
+      var r = canvas.getBoundingClientRect();
+      if (!r.width) return;
+      yawT = clamp((e.clientX - (r.left + r.width / 2)) / Math.max(120, r.width), -1.2, 1.2) * 0.55;
+      tiltT = clamp((e.clientY - (r.top + r.height / 2)) / Math.max(120, r.height), -1.2, 1.2) * 0.3;
+    }
+    function onLeave() { yawT = 0; tiltT = 0; }
+    if (opts.parallax !== false) {
+      addEventListener("pointermove", onMove, { passive: true });
+      addEventListener("pointerleave", onLeave);
+    }
+    var unTheme = Theme.onChange(function () { if (reduced()) renderStatic(); });
+
+    var api = {
+      get state() { return state; },
+      setState: function (name) {
+        var canon = ORB_ALIAS[name];
+        if (!canon || canon === state) return api;
+        fromState = blend < 1 ? fromState : state;   // mid-morph: keep origin
+        state = canon; blend = 0; blendV = 0;
+        if (canon !== "searching") { targetEl = null; target = null; }
+        canvas.setAttribute("data-state", canon);
+        if (wrap && wrap.setAttribute) wrap.setAttribute("data-state", canon);
+        if (reduced()) renderStatic();
+        return api;
+      },
+      pointAt: function (node) {
+        targetEl = isEl(node) ? node : (typeof node === "string" ? el(node) : null);
+        if (targetEl) { recomputeTarget(); api.setState("searching"); }
+        else target = null;
+        return api;
+      },
+      resize: resize,
+      get canvas() { return canvas; },
+      destroy: function () {
+        destroyed = true; stop();
+        if (io) io.disconnect();
+        if (ro) ro.disconnect(); else removeEventListener("resize", resize);
+        removeEventListener("pointermove", onMove); removeEventListener("pointerleave", onLeave);
+        unTheme();
+        ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    };
+    canvas.setAttribute("data-state", state);
+    if (wrap && wrap.setAttribute) wrap.setAttribute("data-state", state);
+    return api;
+  }
+
+  /* ---------------------------------------------------------
+     5. scenes  (sticky stage + scroll steps)
+     --------------------------------------------------------- */
+  function scenes(root, opts) {
+    opts = opts || {};
+    var scene = isEl(root) ? root : el(root);
+    if (!scene) return { destroy: function () { } };
+    var steps = els(".st-step", scene);
+    var stage = el(".st-stage", scene);
+    var active = -1, ioStep = null, unScroll = null;
+
+    function setActive(i, dir) {
+      if (i === active) return;
+      var prev = active; active = i;
+      steps.forEach(function (s, j) { s.classList.toggle("is-active", j === i); });
+      var node = steps[i];
+      if (node) {
+        var orbState = node.getAttribute("data-orb");
+        if (orbState && opts.orb && opts.orb.setState) opts.orb.setState(orbState);
+        scene.setAttribute("data-step", node.getAttribute("data-step") || String(i));
+      }
+      if (opts.onStep) opts.onStep(i, node, i > prev ? 1 : -1);
+    }
+
+    if (global.IntersectionObserver) {
+      // under 800px the stage is stacked on top, so the active band sits in the lower part of the viewport
+      var narrow = global.matchMedia && global.matchMedia("(max-width:800px)").matches, bandMid = narrow ? 0.78 : 0.5;
+      ioStep = new IntersectionObserver(function (es) {
+        // pick the entry closest to the middle band of the viewport
+        var best = null, bestD = Infinity;
+        es.forEach(function (e) { if (e.isIntersecting) { var d = Math.abs(e.boundingClientRect.top + e.boundingClientRect.height / 2 - innerHeight * bandMid); if (d < bestD) { bestD = d; best = e; } } });
+        if (best) setActive(steps.indexOf(best.target));
+      }, { rootMargin: narrow ? "-68% 0px -12% 0px" : "-45% 0px -45% 0px", threshold: 0 });
+      steps.forEach(function (s) { ioStep.observe(s); });
+    } else { setActive(0); }
+
+    function onScroll() {
+      var r = scene.getBoundingClientRect();
+      var h = r.height - innerHeight;
+      var p = h > 0 ? clamp(-r.top / h, 0, 1) : (r.top < 0 ? 1 : 0);
+      scene.style.setProperty("--p", p.toFixed(4));
+      if (opts.onProgress) opts.onProgress(active, p, scene);
+      // per-step progress as --sp on each step
+      if (opts.stepProgress) {
+        steps.forEach(function (s) {
+          var sr = s.getBoundingClientRect();
+          var sp = clamp((innerHeight * 0.6 - sr.top) / Math.max(1, sr.height), 0, 1);
+          s.style.setProperty("--sp", sp.toFixed(3));
+        });
+      }
+    }
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll);
+    onScroll();
+    if (reduced()) setActive(steps.length ? steps.length - 1 : -1);
+    else if (active < 0) setActive(0);
+
+    return {
+      steps: steps, stage: stage, scene: scene,
+      get index() { return active; },
+      go: function (i) { if (steps[i]) steps[i].scrollIntoView({ behavior: reduced() ? "auto" : "smooth", block: "center" }); },
+      destroy: function () {
+        if (ioStep) ioStep.disconnect();
+        removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll);
+      }
+    };
+  }
+
+  /* ---------------------------------------------------------
+     6. chart scaffolding
+     --------------------------------------------------------- */
+  function chartBase(node, opts, defAspect) {
+    opts = opts || {};
+    var host = isEl(node) ? node : el(node);
+    if (!host) throw new Error("Story.chart: target element not found");
+    var svg;
+    if (host.tagName.toLowerCase() === "svg") svg = host;
+    else { svg = mk("svg", null, host); }
+    svg.setAttribute("class", "st-chart " + (opts.className || ""));
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", opts.label || opts.ariaLabel || "Chart");
+    var m = Object.assign({ top: 18, right: 22, bottom: 34, left: 46 }, opts.margin || {});
+    var W = opts.width || 700, H = opts.height || Math.round(W * (opts.aspect || defAspect || 0.58));
+    var api = {
+      svg: svg, host: host, m: m,
+      get w() { return W - m.left - m.right; },
+      get h() { return H - m.top - m.bottom; },
+      W: W, H: H,
+      clear: function () { while (svg.firstChild) svg.removeChild(svg.firstChild); },
+      frame: function () {
+        svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+        svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+        if (opts.height && host !== svg) svg.setAttribute("height", opts.height);
+        var g = mk("g", { transform: "translate(" + m.left + "," + m.top + ")" }, svg);
+        return g;
+      },
+      setLabel: function (s) { svg.setAttribute("aria-label", s); }
+    };
+    return api;
+  }
+  // x/y axes with 12px mono type (styled by story.css)
+  function axes(g, b, xs, ys, optsA) {
+    optsA = optsA || {};
+    var w = b.w, h = b.h;
+    if (optsA.grid !== false) {
+      ys.ticks.forEach(function (t) {
+        mk("line", { class: "st-grid", x1: 0, x2: w, y1: ys.s(t), y2: ys.s(t) }, g);
+      });
+    }
+    mk("line", { class: "st-axis-line", x1: 0, x2: w, y1: h, y2: h }, g);
+    ys.ticks.forEach(function (t) {
+      var n = mk("text", { x: -8, y: ys.s(t) + 4, "text-anchor": "end" }, g);
+      n.textContent = optsA.yfmt ? optsA.yfmt(t) : fmt(t);
+    });
+    (xs.labels || xs.ticks || []).forEach(function (t, i) {
+      var n = mk("text", { x: xs.s(xs.ticks ? t : i), y: h + 20, "text-anchor": "middle" }, g);
+      n.textContent = optsA.xfmt ? optsA.xfmt(t, i) : (typeof t === "number" ? fmt(t, 0) : t);
+    });
+    if (optsA.ylabel) { var yl = mk("text", { class: "st-caption", x: -b.m.left + 2, y: -6 }, g); yl.textContent = optsA.ylabel; }
+    if (optsA.xlabel) { var xl = mk("text", { class: "st-caption", x: w, y: h + 32, "text-anchor": "end" }, g); xl.textContent = optsA.xlabel; }
+  }
+  function linScale(dom, rng) {
+    var d0 = dom[0], d1 = dom[1], r0 = rng[0], r1 = rng[1];
+    var f = function (v) { return d1 === d0 ? r0 : r0 + (v - d0) / (d1 - d0) * (r1 - r0); };
+    f.domain = dom; f.range = rng;
+    f.invert = function (p) { return d0 + (p - r0) / (r1 - r0) * (d1 - d0); };
+    return f;
+  }
+  function nice(dom, zero) {
+    var lo = zero ? Math.min(0, dom[0]) : dom[0], hi = dom[1];
+    var t = ticks(lo, hi, 5);
+    return [Math.min(lo, t[0]), Math.max(hi, t[t.length - 1])];
+  }
+  function tok(name) { return Theme.get(name); }
+  // shared t:0->1 animator for chart state transitions
+  function transition(cb, opts) {
+    opts = opts || {};
+    if (reduced()) { cb(1, true); return { stop: function () { } }; }
+    var s = spring(0, 1, function (v, done) { cb(clamp(v, 0, 1.0001), done); }, { stiffness: opts.stiffness || 120, damping: opts.damping });
+    return s;
+  }
+
+  /* ---------------------------------------------------------
+     7. charts
+     --------------------------------------------------------- */
+  var chart = {};
+
+  /* line: {series:[{name,points:[[x,y]..],color?,dash?}], gap?:[i,j]} */
+  chart.line = function (node, data, opts) {
+    opts = opts || {};
+    var b = chartBase(node, opts, 0.56), cur = data, un, anim = null, first = true;
+    function render(t) {
+      b.clear();
+      var g = b.frame(), w = b.w, h = b.h;
+      var all = [];
+      cur.series.forEach(function (s) { s.points.forEach(function (p) { all.push(p); }); });
+      var xd = extent(all, function (p) { return p[0]; }), yd = nice(extent(all, function (p) { return p[1]; }), opts.zero !== false);
+      var xs = linScale(xd, [0, w]), ys = linScale(yd, [h, 0]);
+      var xt = opts.xticks || ticks(xd[0], xd[1], 5), yt = ticks(yd[0], yd[1], 5);
+      axes(g, b, { s: xs, ticks: xt }, { s: ys, ticks: yt }, opts);
+      // shaded gap between two named series
+      if (cur.gap) {
+        var A = cur.series[cur.gap[0]] || cur.series.find(function (s) { return s.name === cur.gap[0]; });
+        var B = cur.series[cur.gap[1]] || cur.series.find(function (s) { return s.name === cur.gap[1]; });
+        if (A && B) {
+          var d = "M" + A.points.map(function (p) { return xs(p[0]) + "," + ys(p[1]); }).join("L") +
+            "L" + B.points.slice().reverse().map(function (p) { return xs(p[0]) + "," + ys(p[1]); }).join("L") + "Z";
+          var band = mk("path", { class: "st-gap", d: d, fill: tok("accent") }, g);
+          band.setAttribute("opacity", (0.14 * t).toFixed(3));
+        }
+      }
+      cur.series.forEach(function (s, i) {
+        var col = s.color ? tok(s.color) || s.color : (i === 0 ? tok("accent") : tok("ink-2"));
+        var d = "M" + s.points.map(function (p) { return xs(p[0]).toFixed(2) + "," + ys(p[1]).toFixed(2); }).join("L");
+        var path = mk("path", { class: "st-series-line", d: d, stroke: col }, g);
+        if (s.dash) path.setAttribute("stroke-dasharray", "5 5");
+        else {
+          // draw-in
+          var len = path.getTotalLength ? path.getTotalLength() : 0;
+          if (len) { path.setAttribute("stroke-dasharray", len); path.setAttribute("stroke-dashoffset", (len * (1 - t)).toFixed(1)); }
+        }
+        // direct label at the end of the line
+        var lastP = s.points[s.points.length - 1];
+        if (s.name && t > .6) {
+          var lab = mk("text", { class: "st-label-direct", x: xs(lastP[0]) - 4, y: ys(lastP[1]) - 8, "text-anchor": "end", fill: col }, g);
+          lab.textContent = s.name;
+          lab.setAttribute("opacity", ((t - .6) / .4).toFixed(2));
+        }
+      });
+    }
+    function run() { if (anim) anim.stop(); anim = transition(function (t) { render(clamp(t, 0, 1)); }); }
+    un = Theme.onChange(function () { render(1); });
+    if (first) { first = false; inView(b.svg, run, { once: true }); render(0.0001); }
+    return {
+      update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); },
+      el: b.svg,
+      destroy: function () { if (anim) anim.stop(); un(); b.clear(); }
+    };
+  };
+
+  /* bars: [{label, value, color?}] */
+  chart.bars = function (node, data, opts) {
+    opts = opts || {};
+    var b = chartBase(node, opts, 0.56), cur = data, prev = data.map(function () { return 0; }), anim, un;
+    function render(t, from) {
+      b.clear();
+      var g = b.frame(), w = b.w, h = b.h;
+      var yd = nice([0, extent(cur, function (d) { return d.value; })[1]], true);
+      var ys = linScale(yd, [h, 0]);
+      axes(g, b, { s: function (i) { return (i + .5) * (w / cur.length); }, labels: cur.map(function (d) { return d.label; }) }, { s: ys, ticks: ticks(yd[0], yd[1], 5) }, opts);
+      var bw = (w / cur.length) * 0.62;
+      cur.forEach(function (d, i) {
+        var v = lerp(from[i] == null ? 0 : from[i], d.value, t);
+        var x = i * (w / cur.length) + (w / cur.length - bw) / 2;
+        var y = ys(v), hh = Math.max(0, h - y);
+        mk("rect", { class: "st-bar", x: x, y: y, width: bw, height: hh, fill: d.color ? (tok(d.color) || d.color) : tok("accent") }, g);
+        var lab = mk("text", { class: "st-label-direct", x: x + bw / 2, y: y - 7, "text-anchor": "middle" }, g);
+        lab.textContent = (opts.valueFmt || fmt)(v);
+      });
+    }
+    function run() {
+      var from = prev.slice();
+      if (anim) anim.stop();
+      anim = transition(function (t) { render(clamp(t, 0, 1), from); });
+      prev = cur.map(function (d) { return d.value; });
+    }
+    un = Theme.onChange(function () { render(1, prev); });
+    render(0, prev);
+    inView(b.svg, run, { once: true });
+    return {
+      update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); },
+      el: b.svg,
+      destroy: function () { if (anim) anim.stop(); un(); b.clear(); }
+    };
+  };
+
+  /* flow: proportional bands between two columns
+     {left:[{label,value}], right:[{label,value}], links:[{from,to,value,color?}]} */
+  chart.flow = function (node, data, opts) {
+    opts = opts || {};
+    var b = chartBase(node, opts, 0.6), cur = data, anim, un;
+    function render(t) {
+      b.clear();
+      var m = b.m, g = b.frame(), w = b.w, h = b.h, colW = opts.colWidth || 16;
+      var total = cur.left.reduce(function (a, d) { return a + d.value; }, 0) || 1;
+      var pad = 10, avail = h - pad * (cur.left.length - 1);
+      var ly = 0, L = {};
+      cur.left.forEach(function (d) { var hh = d.value / total * avail; L[d.label] = { y: ly, h: hh, off: 0 }; ly += hh + pad; });
+      var rtotal = cur.right.reduce(function (a, d) { return a + d.value; }, 0) || 1;
+      var ravail = h - pad * (cur.right.length - 1), ry = 0, Rm = {};
+      cur.right.forEach(function (d) { var hh = d.value / rtotal * ravail; Rm[d.label] = { y: ry, h: hh, off: 0 }; ry += hh + pad; });
+
+      cur.links.forEach(function (lk, i) {
+        var a = L[lk.from], c = Rm[lk.to];
+        if (!a || !c) return;
+        var ah = lk.value / total * avail, ch = lk.value / rtotal * ravail;
+        var y0 = a.y + a.off, y1 = c.y + c.off; a.off += ah; c.off += ch;
+        var x0 = colW, x1 = w - colW, mid = (x0 + x1) / 2;
+        var e = clamp((t - i * 0.05) / 0.75, 0, 1);
+        var xe = lerp(x0, x1, e);
+        var d = "M" + x0 + "," + y0 + "C" + mid + "," + y0 + " " + mid + "," + y1 + " " + xe + "," + lerp(y0, y1, e) +
+          "L" + xe + "," + lerp(y0 + ah, y1 + ch, e) + "C" + mid + "," + (y1 + ch) + " " + mid + "," + (y0 + ah) + " " + x0 + "," + (y0 + ah) + "Z";
+        var col = lk.color ? (tok(lk.color) || lk.color) : tok("accent");
+        var p = mk("path", { d: d, fill: col }, g);
+        p.setAttribute("opacity", (lk.opacity == null ? 0.32 : lk.opacity));
+        if (lk.label && e > .8) {
+          var tx = mk("text", { class: "st-label-direct", x: x1 - 6, y: y1 + ch / 2 + 4, "text-anchor": "end", fill: col }, g);
+          tx.textContent = lk.label;
+        }
+      });
+      cur.left.forEach(function (d) {
+        mk("rect", { x: 0, y: L[d.label].y, width: colW, height: L[d.label].h, fill: tok("ink-2") }, g);
+        var tx = mk("text", { class: "st-label-direct", x: colW + 7, y: L[d.label].y + 14 }, g);
+        tx.textContent = d.label;
+      });
+      cur.right.forEach(function (d) {
+        mk("rect", { x: w - colW, y: Rm[d.label].y, width: colW, height: Rm[d.label].h, fill: tok("ink") }, g);
+        var tx = mk("text", { class: "st-label-direct", x: w - colW - 7, y: Rm[d.label].y + 14, "text-anchor": "end" }, g);
+        tx.textContent = d.label;
+      });
+    }
+    function run() { if (anim) anim.stop(); anim = transition(function (t) { render(clamp(t, 0, 1)); }, { stiffness: 70 }); }
+    un = Theme.onChange(function () { render(1); });
+    render(0.001); inView(b.svg, run, { once: true });
+    return { update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); }, el: b.svg, destroy: function () { if (anim) anim.stop(); un(); b.clear(); } };
+  };
+
+  /* scatter: {points:[{x,y,label?,color?}], region?:{x0,x1,y0,y1,label}} */
+  chart.scatter = function (node, data, opts) {
+    opts = opts || {};
+    var b = chartBase(node, opts, 0.62), cur = data, anim, un;
+    function render(t) {
+      b.clear();
+      var g = b.frame(), w = b.w, h = b.h, pts = cur.points || [];
+      var xd = opts.xdomain || nice(extent(pts, function (p) { return p.x; }), opts.zero), yd = opts.ydomain || nice(extent(pts, function (p) { return p.y; }), opts.zero);
+      var xs = linScale(xd, [0, w]), ys = linScale(yd, [h, 0]);
+      axes(g, b, { s: xs, ticks: ticks(xd[0], xd[1], 5) }, { s: ys, ticks: ticks(yd[0], yd[1], 5) }, opts);
+      if (cur.region) {
+        var r = cur.region;
+        var x0 = xs(r.x0 == null ? xd[0] : r.x0), x1 = xs(r.x1 == null ? xd[1] : r.x1);
+        var y0 = ys(r.y1 == null ? yd[1] : r.y1), y1 = ys(r.y0 == null ? yd[0] : r.y0);
+        mk("rect", { class: "st-region", x: Math.min(x0, x1), y: Math.min(y0, y1), width: Math.abs(x1 - x0), height: Math.abs(y1 - y0), fill: tok("warn") }, g)
+          .setAttribute("opacity", (0.12 * t).toFixed(3));
+        mk("rect", { class: "st-region-edge", x: Math.min(x0, x1), y: Math.min(y0, y1), width: Math.abs(x1 - x0), height: Math.abs(y1 - y0), stroke: tok("warn") }, g);
+        if (r.label) {
+          var lt = mk("text", { class: "st-label-direct", x: (x0 + x1) / 2, y: (y0 + y1) / 2, "text-anchor": "middle", fill: tok("warn") }, g);
+          lt.textContent = r.label; lt.setAttribute("opacity", t.toFixed(2));
+        }
+      }
+      pts.forEach(function (p, i) {
+        var e = clamp((t - (i / Math.max(1, pts.length)) * 0.4) / 0.6, 0, 1);
+        var c = mk("circle", { cx: xs(p.x), cy: ys(p.y), r: (p.r || 5) * e, fill: p.color ? (tok(p.color) || p.color) : tok("accent") }, g);
+        c.setAttribute("opacity", (0.85 * e).toFixed(2));
+        if (p.label && e > .9) {
+          var tx = mk("text", { class: "st-label-direct", x: xs(p.x) + 9, y: ys(p.y) + 4 }, g);
+          tx.textContent = p.label;
+        }
+      });
+    }
+    function run() { if (anim) anim.stop(); anim = transition(function (t) { render(clamp(t, 0, 1)); }, { stiffness: 90 }); }
+    un = Theme.onChange(function () { render(1); });
+    render(0.001); inView(b.svg, run, { once: true });
+    return { update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); }, el: b.svg, destroy: function () { if (anim) anim.stop(); un(); b.clear(); } };
+  };
+
+  /* histogram: {values:[..], bins?, marker?:{x,label}} - fills progressively */
+  chart.histogram = function (node, data, opts) {
+    opts = opts || {};
+    var b = chartBase(node, opts, 0.56), cur = data, anim, un;
+    function bin() {
+      var v = cur.values || [], n = cur.bins || opts.bins || 28;
+      var d = opts.xdomain || extent(v);
+      var counts = new Array(n).fill(0), order = [];
+      for (var i = 0; i < v.length; i++) {
+        var k = clamp(Math.floor((v[i] - d[0]) / (d[1] - d[0]) * n), 0, n - 1);
+        order.push(k);
+      }
+      return { d: d, n: n, order: order };
+    }
+    function render(t) {
+      b.clear();
+      var g = b.frame(), w = b.w, h = b.h, B = bin();
+      var take = Math.round(B.order.length * t);
+      var counts = new Array(B.n).fill(0);
+      for (var i = 0; i < take; i++) counts[B.order[i]]++;
+      var full = new Array(B.n).fill(0);
+      for (var j = 0; j < B.order.length; j++) full[B.order[j]]++;
+      var ymax = Math.max(1, extent(full)[1]);
+      var ys = linScale([0, ymax], [h, 0]), xs = linScale(B.d, [0, w]);
+      axes(g, b, { s: xs, ticks: ticks(B.d[0], B.d[1], 5) }, { s: ys, ticks: ticks(0, ymax, 4) }, opts);
+      var bw = w / B.n;
+      counts.forEach(function (c, i) {
+        if (!c) return;
+        mk("rect", { x: i * bw + 0.5, y: ys(c), width: Math.max(1, bw - 1), height: h - ys(c), fill: tok("accent") }, g).setAttribute("opacity", ".72");
+      });
+      if (cur.marker) {
+        var mx = xs(cur.marker.x);
+        mk("line", { class: "st-marker", x1: mx, x2: mx, y1: -4, y2: h, stroke: tok("warn") }, g);
+        var lt = mk("text", { class: "st-label-direct", x: mx - 6, y: 10, "text-anchor": mx > w * .6 ? "end" : "start", fill: tok("warn") }, g);
+        if (mx <= w * .6) lt.setAttribute("x", mx + 6);
+        lt.textContent = cur.marker.label || fmt(cur.marker.x);
+      }
+      if (opts.countLabel !== false) {
+        var ct = mk("text", { class: "st-caption", x: w, y: -4, "text-anchor": "end" }, g);
+        ct.textContent = take + " / " + B.order.length + " draws";
+      }
+    }
+    function run() { if (anim) anim.stop(); anim = transition(function (t) { render(clamp(t, 0, 1)); }, { stiffness: 26 }); }
+    un = Theme.onChange(function () { render(1); });
+    render(0); inView(b.svg, run, { once: true });
+    return { update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); }, el: b.svg, destroy: function () { if (anim) anim.stop(); un(); b.clear(); } };
+  };
+
+  /* tornado: [{label, low, high, base?}] - sorts itself by absolute swing */
+  chart.tornado = function (node, data, opts) {
+    opts = opts || {};
+    var b = chartBase(node, opts, 0.72), cur = data, anim, un, order = null;
+    function sorted() {
+      var idx = cur.map(function (d, i) { return i; });
+      idx.sort(function (a, c) { return Math.abs(cur[c].high - cur[c].low) - Math.abs(cur[a].high - cur[a].low); });
+      return idx;
+    }
+    function render(t) {
+      b.clear();
+      var m = Object.assign({}, b.m); // wide left gutter for row labels
+      var g = b.frame(), w = b.w, h = b.h;
+      var base = opts.base == null ? 0 : opts.base;
+      var xd = nice(extent(cur.reduce(function (a, d) { return a.concat([d.low, d.high, base]); }, [])), false);
+      var xs = linScale(xd, [0, w]);
+      var rowH = h / cur.length, bh = rowH * 0.58;
+      var start = cur.map(function (d, i) { return i; }), end = order || sorted();
+      mk("line", { class: "st-axis-line", x1: 0, x2: w, y1: h, y2: h }, g);
+      ticks(xd[0], xd[1], 5).forEach(function (v) {
+        mk("line", { class: "st-grid", x1: xs(v), x2: xs(v), y1: 0, y2: h }, g);
+        var tx = mk("text", { x: xs(v), y: h + 20, "text-anchor": "middle" }, g);
+        tx.textContent = (opts.xfmt ? opts.xfmt(v) : fmt(v));
+      });
+      mk("line", { class: "st-axis-line", x1: xs(base), x2: xs(base), y1: 0, y2: h, stroke: tok("ink-2") }, g);
+      cur.forEach(function (d, i) {
+        var from = start.indexOf(i), to = end.indexOf(i);
+        var row = lerp(from, to, t);
+        var y = row * rowH + (rowH - bh) / 2;
+        var x0 = xs(Math.min(d.low, d.high)), x1 = xs(Math.max(d.low, d.high));
+        mk("rect", { x: x0, y: y, width: Math.max(1, x1 - x0), height: bh, fill: tok("accent") }, g).setAttribute("opacity", ".55");
+        mk("rect", { x: x0, y: y, width: Math.max(1, xs(base) - x0), height: bh, fill: tok("warn") }, g).setAttribute("opacity", ".45");
+        var lt = mk("text", { class: "st-label-direct", x: -8, y: y + bh / 2 + 4, "text-anchor": "end" }, g);
+        lt.textContent = d.label;
+        var vt = mk("text", { x: x1 + 6, y: y + bh / 2 + 4 }, g);
+        vt.textContent = (opts.xfmt ? opts.xfmt(d.high) : fmt(d.high));
+      });
+    }
+    function run(toSorted) {
+      order = toSorted === false ? cur.map(function (d, i) { return i; }) : sorted();
+      if (anim) anim.stop();
+      anim = transition(function (t) { render(clamp(t, 0, 1)); }, { stiffness: 55 });
+    }
+    un = Theme.onChange(function () { render(1); });
+    render(0); inView(b.svg, function () { run(true); }, { once: true });
+    return {
+      update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(o && o.sorted === false ? false : true); },
+      sort: function () { run(true); },
+      el: b.svg, destroy: function () { if (anim) anim.stop(); un(); b.clear(); }
+    };
+  };
+
+  /* force: {nodes:[{id,label?,group?}], links:[{source,target,w?}], highlight?:[id,..] }
+     small deterministic force simulation, settles then stops */
+  chart.force = function (node, data, opts) {
+    opts = opts || {};
+    var b = chartBase(node, opts, 0.72), cur = null, un, unTick = null, N = [], L = [], byId = {}, hot = [];
+    function init(d) {
+      cur = d;
+      N = d.nodes.map(function (n, i) {
+        var a = i / d.nodes.length * 6.2832;
+        return { id: n.id, label: n.label || n.id, group: n.group || 0, x: b.w / 2 + Math.cos(a) * b.h * .3, y: b.h / 2 + Math.sin(a) * b.h * .3, vx: 0, vy: 0, r: n.r || 6 };
+      });
+      byId = {}; N.forEach(function (n) { byId[n.id] = n; });
+      L = d.links.filter(function (l) { return byId[l.source] && byId[l.target]; })
+        .map(function (l) { return { s: byId[l.source], t: byId[l.target], w: l.w || 1, raw: l }; });
+      hot = d.highlight || [];
+    }
+    function sim(steps) {
+      for (var s = 0; s < steps; s++) {
+        for (var i = 0; i < N.length; i++) {
+          var a = N[i];
+          a.vx += (b.w / 2 - a.x) * 0.0016; a.vy += (b.h / 2 - a.y) * 0.0016;
+          for (var j = i + 1; j < N.length; j++) {
+            var c = N[j], dx = a.x - c.x, dy = a.y - c.y, d2 = dx * dx + dy * dy || 1;
+            var f = 900 / d2;
+            if (d2 < 90000) { a.vx += dx * f * 0.02; a.vy += dy * f * 0.02; c.vx -= dx * f * 0.02; c.vy -= dy * f * 0.02; }
+          }
+        }
+        L.forEach(function (l) {
+          var dx = l.t.x - l.s.x, dy = l.t.y - l.s.y, d = Math.sqrt(dx * dx + dy * dy) || 1;
+          var target = opts.linkDistance || 74, f = (d - target) / d * 0.045 * l.w;
+          l.s.vx += dx * f; l.s.vy += dy * f; l.t.vx -= dx * f; l.t.vy -= dy * f;
+        });
+        N.forEach(function (n) {
+          n.vx *= 0.84; n.vy *= 0.84; n.x += n.vx; n.y += n.vy;
+          n.x = clamp(n.x, 14, b.w - 14); n.y = clamp(n.y, 14, b.h - 14);
+        });
+      }
+    }
+    var g = null;
+    function render() {
+      b.clear();
+      g = b.frame();
+      var hotSet = {}; hot.forEach(function (h) { hotSet[h] = 1; });
+      L.forEach(function (l) {
+        var on = hotSet[l.s.id] && hotSet[l.t.id];
+        mk("line", { class: "st-link" + (on ? " is-hot" : ""), x1: l.s.x, y1: l.s.y, x2: l.t.x, y2: l.t.y, stroke: on ? tok("accent") : tok("rule-soft"), "stroke-width": on ? 2.6 : 1.2 }, g);
+      });
+      N.forEach(function (n) {
+        var on = hotSet[n.id];
+        mk("circle", { class: "st-node", cx: n.x, cy: n.y, r: n.r * (on ? 1.5 : 1), fill: on ? tok("accent") : tok("ink-2"), stroke: tok("paper") }, g);
+        if (opts.labels !== false) {
+          var tx = mk("text", { x: n.x, y: n.y - n.r - 6, "text-anchor": "middle", fill: on ? tok("accent") : tok("muted") }, g);
+          tx.textContent = n.label;
+        }
+      });
+    }
+    function settle() {
+      if (unTick) unTick();
+      if (reduced()) { sim(320); render(); return; }
+      var left = 300;
+      unTick = tick(function () { sim(6); render(); left -= 6; if (left <= 0) { unTick = null; return false; } });
+    }
+    init(data);
+    un = Theme.onChange(render);
+    sim(60); render();
+    inView(b.svg, settle, { once: true });
+    return {
+      update: function (d, o) {
+        if (o) Object.assign(opts, o);
+        if (d && d.nodes) { init(d); settle(); }
+        else { if (d && d.highlight) hot = d.highlight; render(); }
+      },
+      highlight: function (ids) { hot = ids || []; render(); },
+      // light the path node by node along an ordered id list
+      tracePath: function (ids, msPerStep) {
+        hot = []; var i = 0;
+        (function next() {
+          if (i >= ids.length) return;
+          hot = ids.slice(0, ++i); render();
+          setTimeout(next, reduced() ? 0 : (msPerStep || 420));
+        })();
+      },
+      el: b.svg,
+      destroy: function () { if (unTick) unTick(); un(); b.clear(); }
+    };
+  };
+
+  /* paths: SEM-style path diagram
+     {nodes:[{id,label,x,y,w?,h?}], edges:[{from,to,coef,label?,dashed?}]}
+     x/y are 0..1 fractions of the plot area. Coefficients animate. */
+  chart.paths = function (node, data, opts) {
+    opts = opts || {};
+    var b = chartBase(node, opts, 0.6), cur = data, prev = {}, anim, un;
+    function render(t, from) {
+      b.clear();
+      var g = b.frame(), w = b.w, h = b.h;
+      var defs = mk("defs", null, b.svg);
+      var mkr = mk("marker", { id: "st-arrow", viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 6, markerHeight: 6, orient: "auto-start-reverse" }, defs);
+      mk("path", { d: "M0,0L10,5L0,10z", fill: tok("ink-2") }, mkr);
+      var P = {};
+      cur.nodes.forEach(function (n) {
+        P[n.id] = { x: n.x * w, y: n.y * h, w: (n.w || 0.2) * w, h: (n.h || 0.12) * h, latent: n.latent };
+      });
+      cur.edges.forEach(function (e) {
+        var a = P[e.from], c = P[e.to];
+        if (!a || !c) return;
+        var dx = c.x - a.x, dy = c.y - a.y, d = Math.sqrt(dx * dx + dy * dy) || 1;
+        var ax = a.x + dx / d * (a.w / 2), ay = a.y + dy / d * (a.h / 2 + 4);
+        var cx2 = c.x - dx / d * (c.w / 2 + 8), cy2 = c.y - dy / d * (c.h / 2 + 8);
+        var key = e.from + ">" + e.to;
+        var v = lerp(from[key] == null ? 0 : from[key], e.coef, t);
+        var mag = Math.abs(v);
+        var col = v < 0 ? tok("warn") : tok("accent");
+        var p = mk("path", { class: "st-path-edge", d: "M" + ax + "," + ay + "L" + cx2 + "," + cy2, stroke: col, "stroke-width": (0.8 + mag * 4).toFixed(2) }, g);
+        if (e.dashed) p.setAttribute("stroke-dasharray", "5 4");
+        var tx = mk("text", { class: "st-label-direct", x: (ax + cx2) / 2, y: (ay + cy2) / 2 - 6, "text-anchor": "middle", fill: col }, g);
+        tx.textContent = (v < 0 ? "-" : "") + Math.abs(v).toFixed(2).replace(/^0\./, ".");
+      });
+      cur.nodes.forEach(function (n) {
+        var p = P[n.id];
+        if (p.latent) {
+          mk("ellipse", { cx: p.x, cy: p.y, rx: p.w / 2, ry: p.h / 2, fill: tok("surface"), stroke: tok("rule"), "stroke-width": 2 }, g);
+        } else {
+          mk("rect", { x: p.x - p.w / 2, y: p.y - p.h / 2, width: p.w, height: p.h, fill: tok("surface"), stroke: tok("rule"), "stroke-width": 2 }, g);
+        }
+        var tx = mk("text", { class: "st-label-direct", x: p.x, y: p.y + 4, "text-anchor": "middle", fill: tok("ink") }, g);
+        tx.textContent = n.label || n.id;
+      });
+    }
+    function run() {
+      var from = {};
+      for (var k in prev) from[k] = prev[k];
+      if (anim) anim.stop();
+      anim = transition(function (t) { render(clamp(t, 0, 1), from); }, { stiffness: 80 });
+      prev = {}; cur.edges.forEach(function (e) { prev[e.from + ">" + e.to] = e.coef; });
+    }
+    un = Theme.onChange(function () { render(1, prev); });
+    render(0, {}); inView(b.svg, run, { once: true });
+    return { update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); }, el: b.svg, destroy: function () { if (anim) anim.stop(); un(); b.clear(); } };
+  };
+
+  /* dots: dot-density / beeswarm on canvas
+     {points:[{x, group?, color?, flag?}], groups?:[names]} */
+  chart.dots = function (node, data, opts) {
+    opts = opts || {};
+    var host = isEl(node) ? node : el(node);
+    var canvas = host.tagName.toLowerCase() === "canvas" ? host : html("canvas", "st-canvas", host);
+    canvas.classList.add("st-canvas");
+    canvas.setAttribute("role", "img");
+    canvas.setAttribute("aria-label", opts.label || "Dot density chart");
+    var ctx = canvas.getContext("2d");
+    var cur = data, W = 0, H = 0, DPR = 1, laid = [], anim = null, un, ro = null;
+    var m = Object.assign({ top: 16, right: 20, bottom: 32, left: 50 }, opts.margin || {});
+
+    function layout() {
+      var pts = cur.points || [];
+      var groups = cur.groups || Array.from(new Set(pts.map(function (p) { return p.group == null ? "" : p.group; })));
+      var xd = opts.xdomain || nice(extent(pts, function (p) { return p.x; }), false);
+      var pw = W - m.left - m.right, ph = H - m.top - m.bottom;
+      var bandH = ph / Math.max(1, groups.length);
+      var r = opts.radius || (pts.length > 900 ? 1.8 : 3);
+      laid = [];
+      groups.forEach(function (gname, gi) {
+        var sub = pts.filter(function (p) { return (p.group == null ? "" : p.group) === gname; });
+        sub.sort(function (a, c) { return a.x - c.x; });
+        var placed = [];
+        sub.forEach(function (p) {
+          var x = m.left + (p.x - xd[0]) / (xd[1] - xd[0]) * pw;
+          var y0 = m.top + gi * bandH + bandH / 2, y = y0, k = 0, dir = 1;
+          // beeswarm: push away from occupied neighbours within 2r
+          while (k < 260) {
+            var ok = true;
+            for (var i = placed.length - 1; i >= 0 && placed[i].x > x - r * 2.2; i--) {
+              var dx = placed[i].x - x, dy = placed[i].y - y;
+              if (dx * dx + dy * dy < (r * 2.05) * (r * 2.05)) { ok = false; break; }
+            }
+            if (ok) break;
+            k++; dir = -dir;
+            y = y0 + dir * Math.ceil(k / 2) * r * 1.5;
+            if (Math.abs(y - y0) > bandH / 2 - r) { y = y0 + (Math.random() - .5) * (bandH - r * 2); break; }
+          }
+          var rec = { x: x, y: y, r: r, p: p, g: gi };
+          placed.push(rec); laid.push(rec);
+        });
+      });
+      laid.xd = xd; laid.groups = groups; laid.bandH = bandH;
+    }
+    function render(t) {
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      if (!laid.length) return;
+      var pw = W - m.left - m.right, ph = H - m.top - m.bottom;
+      // axis
+      ctx.strokeStyle = tok("rule-soft"); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(m.left, H - m.bottom); ctx.lineTo(W - m.right, H - m.bottom); ctx.stroke();
+      ctx.fillStyle = tok("muted");
+      ctx.font = "12px " + (getComputedStyle(document.documentElement).getPropertyValue("--font-mono") || "monospace");
+      ctx.textAlign = "center";
+      ticks(laid.xd[0], laid.xd[1], 5).forEach(function (v) {
+        var x = m.left + (v - laid.xd[0]) / (laid.xd[1] - laid.xd[0]) * pw;
+        ctx.fillText(fmt(v), x, H - m.bottom + 18);
+      });
+      ctx.textAlign = "right";
+      laid.groups.forEach(function (gname, gi) {
+        if (gname === "") return;
+        ctx.fillStyle = tok("ink");
+        ctx.fillText(String(gname), m.left - 8, m.top + gi * laid.bandH + laid.bandH / 2 + 4);
+      });
+      var accent = tok("accent"), warn = tok("warn"), ink2 = tok("ink-2");
+      var take = Math.round(laid.length * t);
+      for (var i = 0; i < take; i++) {
+        var d = laid[i];
+        ctx.fillStyle = d.p.flag ? warn : (d.p.color ? (tok(d.p.color) || d.p.color) : accent);
+        ctx.globalAlpha = d.p.flag ? 0.95 : 0.55;
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 6.2832); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+    function resize() {
+      var r = canvas.getBoundingClientRect();
+      W = Math.max(60, Math.round(r.width || 600));
+      H = Math.round(opts.height || W * (opts.aspect || 0.5));
+      DPR = Math.min(global.devicePixelRatio || 1, 2);
+      canvas.style.height = H + "px";
+      canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+      layout(); render(1);
+    }
+    function run() {
+      layout();
+      if (anim) anim.stop();
+      if (reduced()) { render(1); return; }
+      anim = transition(function (t) { render(clamp(t, 0, 1)); }, { stiffness: 22 });
+    }
+    un = Theme.onChange(function () { render(1); });
+    if (global.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(canvas); } else addEventListener("resize", resize);
+    resize(); render(0);
+    inView(canvas, run, { once: true });
+    return {
+      update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); },
+      el: canvas,
+      destroy: function () { if (anim) anim.stop(); un(); if (ro) ro.disconnect(); else removeEventListener("resize", resize); ctx.clearRect(0, 0, canvas.width, canvas.height); }
+    };
+  };
+
+  /* ---------------------------------------------------------
+     8. presenter mode
+     --------------------------------------------------------- */
+  var presentState = null;
+  function present(opts) {
+    opts = opts || {};
+    if (presentState) return presentState;
+    var steps = els(opts.selector || ".st-step");
+    if (!steps.length) steps = els("section, .section");
+    var i = 0, dots = null;
+    document.documentElement.classList.add("st-presenting");
+    document.body.classList.add("st-presenting");
+    if (steps.length) {
+      dots = html("div", "st-present-dots");
+      steps.forEach(function () { html("b", null, dots); });
+      document.body.appendChild(dots);
+    }
+    var hint = html("div", "st-present-hint");
+    hint.textContent = "arrows step  ·  esc exits";
+    document.body.appendChild(hint);
+    function go(n) {
+      i = clamp(n, 0, steps.length - 1);
+      if (dots) Array.prototype.forEach.call(dots.children, function (b, j) { b.classList.toggle("is-on", j === i); });
+      if (steps[i]) steps[i].scrollIntoView({ behavior: reduced() ? "auto" : "smooth", block: "center" });
+      if (opts.onStep) opts.onStep(i, steps[i]);
+    }
+    function key(e) {
+      if (e.key === "Escape") { exit(); return; }
+      if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === " " || e.key === "PageDown") { e.preventDefault(); go(i + 1); }
+      else if (e.key === "ArrowLeft" || e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); go(i - 1); }
+    }
+    function exit() {
+      document.documentElement.classList.remove("st-presenting");
+      document.body.classList.remove("st-presenting");
+      removeEventListener("keydown", key);
+      if (dots) dots.remove();
+      hint.remove();
+      presentState = null;
+      if (opts.onExit) opts.onExit();
+    }
+    addEventListener("keydown", key);
+    go(0);
+    presentState = { go: go, exit: exit, get index() { return i; }, steps: steps };
+    return presentState;
+  }
+  function autoPresent(opts) {
+    // P toggles, ?present=1 starts in presenter mode
+    addEventListener("keydown", function (e) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var t = e.target;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      if (e.key === "p" || e.key === "P") { if (presentState) presentState.exit(); else present(opts); }
+    });
+    if (/[?&]present=1/.test(location.search)) {
+      if (document.readyState === "loading") addEventListener("DOMContentLoaded", function () { present(opts); });
+      else present(opts);
+    }
+  }
+
+  /* ---------------------------------------------------------
+     9. export
+     --------------------------------------------------------- */
+  var Story = {
+    version: "1.0.0",
+    orb: orb,
+    scenes: scenes,
+    chart: chart,
+    spring: spring,
+    tween: tween,
+    flip: flip,
+    countUp: countUp,
+    reveal: reveal,
+    inView: inView,
+    progressBar: progressBar,
+    present: present,
+    autoPresent: autoPresent,
+    theme: Theme,
+    reduced: reduced,
+    tick: tick,
+    util: { clamp: clamp, lerp: lerp, fmt: fmt, ticks: ticks, extent: extent, mk: mk, parseColor: parseColor }
+  };
+  global.Story = Story;
+  // presenter mode is always available; pages may call Story.autoPresent() again with options
+  autoPresent();
+})(typeof window !== "undefined" ? window : this);
+/*STORY_JS_END*/</script>
+
+<script>
+/* Local fallback engine. If tools/story.js has been inlined above, window.Story
+   already exists and everything below is skipped. Keep the two APIs identical. */
+(function () {
+  if (window.Story) return;
+  var RM = matchMedia('(prefers-reduced-motion: reduce)');
+  var S = {};
+
+  S.spring = function (from, to, cb, opts) {
+    if (RM.matches) { cb(to, true); return function () {}; }
+    var dur = (opts && opts.duration) || 620, t0 = performance.now(), raf = 0, dead = false;
+    function frame(t) {
+      if (dead) return;
+      var p = Math.min(1, (t - t0) / dur);
+      var e = 1 - Math.pow(1 - p, 3);
+      cb(from + (to - from) * e, p === 1);
+      if (p < 1) raf = requestAnimationFrame(frame);
+    }
+    raf = requestAnimationFrame(frame);
+    return function () { dead = true; cancelAnimationFrame(raf); };
+  };
+  S.tween = S.spring;
+
+  S.reveal = function (root, opts) {
+    var sel = (opts && opts.selector) || '[data-st-reveal]';
+    var els = (root || document).querySelectorAll(sel);
+    if (RM.matches || !window.IntersectionObserver) {
+      els.forEach(function (e) { e.classList.add('is-in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e, i) {
+        if (!e.isIntersecting) return;
+        setTimeout(function () { e.target.classList.add('is-in'); }, i * 70);
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    els.forEach(function (e) { io.observe(e); });
+  };
+
+  S.scenes = function (root, opts) {
+    opts = opts || {};
+    var steps = Array.prototype.slice.call(root.querySelectorAll('.st-step'));
+    var cur = -1;
+    function pick() {
+      var mid = innerHeight * 0.5, best = 0, bd = Infinity;
+      steps.forEach(function (s, i) {
+        var r = s.getBoundingClientRect();
+        var d = Math.abs(r.top + r.height / 2 - mid);
+        if (d < bd) { bd = d; best = i; }
+      });
+      if (best !== cur) {
+        var dir = best > cur ? 1 : -1;
+        steps.forEach(function (s, i) { s.classList.toggle('is-active', i === best); });
+        cur = best;
+        var os = steps[best].getAttribute('data-orb');
+        if (os && opts.orb && opts.orb.setState) opts.orb.setState(os);
+        if (opts.onStep) opts.onStep(best, steps[best], dir);
+      }
+      var r0 = root.getBoundingClientRect();
+      var p = Math.max(0, Math.min(1, (innerHeight * 0.5 - r0.top) / Math.max(1, r0.height)));
+      root.style.setProperty('--p', p.toFixed(3));
+      if (opts.onProgress) opts.onProgress(cur, p);
+    }
+    var tick = false;
+    function on() { if (tick) return; tick = true; requestAnimationFrame(function () { tick = false; pick(); }); }
+    addEventListener('scroll', on, { passive: true });
+    addEventListener('resize', on);
+    pick();
+    return { steps: steps, refresh: pick, destroy: function () { removeEventListener('scroll', on); removeEventListener('resize', on); } };
+  };
+
+  S.progressBar = function () {
+    var b = document.createElement('div');
+    b.className = 'st-progress'; b.setAttribute('aria-hidden', 'true');
+    b.innerHTML = '<i></i>';
+    document.body.appendChild(b);
+    var i = b.firstChild, tick = false;
+    function upd() {
+      var h = document.documentElement.scrollHeight - innerHeight;
+      i.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + '%';
+    }
+    addEventListener('scroll', function () {
+      if (tick) return; tick = true;
+      requestAnimationFrame(function () { tick = false; upd(); });
+    }, { passive: true });
+    upd();
+  };
+
+  /* Dotted monochrome orb. Vanilla canvas, 2D arcs only.
+     Visual reference: github.com/Jakubantalik/thinking-orbs (MIT). No code copied. */
+  S.orb = function (canvas, o) {
+    o = o || {};
+    var N = o.density || 480, dpr = Math.min(2, devicePixelRatio || 1);
+    var pts = [], state = 'idle', target = 0, energy = 0, raf = 0, vis = true, t = 0;
+    for (var i = 0; i < N; i++) {
+      var y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(Math.max(0, 1 - y * y));
+      var th = Math.PI * (3 - Math.sqrt(5)) * i;
+      pts.push({ x: Math.cos(th) * r, y: y, z: Math.sin(th) * r, s: Math.random() });
+    }
+    function css(n, f) {
+      var v = getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+      return v || f;
+    }
+    function size() {
+      var w = canvas.clientWidth || 180, h = canvas.clientHeight || w;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+    }
+    var STATES = { idle: 0.16, breathing: 0.16, searching: 0.62, thinking: 0.7, connecting: 0.5,
+      solving: 0.66, retrieving: 0.62, wrong: 0.95, grounded: 0.1, resolved: 0.08 };
+    function draw() {
+      var ctx = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
+      var cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.40;
+      ctx.clearRect(0, 0, w, h);
+      var col = state === 'wrong' ? css('--warn', '#A8501B')
+        : (state === 'grounded' || state === 'resolved') ? css('--green', '#0F7A52')
+        : css('--ink', '#12140F');
+      energy += (target - energy) * 0.07;
+      var breathe = 1 + Math.sin(t / 46) * 0.035 * (1 + energy);
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i];
+        var a = t * (0.006 + energy * 0.012) + p.s * energy * 2.2;
+        var ca = Math.cos(a), sa = Math.sin(a);
+        var x = p.x * ca - p.z * sa, z = p.x * sa + p.z * ca, y = p.y;
+        var frac = state === 'wrong' ? 1 + Math.sin(p.s * 31 + t / 9) * 0.22 * energy : 1;
+        var lat = (state === 'grounded' || state === 'resolved')
+          ? 1 - 0.1 * Math.abs(Math.sin(y * 7)) : 1;
+        var rr = R * breathe * frac * lat;
+        var sc = 0.62 + 0.38 * ((z + 1) / 2);
+        ctx.globalAlpha = 0.14 + 0.72 * ((z + 1) / 2);
+        ctx.fillStyle = col;
+        ctx.beginPath();
+        ctx.arc(cx + x * rr, cy + y * rr, Math.max(0.5, 1.5 * dpr * sc), 0, 6.2832);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+    function loop() { t++; draw(); raf = requestAnimationFrame(loop); }
+    function start() { if (!raf && vis && !RM.matches) loop(); }
+    function stop() { cancelAnimationFrame(raf); raf = 0; }
+    size(); target = STATES.idle; energy = target; draw();
+    if (RM.matches) { draw(); } else { start(); }
+    addEventListener('resize', function () { size(); draw(); });
+    document.addEventListener('visibilitychange', function () {
+      vis = !document.hidden; if (vis) start(); else stop();
+    });
+    var io = window.IntersectionObserver ? new IntersectionObserver(function (es) {
+      vis = es[0].isIntersecting; if (vis) start(); else stop();
+    }, { threshold: 0 }) : null;
+    if (io) io.observe(canvas);
+    return {
+      setState: function (n) {
+        state = n; target = STATES[n] != null ? STATES[n] : STATES.idle;
+        if (canvas.parentNode) canvas.parentNode.setAttribute('data-state', n);
+        if (RM.matches) draw();
+      },
+      pointAt: function () {},
+      destroy: function () { stop(); if (io) io.disconnect(); }
+    };
+  };
+
+  S.autoPresent = function () {
+    var on = false, dots = null, hint = null;
+    var steps = Array.prototype.slice.call(document.querySelectorAll('.st-step'));
+    var idx = 0;
+    function go(i) {
+      idx = Math.max(0, Math.min(steps.length - 1, i));
+      steps[idx].scrollIntoView({ behavior: RM.matches ? 'auto' : 'smooth', block: 'center' });
+      if (dots) Array.prototype.forEach.call(dots.children, function (b, j) {
+        b.classList.toggle('is-on', j === idx);
+      });
+    }
+    function key(e) {
+      if (e.target && /input|select|textarea/i.test(e.target.tagName)) return;
+      if (e.key === 'p' || e.key === 'P') { toggle(); return; }
+      if (!on) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(idx + 1); }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); go(idx - 1); }
+      if (e.key === 'Escape') toggle();
+    }
+    function toggle() {
+      on = !on;
+      document.body.classList.toggle('st-presenting', on);
+      document.documentElement.classList.toggle('st-presenting', on);
+      if (on) {
+        dots = document.createElement('div'); dots.className = 'st-present-dots';
+        dots.setAttribute('aria-hidden', 'true');
+        steps.forEach(function () { dots.appendChild(document.createElement('b')); });
+        hint = document.createElement('div'); hint.className = 'st-present-hint';
+        hint.textContent = 'arrows to step · esc to exit';
+        document.body.appendChild(dots); document.body.appendChild(hint);
+        go(idx);
+      } else {
+        if (dots) dots.remove(); if (hint) hint.remove(); dots = hint = null;
+      }
+    }
+    addEventListener('keydown', key);
+    if (/[?&]present=1/.test(location.search)) toggle();
+    return { toggle: toggle };
+  };
+  S.present = function () { return S.autoPresent(); };
+
+  window.Story = S;
+})();
+</script>
+
+<script type="module">
+import { rankAgainst } from './lib/benchmark.js';
+
+const S = window.Story;
+const RM = matchMedia('(prefers-reduced-motion: reduce)');
+const NS = 'http://www.w3.org/2000/svg';
+const $ = (s, r) => (r || document).querySelector(s);
+const el = (t, a, kids) => {
+  const n = document.createElementNS(NS, t);
+  for (const k in (a || {})) n.setAttribute(k, a[k]);
+  if (kids != null) n.textContent = kids;
+  return n;
+};
+const PK = ['p10', 'p25', 'p50', 'p75', 'p90', 'p95', 'p99'];
+const PV = { p10: 10, p25: 25, p50: 50, p75: 75, p90: 90, p95: 95, p99: 99 };
+const BANDS = ['20-49', '50-99', '100-249', '250-499', '500-999', '1000+'];
+const EXAMPLE = { sector: '32', naics: '3252', band: '250-499', rate: 3.20 };
+
+/* ---------- theme toggle (same contract as app.js) ---------- */
+(function theme() {
+  const root = document.documentElement, btn = $('#theme-toggle');
+  const saved = localStorage.getItem('ehs-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  btn && btn.addEventListener('click', () => {
+    const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+    const now = root.getAttribute('data-theme') || (dark ? 'dark' : 'light');
+    const next = now === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('ehs-theme', next);
+  });
+})();
+
+/* ---------- data ---------- */
+const cache = new Map();
+const getJSON = (p) => {
+  if (!cache.has(p)) cache.set(p, fetch(p).then((r) => {
+    if (!r.ok) throw new Error(p + ' -> ' + r.status);
+    return r.json();
+  }));
+  return cache.get(p);
+};
+const toDist = (raw, naics, band) => ({
+  naics, sizeBand: band, n: raw.n, zeroRate: raw.zeroRate,
+  percentiles: Object.fromEntries(PK.map((k) => [k, raw.trir[k]])),
+  aggregate: raw.trir.aggregate
+});
+
+/* Reconstruct the shape of a distribution from its published breakpoints.
+   100 dots = 100 percentiles. Zero mass is placed at zero, not interpolated. */
+function densityDots(d) {
+  const pts = [[0, d.zeroRate * 100]].concat(
+    PK.map((k) => [d.percentiles[k], PV[k]]).filter(([v, p]) => v > 0 && p > d.zeroRate * 100)
+  );
+  const out = [];
+  for (let q = 0.5; q < 100; q += 1) {
+    if (q <= d.zeroRate * 100) { out.push(0); continue; }
+    let v = pts[pts.length - 1][0];
+    for (let i = 0; i < pts.length - 1; i++) {
+      const [v0, p0] = pts[i], [v1, p1] = pts[i + 1];
+      if (q >= p0 && q <= p1) { v = p1 === p0 ? v1 : v0 + ((q - p0) / (p1 - p0)) * (v1 - v0); break; }
+    }
+    out.push(v);
+  }
+  return out;
+}
+
+/* ---------- swarm chart ---------- */
+function swarm(svg, d, rate, opts) {
+  opts = opts || {};
+  const W = 560, H = svg.viewBox.baseVal.height || 300;
+  const L = 14, R = 14, base = H - 44;
+  const vals = densityDots(d);
+  const hi = Math.max(d.percentiles.p95 || 1, rate * 1.15, 1);
+  const x = (v) => L + (Math.min(v, hi) / hi) * (W - L - R);
+  svg.replaceChildren();
+
+  svg.appendChild(el('line', { class: 'axis', x1: L, y1: base + 6, x2: W - R, y2: base + 6 }));
+  for (const k of ['p50', 'p75', 'p90']) {
+    const v = d.percentiles[k];
+    if (!(v > 0) || v > hi) continue;
+    svg.appendChild(el('line', { class: 'gridline', x1: x(v), y1: 20, x2: x(v), y2: base + 6 }));
+    svg.appendChild(el('text', { x: x(v), y: 16, 'text-anchor': 'middle' }, k + ' ' + v.toFixed(2)));
+  }
+
+  /* stack dots that share a column, beeswarm style */
+  const cols = new Map(), dots = [];
+  for (const v of vals) {
+    const cx = Math.round(x(v) / 7) * 7;
+    const k = cols.get(cx) || 0;
+    cols.set(cx, k + 1);
+    dots.push({ cx, cy: base - 4 - k * 6.4, zero: v === 0 });
+  }
+  const nodes = dots.map((p) => {
+    const c = el('circle', { class: 'dot' + (p.zero ? ' zero' : ''), cx: p.cx, cy: base - 4, r: 2.7 });
+    svg.appendChild(c);
+    return c;
+  });
+  if (RM.matches || opts.instant) {
+    nodes.forEach((c, i) => c.setAttribute('cy', dots[i].cy));
+  } else {
+    S.tween(0, 1, (v) => {
+      nodes.forEach((c, i) => c.setAttribute('cy', base - 4 + (dots[i].cy - (base - 4)) * v));
+    }, { duration: 780 });
+  }
+
+  const zeroPct = (d.zeroRate * 100).toFixed(0);
+  svg.appendChild(el('text', { x: L, y: base + 22 }, zeroPct + '% at zero'));
+  svg.appendChild(el('text', { x: W - R, y: base + 22, 'text-anchor': 'end' }, 'TRIR → ' + hi.toFixed(1)));
+
+  if (rate != null && isFinite(rate)) {
+    const rx = x(rate);
+    svg.appendChild(el('line', { class: 'you', x1: rx, y1: 22, x2: rx, y2: base + 6 }));
+    svg.appendChild(el('text', {
+      class: 'youtx', x: Math.min(W - R, Math.max(L + 40, rx)), y: 36, 'text-anchor': 'middle'
+    }, 'you ' + rate.toFixed(2)));
+  }
+}
+
+/* ---------- scene 1: verdict list ---------- */
+async function scene1() {
+  const [nat, sec, b32] = await Promise.all([
+    getJSON('data/national.json'), getJSON('data/sectors.json'), getJSON('data/benchmarks/32.json')
+  ]);
+  const n25 = nat['2025'], s32 = sec['32'].years['2025'];
+  const dIndustry = toDist(b32['3252|all'], '3252', 'all');
+  const dPeers = toDist(b32['3252|250-499'], '3252', '250-499');
+  const rIndustry = rankAgainst(EXAMPLE.rate, dIndustry);
+  const rPeers = rankAgainst(EXAMPLE.rate, dPeers);
+
+  const rows = [
+    { t: 'All filers, CY2025', s: n25.establishments.toLocaleString() + ' establishments · aggregate TRIR ' + n25.trir.toFixed(2), v: '− 8%', cls: 'good', note: 'below' },
+    { t: 'NAICS sector 32', s: s32.est.toLocaleString() + ' establishments · aggregate TRIR ' + s32.trir.toFixed(2), v: '+ 37%', cls: 'mid', note: 'above' },
+    { t: 'NAICS 3252, all sizes', s: dIndustry.n.toLocaleString() + ' establishments · median ' + dIndustry.percentiles.p50.toFixed(2), v: 'p' + Math.round(rIndustry.percentileRank), cls: 'mid', note: 'rank' },
+    { t: 'NAICS 3252, 250–499 employees', s: dPeers.n.toLocaleString() + ' establishments · median ' + dPeers.percentiles.p50.toFixed(2), v: 'p' + Math.round(rPeers.percentileRank), cls: 'bad', note: 'rank' }
+  ];
+  const list = $('#v-list');
+  list.replaceChildren(...rows.map((r, i) => {
+    const d = document.createElement('div');
+    d.className = 'verdict ' + r.cls;
+    d.dataset.i = String(i);
+    if (!RM.matches) d.classList.add('is-dim');
+    d.innerHTML = '<div><b></b><span></span></div><em></em>';
+    d.querySelector('b').textContent = r.t;
+    d.querySelector('span').textContent = r.s;
+    d.querySelector('em').textContent = r.v;
+    return d;
+  }));
+  return { rows, list };
+}
+
+/* ---------- scene 4: small multiples ---------- */
+async function scene4() {
+  const b32 = await getJSON('data/benchmarks/32.json');
+  const box = $('#mult-4'), rows = [];
+  box.replaceChildren();
+  for (const band of BANDS) {
+    const raw = b32['3252|' + band];
+    if (!raw) continue;
+    const d = toDist(raw, '3252', band);
+    const rk = rankAgainst(EXAMPLE.rate, d).percentileRank;
+    rows.push({ band, n: d.n, rk, zero: d.zeroRate, med: d.percentiles.p50, agg: d.aggregate });
+    const c = document.createElement('div');
+    c.className = 'mult';
+    c.innerHTML = '<h4></h4><span class="rk">p0</span><span class="n"></span>';
+    c.querySelector('h4').textContent = band + ' employees';
+    c.querySelector('.n').textContent = 'n = ' + d.n + ' · ' + (d.zeroRate * 100).toFixed(0) + '% zero';
+    const out = c.querySelector('.rk');
+    out.style.color = rk >= 90 ? 'var(--bad)' : rk >= 75 ? 'var(--warn)' : 'var(--green)';
+    box.appendChild(c);
+    if (RM.matches) out.textContent = 'p' + Math.round(rk);
+    else S.tween(0, rk, (v) => { out.textContent = 'p' + Math.round(v); }, { duration: 900 });
+  }
+  const t = document.createElement('table');
+  t.innerHTML = '<thead><tr><th>Size band</th><th>n</th><th>zero %</th><th>median</th><th>aggregate</th><th>rank of 3.20</th></tr></thead>';
+  const tb = document.createElement('tbody');
+  for (const r of rows) {
+    const tr = document.createElement('tr');
+    for (const c of [r.band, r.n, (r.zero * 100).toFixed(0), r.med.toFixed(2), r.agg.toFixed(2), 'p' + Math.round(r.rk)]) {
+      const td = document.createElement('td');
+      td.textContent = c;
+      tr.appendChild(td);
+    }
+    tb.appendChild(tr);
+  }
+  t.appendChild(tb);
+  $('#mult-table').replaceChildren(t);
+}
+
+/* ---------- scene 3: picker ---------- */
+async function picker() {
+  const [sectors, catalog] = await Promise.all([getJSON('data/sectors.json'), getJSON('data/naics-catalog.json')]);
+  const selS = $('#p-sector'), selN = $('#p-naics'), selB = $('#p-band'), inR = $('#p-rate');
+  const opt = (v, t) => { const o = document.createElement('option'); o.value = v; o.textContent = t; return o; };
+
+  const secCodes = Object.keys(sectors).sort();
+  selS.replaceChildren(...secCodes.map((c) => opt(c, c + ' · ' + (sectors[c].years['2025'] ? sectors[c].years['2025'].est.toLocaleString() + ' est.' : ''))));
+  selS.value = EXAMPLE.sector;
+  selB.replaceChildren(opt('all', 'All sizes'), ...BANDS.map((b) => opt(b, b + ' employees')));
+  selB.value = EXAMPLE.band;
+
+  function fillNaics() {
+    const s = sectors[selS.value];
+    const subs = (s && s.subs) ? s.subs.slice() : [];
+    subs.sort((a, b) => b.n - a.n);
+    selN.replaceChildren(
+      opt(selS.value, 'All of sector ' + selS.value),
+      ...subs.map((x) => opt(x.c, x.c + ' · ' + x.t.slice(0, 44) + ' (n=' + x.n + ')'))
+    );
+    if (selS.value === EXAMPLE.sector && subs.some((x) => x.c === EXAMPLE.naics)) selN.value = EXAMPLE.naics;
+  }
+  fillNaics();
+  if (!selN.value || selN.value !== EXAMPLE.naics) {
+    const catName = catalog[EXAMPLE.naics];
+    if (catName) selN.appendChild(opt(EXAMPLE.naics, EXAMPLE.naics + ' · ' + catName.t.slice(0, 44)));
+    selN.value = EXAMPLE.naics;
+  }
+
+  async function run() {
+    const rate = Number(inR.value);
+    const naics = selN.value, band = selB.value;
+    const out = $('#p-readout');
+    let bench;
+    try { bench = await getJSON('data/benchmarks/' + selS.value + '.json'); }
+    catch (e) { out.textContent = 'No benchmark file for sector ' + selS.value + '.'; return; }
+    const tried = [naics + '|' + band, naics + '|all', naics.slice(0, 4) + '|' + band,
+      naics.slice(0, 4) + '|all', selS.value + '|' + band, selS.value + '|all'];
+    let key = tried.find((k) => bench[k]);
+    if (!key) { out.textContent = 'No peer group in the file for NAICS ' + naics + ' at ' + band + '.'; return; }
+    const [kn, kb] = key.split('|');
+    const d = toDist(bench[key], kn, kb);
+    swarm($('#swarm-3'), d, isFinite(rate) ? rate : null);
+    if (!isFinite(rate) || rate < 0) { out.textContent = 'Enter a non-negative rate.'; return; }
+    const r = rankAgainst(rate, d);
+    out.innerHTML = '';
+    const p = document.createElement('p');
+    p.style.margin = '0 0 6px';
+    p.innerHTML = '<strong>p' + Math.round(r.percentileRank) + '</strong> against <strong>n = ' +
+      d.n.toLocaleString() + '</strong> establishments in NAICS ' + kn +
+      (kb === 'all' ? ', all sizes' : ' at ' + kb + ' employees') + '.';
+    const q = document.createElement('p');
+    q.style.margin = '0';
+    q.textContent = r.interpretation;
+    out.append(p, q);
+    if (d.n < 50) {
+      const w = document.createElement('p');
+      w.style.cssText = 'margin:8px 0 0;color:var(--warn)';
+      w.textContent = 'Small group: n = ' + d.n + '. Quote this rank only with the n beside it.';
+      out.appendChild(w);
+    }
+  }
+  selS.addEventListener('change', () => { fillNaics(); run(); });
+  selN.addEventListener('change', run);
+  selB.addEventListener('change', run);
+  inR.addEventListener('input', run);
+  await run();
+}
+
+/* ---------- boot ---------- */
+(async function boot() {
+  S.progressBar();
+  S.reveal(document, { selector: '.st-reveal' });
+  // tools/story.js calls autoPresent() itself; the local fallback does not.
+  if (!S.version) S.autoPresent();
+  const orb = S.orb($('#hero-orb'), {
+    density: 520,
+    label: 'Animated indicator for the state of the comparison: searching for peers, then settling on a verdict.'
+  });
+  const stateOut = $('#orb-state');
+  orb.setState('idle');
+  stateOut.textContent = 'idle';
+
+  let s1;
+  try {
+    s1 = await scene1();
+    const b32 = await getJSON('data/benchmarks/32.json');
+    swarm($('#swarm-2'), toDist(b32['3252|all'], '3252', 'all'), EXAMPLE.rate, { instant: true });
+    await scene4();
+    await picker();
+  } catch (e) {
+    console.error(e);
+    const w = document.createElement('p');
+    w.style.cssText = 'color:var(--bad);font-family:var(--font-mono);font-size:.8rem';
+    w.textContent = 'Benchmark data did not load. Open this page over http, not file://.';
+    $('#story-main').prepend(w);
+  }
+
+  document.querySelectorAll('.st-scene').forEach((sc) => {
+    const scene = Number(sc.dataset.scene);
+    S.scenes(sc, {
+      orb,
+      onStep(i, step) {
+        stateOut.textContent = step.dataset.orb || 'idle';
+        if (scene === 1 && s1) {
+          s1.list.querySelectorAll('.verdict').forEach((v, j) => {
+            v.classList.toggle('is-dim', !RM.matches && j >= i);
+          });
+        }
+        if (scene === 2 && i === 2) {
+          getJSON('data/benchmarks/32.json').then((b) => {
+            swarm($('#swarm-2'), toDist(b['3252|all'], '3252', 'all'), EXAMPLE.rate);
+          });
+        }
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
