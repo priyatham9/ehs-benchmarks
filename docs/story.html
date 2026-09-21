@@ -2957,7 +2957,8 @@ details.data-table th:first-child,details.data-table td:first-child{text-align:l
   }
   function autoFindings() {
     var ch = els(".st-chapter");
-    if (/story\.html$/.test(location.pathname)) document.body.classList.add("st-story");
+    // story pages and the hub (itself a story) keep one fixed bar only: the wayfinder
+    if (/story\.html$/.test(location.pathname) || /\/grounded\/(docs\/)?(index\.html)?$/.test(location.pathname)) document.body.classList.add("st-story");
     if (ch.length < 2 || document.querySelector(".st-findings")) return;
     var nav = html("nav", "st-findings");
     nav.setAttribute("aria-label", "Findings in this story");
