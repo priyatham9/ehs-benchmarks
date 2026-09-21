@@ -336,7 +336,8 @@
 /* ---------- charts ---------- */
 .st-chart{display:block;width:100%;overflow:visible;font-family:var(--font-sans)}
 .st-chart.st-in-stage{height:min(66vh,720px);max-height:66vh}
-.st-chart text{font-family:var(--font-mono);fill:var(--muted);font-variant-numeric:tabular-nums}
+.st-chart text{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.st-chart text:not([fill]){fill:var(--muted)}
 .st-chart text:not([font-size]){font-size:14px}
 .st-chart .st-axis-line{stroke:var(--rule-soft);stroke-width:1.5}
 .st-chart .st-grid{stroke:var(--rule-soft);stroke-width:1;stroke-dasharray:2 4}
@@ -530,6 +531,20 @@ html{scroll-padding-top:16px}
 }
 .st-presenting .rs-header,.st-presenting .footer,.st-presenting .st-chapter,.st-presenting .st-findings{display:none!important}
 .st-presenting nav.pgm,.st-presenting .story-nav,.st-presenting .story-hero{display:none!important}
+
+/* forced reduced motion (testing hook ?reduced=1) mirrors the media query */
+.st-reduced *,.st-reduced *::before,.st-reduced *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+/* v1.2.5 phone: cap any stage figure, however deeply nested, so it fits the pinned half-screen stage; presenter on phones falls back to normal reading */
+@media(max-width:800px){
+  .st-stage-inner svg,.st-stage-inner canvas:not(.st-orb){max-height:40vh;max-height:40svh}
+  .st-presenting .st-step{min-height:80vh}
+}
+/* forced reduced motion gets the same end states as the media query */
+.st-reduced .st-reveal{opacity:1!important;transform:none!important;transition:none!important}
+.st-reduced .st-step{opacity:1!important;transition:none!important}
+.st-reduced .st-scene.st-flow .st-step > *{opacity:1!important;transform:none!important;transition:none!important}
+.st-reduced .st-stage-inner.st-layers > [data-show]{transition:none!important}
+.st-reduced .st-companion .st-companion-cap{transition:none!important}
 /*STORY_CSS_END*/</style>
 <script>/*STORY_JS_START*/
 /* ============================================================
@@ -544,7 +559,10 @@ html{scroll-padding-top:16px}
      0. small utilities
      --------------------------------------------------------- */
   var mqReduce = global.matchMedia ? matchMedia("(prefers-reduced-motion: reduce)") : null;
-  function reduced() { return !!(mqReduce && mqReduce.matches); }
+  // ?reduced=1 forces the reduced-motion path so it can be tested without changing OS settings
+  var forceReduced = /[?&]reduced=1/.test(location.search);
+  if (forceReduced) document.documentElement.classList.add("st-reduced");
+  function reduced() { return forceReduced || !!(mqReduce && mqReduce.matches); }
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
   function lerp(a, b, t) { return a + (b - a) * t; }
   function isEl(x) { return x && x.nodeType === 1; }

@@ -102,7 +102,8 @@
 /* ---------- charts ---------- */
 .st-chart{display:block;width:100%;overflow:visible;font-family:var(--font-sans)}
 .st-chart.st-in-stage{height:min(66vh,720px);max-height:66vh}
-.st-chart text{font-family:var(--font-mono);fill:var(--muted);font-variant-numeric:tabular-nums}
+.st-chart text{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.st-chart text:not([fill]){fill:var(--muted)}
 .st-chart text:not([font-size]){font-size:14px}
 .st-chart .st-axis-line{stroke:var(--rule-soft);stroke-width:1.5}
 .st-chart .st-grid{stroke:var(--rule-soft);stroke-width:1;stroke-dasharray:2 4}
@@ -296,6 +297,20 @@ html{scroll-padding-top:16px}
 }
 .st-presenting .rs-header,.st-presenting .footer,.st-presenting .st-chapter,.st-presenting .st-findings{display:none!important}
 .st-presenting nav.pgm,.st-presenting .story-nav,.st-presenting .story-hero{display:none!important}
+
+/* forced reduced motion (testing hook ?reduced=1) mirrors the media query */
+.st-reduced *,.st-reduced *::before,.st-reduced *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+/* v1.2.5 phone: cap any stage figure, however deeply nested, so it fits the pinned half-screen stage; presenter on phones falls back to normal reading */
+@media(max-width:800px){
+  .st-stage-inner svg,.st-stage-inner canvas:not(.st-orb){max-height:40vh;max-height:40svh}
+  .st-presenting .st-step{min-height:80vh}
+}
+/* forced reduced motion gets the same end states as the media query */
+.st-reduced .st-reveal{opacity:1!important;transform:none!important;transition:none!important}
+.st-reduced .st-step{opacity:1!important;transition:none!important}
+.st-reduced .st-scene.st-flow .st-step > *{opacity:1!important;transform:none!important;transition:none!important}
+.st-reduced .st-stage-inner.st-layers > [data-show]{transition:none!important}
+.st-reduced .st-companion .st-companion-cap{transition:none!important}
 /*STORY_CSS_END*/</style>
 
 <style>
@@ -313,6 +328,9 @@ html{scroll-padding-top:16px}
 
 /* Layout for the story primitives comes from tools/story.css, inlined above.
    Everything below is specific to this page. */
+
+/* Only the engine's bottom wayfinder is fixed. The top nav and crumb bar scroll away. */
+.crumbbar{position:relative;top:auto;z-index:auto}
 
 .story-wrap{max-width:min(1560px,96vw);margin:0 auto;padding:0 clamp(18px,2vw,32px)}
 .story-bleed{max-width:none;padding:0}
@@ -338,7 +356,6 @@ html{scroll-padding-top:16px}
 /* ---------- chapter cards ---------- */
 .st-chapter{border-top:2px solid var(--rule)}
 .st-chapter .st-chapter-num{color:var(--rule-soft)}
-.st-chapter .chapter-kicker{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin:0 0 14px}
 
 /* ---------- scenes ---------- */
 /* a wider stage than the engine default: the figure is the point of this page */
@@ -425,12 +442,11 @@ svg.st-chart .bignum-svg{fill:var(--bad,var(--warn));font-weight:700;letter-spac
 .monday h3{margin:12px 0 14px;font-size:clamp(1.5rem,3.2vw,2.4rem);letter-spacing:-.02em}
 .monday ol{margin:0;padding-left:24px;line-height:1.7;color:var(--ink-2);max-width:68ch;font-size:1.05rem}
 
-.nextcard{display:grid;grid-template-columns:minmax(0,1fr) clamp(180px,18vw,260px);gap:clamp(24px,4vw,56px);align-items:center;border:2px solid var(--rule);background:var(--paper-2);padding:clamp(28px,3.4vw,54px);margin:48px 0 18px;text-decoration:none;color:inherit}
+.nextcard{display:block;border:2px solid var(--rule);background:var(--paper-2);padding:clamp(28px,3.4vw,54px);margin:48px 0 18px;text-decoration:none;color:inherit}
 .nextcard:hover{background:var(--green-soft)}
 .nextcard .label{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green);display:block;margin-bottom:14px}
 .nextcard h3{margin:0 0 12px;font-size:clamp(1.8rem,4vw,3rem);letter-spacing:-.025em;line-height:1.04}
 .nextcard p{margin:0;color:var(--ink-2);font-size:clamp(1rem,1.2vw,1.2rem);max-width:46ch}
-.nextcard .nc-orb{width:100%;aspect-ratio:1/1;line-height:0;justify-self:center}
 .story-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));border:2px solid var(--rule);margin:0 0 56px;font-family:var(--font-mono)}
 .story-nav a{padding:22px 24px;color:inherit;text-decoration:none;border-right:2px solid var(--rule)}
 .story-nav a:last-child{border-right:0}
@@ -452,17 +468,25 @@ details.data-table th:first-child,details.data-table td:first-child{text-align:l
   .st-hero .st-hero-orb{width:min(260px,62vw);order:-1}
   .story-hero h1{font-size:clamp(2.1rem,8vw,3rem)}
   .st-scene{display:block}
-  .st-stage{position:static;height:auto;padding:0 0 18px}
-  .st-stage-inner{padding-top:96px;min-height:0}
+  /* These figures (a four-row verdict list, a picker with a readout) do not fit
+     the engine's short sticky phone stage, so the stage flows with the text.
+     Specificity has to beat .st-scene .st-stage in the engine sheet. */
+  .st-scene .st-stage,.st-scene[data-side="left"] .st-stage{position:relative;top:auto;height:auto;padding:0 0 18px;border-bottom:0;z-index:0}
+  /* reserve a band above the figure so the companion orb never covers it */
+  .st-scene .st-stage-inner{padding-top:72px;min-height:0}
+  .st-scene .st-stage-inner > .st-figure > svg{max-height:none}
+  .st-companion{left:0!important;right:auto;top:0;flex-direction:row;align-items:center;gap:10px}
+  .st-companion .st-companion-orb{width:56px;height:56px}
+  /* the rank and its sentence stack instead of sharing a 375px row */
+  .readout{grid-template-columns:minmax(0,1fr);gap:8px}
+  .picker{grid-template-columns:1fr 1fr}
   .st-step{min-height:0;opacity:1;padding:18px 0}
   .st-scene-rail{display:none}
   svg.st-chart{height:auto;max-height:none;aspect-ratio:16/11}
   #swarm-3{height:auto;max-height:none;aspect-ratio:16/9}
   .verdict-head{min-height:0;flex-wrap:wrap}
-  .st-chapter{grid-template-columns:1fr;min-height:auto;padding-top:56px;padding-bottom:56px}
-  .st-chapter .st-chapter-orb{width:min(200px,50vw)}
-  .nextcard{grid-template-columns:1fr}
-  .nextcard .nc-orb{width:min(200px,50vw)}
+  .st-chapter{grid-template-columns:1fr;min-height:auto;padding-top:56px;padding-bottom:56px;overflow:visible}
+  .st-chapter h2{font-size:clamp(1.5rem,6.6vw,2.2rem)}
   /* Stacked layout: the stage scrolls past before its steps, so nothing is dimmed. */
   .verdict.is-dim > *{opacity:1}
 }
@@ -471,12 +495,17 @@ details.data-table th:first-child,details.data-table td:first-child{text-align:l
   .st-step{opacity:1}
   .verdict.is-dim > *{opacity:1}
 }
+/* ?reduced=1 sets .st-reduced on <html>; mirror the media query above */
+.st-reduced .st-reveal{opacity:1;transform:none}
+.st-reduced .st-step{opacity:1}
+.st-reduced .verdict.is-dim > *{opacity:1}
+.st-reduced .st-scene.st-flow .st-step > *{opacity:1;transform:none}
 </style>
 </head>
 <body>
 
 <nav class="pgm" aria-label="Programme">
-<style>.pgm{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;gap:2px;align-items:center;padding:8px 16px;background:#F7F7F3;color:#101311;border-bottom:2px solid #101311;font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.pgm a{color:#101311;text-decoration:none;padding:6px 9px}.pgm a:hover{background:#EFEFE9}.pgm .x::after{content:"\2197";margin-left:3px;opacity:.7}.pgm .cur{color:#0F7A52;font-weight:700;border-bottom:2px solid #0F7A52}.pgm .t{color:#666D68;margin-left:6px}.pgm .brand{font-weight:700;display:flex;align-items:center;gap:8px;margin-right:6px}.pgm .brand i{width:11px;height:11px;background:#0F7A52;display:inline-block}@media(prefers-color-scheme:dark){.pgm{background:#0A0D0B;color:#EAEFEA;border-color:#EAEFEA}.pgm a{color:#EAEFEA}.pgm a:hover{background:#171D18}.pgm .cur{color:#3FCB88;border-color:#3FCB88}.pgm .brand i{background:#3FCB88}}</style>
+<style>.pgm{position:relative;display:flex;flex-wrap:wrap;gap:2px;align-items:center;padding:8px 16px;background:#F7F7F3;color:#101311;border-bottom:2px solid #101311;font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.pgm a{color:#101311;text-decoration:none;padding:6px 9px}.pgm a:hover{background:#EFEFE9}.pgm .x::after{content:"\2197";margin-left:3px;opacity:.7}.pgm .cur{color:#0F7A52;font-weight:700;border-bottom:2px solid #0F7A52}.pgm .t{color:#666D68;margin-left:6px}.pgm .brand{font-weight:700;display:flex;align-items:center;gap:8px;margin-right:6px}.pgm .brand i{width:11px;height:11px;background:#0F7A52;display:inline-block}@media(prefers-color-scheme:dark){.pgm{background:#0A0D0B;color:#EAEFEA;border-color:#EAEFEA}.pgm a{color:#EAEFEA}.pgm a:hover{background:#171D18}.pgm .cur{color:#3FCB88;border-color:#3FCB88}.pgm .brand i{background:#3FCB88}}</style>
 <span class="brand"><i></i>ehs-benchmarks</span>
 <a class="x" href="https://priyatham9.github.io/">Priyatham Chimmani</a><a href="https://priyatham9.github.io/grounded/">Grounded</a><a href="https://priyatham9.github.io/grounded/paper.html">Paper</a>
 <span class="t">Projects</span><a href="https://priyatham9.github.io/ehs-osha-analysis/">OSHA data quality</a><a href="https://priyatham9.github.io/ehs-ai-grounding-eval/">Grounding eval</a><a href="https://priyatham9.github.io/ehs-human-factors-ontology/">Ontology</a><a href="https://priyatham9.github.io/ehs-risk-sem/">Risk SEM</a><a href="https://priyatham9.github.io/ehs-capitals-calculator/">Calculator</a><a class="cur" aria-current="page" href="https://priyatham9.github.io/ehs-benchmarks/">Benchmarks</a>
@@ -528,10 +557,9 @@ details.data-table th:first-child,details.data-table td:first-child{text-align:l
 <main class="story-wrap" id="story-main">
 
 <!-- ============ SCENE 1 ============ -->
-<section class="st-chapter" data-num="01" data-orb="searching" data-orb-label="Chapter orb searching for a peer group">
-  <p class="chapter-kicker">Chapter one</p>
-  <h2>One rate, four verdicts</h2>
-  <p>The same 3.20 is measured against four different groups. It is below average, above average, worst quartile and worst decile, in that order.</p>
+<section class="st-chapter" data-num="01">
+  <h2>The same TRIR of 3.20 scores p76 against its industry and p93 against its true peers</h2>
+  <p>A rate carries no verdict on its own. Whoever picks the comparison group picks the answer.</p>
 </section>
 <section class="st-scene" data-scene="1" aria-label="One rate, four verdicts">
   <div class="st-scene-rail" aria-hidden="true"></div>
@@ -548,37 +576,36 @@ details.data-table th:first-child,details.data-table td:first-child{text-align:l
   <div class="st-steps">
     <div class="st-step" data-orb="idle" data-step="0">
       <span class="label">The site</span>
-      <h3>One plastics resin plant, 300 employees</h3>
-      <p>NAICS 3252. 600,000 hours worked in CY2025, 10 recordable cases. That is a TRIR of 3.20. The question in the room is always the same: is that good?</p>
+      <h3>600,000 hours and 10 recordable cases give a TRIR of 3.20</h3>
+      <p>One plastics resin plant, NAICS 3252, about 300 employees, CY2025. The rate is fixed for the rest of this page. Only the comparison group changes.</p>
     </div>
     <div class="st-step" data-orb="searching" data-step="1">
       <span class="label">Verdict 1</span>
-      <h3>Against the country: better than average</h3>
-      <p>Every establishment that filed a 300A for CY2025 averages 3.49 recordables per 200,000 hours, hours-weighted across 375,635 filings. 3.20 is under it. This is the number that usually gets into the board deck.</p>
+      <h3>Against all filers, 3.20 is 8% below the 3.49 national rate</h3>
+      <p>3.49 is the hours-weighted aggregate across 375,635 CY2025 filings. This is the comparison that usually reaches the board deck.</p>
     </div>
     <div class="st-step" data-orb="searching" data-step="2">
       <span class="label">Verdict 2</span>
-      <h3>Against manufacturing: worse than average</h3>
-      <p>Narrow to NAICS sector 32 and the aggregate is 2.34 across 20,388 establishments. The same rate is now 37% above its own sector. The plant did not move. The denominator did.</p>
+      <h3>Against NAICS sector 32, 3.20 is 37% above the 2.34 sector rate</h3>
+      <p>Sector 32 aggregates 20,388 establishments. The plant did not change between these two slides. The denominator did.</p>
     </div>
     <div class="st-step" data-orb="connecting" data-step="3">
       <span class="label">Verdict 3</span>
-      <h3>Against the industry: worst quartile</h3>
-      <p>Among the 478 establishments filing under NAICS 3252, the median rate is 0.57 and 45% reported no recordable case at all. 3.20 ranks at the 76th percentile. Three quarters of the industry did better.</p>
+      <h3>Against the 478 filers in NAICS 3252, 3.20 ranks p76</h3>
+      <p>The industry median is 0.57 and 45% of filers reported no recordable case. Three quarters of the industry did better than this plant.</p>
     </div>
     <div class="st-step" data-orb="wrong" data-step="4">
       <span class="label">Verdict 4</span>
-      <h3>Against true peers: worst decile</h3>
-      <p>Hold industry and add size. Among the 34 NAICS 3252 establishments in the 250 to 499 employee band, the aggregate is 0.77 and 3.20 ranks at the 93rd percentile. The honest sentence is not "below the national average". It is "near the bottom of our peer group".</p>
+      <h3>Against the 34 same-size peers, 3.20 ranks p93</h3>
+      <p>Hold NAICS 3252 and add the 250 to 499 employee band. The aggregate there is 0.77. The defensible sentence is "near the bottom of our peer group", not "below the national average".</p>
     </div>
   </div>
 </section>
 
 <!-- ============ SCENE 2 ============ -->
-<section class="st-chapter" data-num="02" data-orb="connecting" data-orb-label="Chapter orb connecting the distribution">
-  <p class="chapter-kicker">Chapter two</p>
-  <h2>The distribution is not a bell</h2>
-  <p>Nearly half of this industry reported no recordable case at all. An average taken over that mass describes almost nobody.</p>
+<section class="st-chapter" data-num="02">
+  <h2>45% of this industry reported zero cases, so the average describes almost nobody</h2>
+  <p>The aggregate is 1.37 and the median is 0.57. A mean quoted against this shape flatters everyone above it.</p>
 </section>
 <section class="st-scene" data-scene="2" data-side="left" aria-label="The shape of the peer distribution">
   <div class="st-scene-rail" aria-hidden="true"></div>
@@ -591,27 +618,26 @@ details.data-table th:first-child,details.data-table td:first-child{text-align:l
   <div class="st-steps">
     <div class="st-step" data-orb="idle" data-step="0">
       <span class="label">Shape</span>
-      <h3>Nearly half the peer group reported zero</h3>
-      <p>45% of NAICS 3252 establishments recorded no case in the filing year. An average taken over that mass describes almost nobody. The median rate for this industry is 0.57.</p>
+      <h3>45% of NAICS 3252 establishments reported no case at all</h3>
+      <p>That block of zeros is the left edge of the figure. The median rate for the industry is 0.57.</p>
     </div>
     <div class="st-step" data-orb="connecting" data-step="1">
       <span class="label">Tail</span>
-      <h3>The mean lives in the tail</h3>
-      <p>The hours-weighted aggregate is 1.37 while the median is 0.57. That gap is the long right tail: p90 is 5.56 and p99 is 14.21. Quoting a mean against this shape flatters anyone above the median.</p>
+      <h3>The 1.37 aggregate sits more than twice the 0.57 median</h3>
+      <p>The gap is the long right tail: p90 is 5.56 and p99 is 14.21. A handful of high-rate sites carry the average away from the middle of the group.</p>
     </div>
     <div class="st-step" data-orb="wrong" data-step="2">
       <span class="label">Position</span>
-      <h3>Where 3.20 actually falls</h3>
-      <p>Between p75 at 3.01 and p90 at 5.56. Comfortably inside the worse half of a distribution whose better half is mostly zeros. A low percentile is the good direction here.</p>
+      <h3>3.20 lands between p75 at 3.01 and p90 at 5.56</h3>
+      <p>That is inside the worse half of a distribution whose better half is mostly zeros. Low percentile is the good direction, so this site reads as a problem the moment the group is right.</p>
     </div>
   </div>
 </section>
 
 <!-- ============ SCENE 3 ============ -->
-<section class="st-chapter" data-num="03" data-orb="solving" data-orb-label="Chapter orb solving for a rank">
-  <p class="chapter-kicker">Chapter three</p>
-  <h2>Change the peer group, change the answer</h2>
-  <p>Your turn. Move the dropdowns and watch the percentile move with them. If a benchmark can be changed by a menu, the menu is part of the number.</p>
+<section class="st-chapter" data-num="03">
+  <h2>Changing the peer group moves the same rate by more than 20 percentile points</h2>
+  <p>Move the dropdowns yourself. If a menu can change the benchmark, the menu is part of the reported number.</p>
 </section>
 <section class="st-scene" data-scene="3" aria-label="Interactive peer group picker">
   <div class="st-scene-rail" aria-hidden="true"></div>
@@ -631,27 +657,26 @@ details.data-table th:first-child,details.data-table td:first-child{text-align:l
   <div class="st-steps">
     <div class="st-step" data-orb="searching" data-step="0">
       <span class="label">Try it</span>
-      <h3>Move the group, watch the rank</h3>
-      <p>Same rate on the left. Pick a different industry or size band and the percentile moves, sometimes by twenty points. If a benchmark can be moved by a dropdown, the dropdown has to be part of the reported number.</p>
+      <h3>Keep 3.20 fixed and the rank moves up to 20 points</h3>
+      <p>Pick a different industry code or size band in the picker. The rate on the left never changes. Only the percentile does.</p>
     </div>
     <div class="st-step" data-orb="connecting" data-step="1">
       <span class="label">Small n</span>
-      <h3>Watch the count, not only the rank</h3>
-      <p>The readout prints n for the group you chose. Some NAICS and size combinations have fewer than 50 establishments. A 93rd percentile out of 34 is one or two plants away from a different story, and should be reported with the n attached.</p>
+      <h3>A p93 computed on n = 34 is two plants from a different answer</h3>
+      <p>The readout prints n for whatever group you chose. Several NAICS and size combinations hold fewer than 50 establishments. Any rank from a group that small belongs in a deck with its n beside it.</p>
     </div>
     <div class="st-step" data-orb="grounded" data-step="2">
       <span class="label">Rule</span>
-      <h3>Pick the group before you see your rank</h3>
-      <p>Choose the industry code and size band your site genuinely belongs to, write it down, then compute. Choosing after you have seen four candidate ranks is how a safety number becomes a negotiation.</p>
+      <h3>Fix the peer group before you compute the rank</h3>
+      <p>Write down the industry code and size band the site genuinely belongs to, then compute once. Picking the group after seeing four candidate ranks turns a safety number into a negotiation.</p>
     </div>
   </div>
 </section>
 
 <!-- ============ SCENE 4 ============ -->
-<section class="st-chapter" data-num="04" data-orb="wrong" data-orb-label="Chapter orb showing a wrong comparison">
-  <p class="chapter-kicker">Chapter four</p>
-  <h2>Size is not a detail</h2>
-  <p>Hold the industry fixed and run the same rate through every published size band. The verdict swings 21 percentile points.</p>
+<section class="st-chapter" data-num="04">
+  <h2>Size band alone swings the verdict from p72 to p93</h2>
+  <p>Industry held fixed at NAICS 3252. Only the employee band changes, and the rank moves 21 points.</p>
 </section>
 <section class="st-scene" data-scene="4" data-side="left" aria-label="The same rate across six size bands">
   <div class="st-scene-rail" aria-hidden="true"></div>
@@ -665,27 +690,26 @@ details.data-table th:first-child,details.data-table td:first-child{text-align:l
   <div class="st-steps">
     <div class="st-step" data-orb="searching" data-step="0">
       <span class="label">Across bands</span>
-      <h3>The same 3.20, four times</h3>
-      <p>Hold the industry fixed and run the rate through every size band the file reports for NAICS 3252. Four bands have enough filers to publish. The rank swings 21 percentile points across them, and the harshest verdict lands in the band this plant actually sits in.</p>
+      <h3>The same 3.20 ranks p72 to p93 across four size bands</h3>
+      <p>Four bands in NAICS 3252 have enough filers to publish. The harshest verdict lands in the band this plant actually sits in.</p>
     </div>
     <div class="st-step" data-orb="wrong" data-step="1">
       <span class="label">Why</span>
-      <h3>Small sites report zero more often</h3>
-      <p>In the 20 to 49 band, 63% of NAICS 3252 establishments reported no case. Fewer exposure hours means more true zeros, which drags the whole lower half of the distribution to the floor. Comparing a 300-person plant against that group is not a comparison.</p>
+      <h3>63% of the 20 to 49 band reported zero, against 45% industry-wide</h3>
+      <p>Fewer exposure hours produce more true zeros, which pins the lower half of that band to the floor. Ranking a 300-person plant against it says nothing about the plant.</p>
     </div>
     <div class="st-step" data-orb="grounded" data-step="2">
       <span class="label">Practice</span>
-      <h3>Benchmark at the establishment, not the enterprise</h3>
-      <p>A corporate roll-up mixes size bands and industries and produces a rate that matches no peer group in the file. Rank each site against its own band, then report the spread across sites.</p>
+      <h3>Rank each establishment in its own band, then report the spread</h3>
+      <p>A corporate roll-up mixes size bands and industries and lands on a rate that matches no peer group in the file. Site-level ranks with their n attached are the reportable unit.</p>
     </div>
   </div>
 </section>
 
 <!-- ============ HONESTY ============ -->
-<section class="st-chapter" data-num="05" data-orb="grounded" data-orb-label="Chapter orb settling into a grounded state">
-  <p class="chapter-kicker">Chapter five</p>
-  <h2>What this does not establish</h2>
-  <p>The limits of this page, written down before anyone quotes a percentile from it.</p>
+<section class="st-chapter" data-num="05">
+  <h2>Every percentile on this page is interpolated from 7 breakpoints, not a computed rank</h2>
+  <p>The limits of the method, written down before anyone quotes a number from it.</p>
 </section>
 <div class="honesty" data-st-reveal>
   <h3>Limits, stated up front</h3>
@@ -717,7 +741,6 @@ details.data-table th:first-child,details.data-table td:first-child{text-align:l
     <h3>What is missing</h3>
     <p>This was the last of the six instruments. The hub lists what none of them has answered yet, and what would have to be built to answer it.</p>
   </div>
-  <div class="nc-orb"><canvas id="next-orb" class="st-orb" aria-hidden="true"></canvas></div>
 </a>
 
 <nav class="story-nav">
@@ -752,7 +775,10 @@ details.data-table th:first-child,details.data-table td:first-child{text-align:l
      0. small utilities
      --------------------------------------------------------- */
   var mqReduce = global.matchMedia ? matchMedia("(prefers-reduced-motion: reduce)") : null;
-  function reduced() { return !!(mqReduce && mqReduce.matches); }
+  // ?reduced=1 forces the reduced-motion path so it can be tested without changing OS settings
+  var forceReduced = /[?&]reduced=1/.test(location.search);
+  if (forceReduced) document.documentElement.classList.add("st-reduced");
+  function reduced() { return forceReduced || !!(mqReduce && mqReduce.matches); }
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
   function lerp(a, b, t) { return a + (b - a) * t; }
   function isEl(x) { return x && x.nodeType === 1; }
@@ -3034,217 +3060,14 @@ details.data-table th:first-child,details.data-table td:first-child{text-align:l
 })(typeof window !== "undefined" ? window : this);
 /*STORY_JS_END*/</script>
 
-<script>
-/* Local fallback engine. If tools/story.js has been inlined above, window.Story
-   already exists and everything below is skipped. Keep the two APIs identical. */
-(function () {
-  if (window.Story) return;
-  var RM = matchMedia('(prefers-reduced-motion: reduce)');
-  var S = {};
-
-  S.spring = function (from, to, cb, opts) {
-    if (RM.matches) { cb(to, true); return function () {}; }
-    var dur = (opts && opts.duration) || 620, t0 = performance.now(), raf = 0, dead = false;
-    function frame(t) {
-      if (dead) return;
-      var p = Math.min(1, (t - t0) / dur);
-      var e = 1 - Math.pow(1 - p, 3);
-      cb(from + (to - from) * e, p === 1);
-      if (p < 1) raf = requestAnimationFrame(frame);
-    }
-    raf = requestAnimationFrame(frame);
-    return function () { dead = true; cancelAnimationFrame(raf); };
-  };
-  S.tween = S.spring;
-
-  S.reveal = function (root, opts) {
-    var sel = (opts && opts.selector) || '[data-st-reveal]';
-    var els = (root || document).querySelectorAll(sel);
-    if (RM.matches || !window.IntersectionObserver) {
-      els.forEach(function (e) { e.classList.add('is-in'); });
-      return;
-    }
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e, i) {
-        if (!e.isIntersecting) return;
-        setTimeout(function () { e.target.classList.add('is-in'); }, i * 70);
-        io.unobserve(e.target);
-      });
-    }, { rootMargin: '0px 0px -12% 0px' });
-    els.forEach(function (e) { io.observe(e); });
-  };
-
-  S.scenes = function (root, opts) {
-    opts = opts || {};
-    var steps = Array.prototype.slice.call(root.querySelectorAll('.st-step'));
-    var cur = -1;
-    function pick() {
-      var mid = innerHeight * 0.5, best = 0, bd = Infinity;
-      steps.forEach(function (s, i) {
-        var r = s.getBoundingClientRect();
-        var d = Math.abs(r.top + r.height / 2 - mid);
-        if (d < bd) { bd = d; best = i; }
-      });
-      if (best !== cur) {
-        var dir = best > cur ? 1 : -1;
-        steps.forEach(function (s, i) { s.classList.toggle('is-active', i === best); });
-        cur = best;
-        var os = steps[best].getAttribute('data-orb');
-        if (os && opts.orb && opts.orb.setState) opts.orb.setState(os);
-        if (opts.onStep) opts.onStep(best, steps[best], dir);
-      }
-      var r0 = root.getBoundingClientRect();
-      var p = Math.max(0, Math.min(1, (innerHeight * 0.5 - r0.top) / Math.max(1, r0.height)));
-      root.style.setProperty('--p', p.toFixed(3));
-      if (opts.onProgress) opts.onProgress(cur, p);
-    }
-    var tick = false;
-    function on() { if (tick) return; tick = true; requestAnimationFrame(function () { tick = false; pick(); }); }
-    addEventListener('scroll', on, { passive: true });
-    addEventListener('resize', on);
-    pick();
-    return { steps: steps, refresh: pick, destroy: function () { removeEventListener('scroll', on); removeEventListener('resize', on); } };
-  };
-
-  S.progressBar = function () {
-    var b = document.createElement('div');
-    b.className = 'st-progress'; b.setAttribute('aria-hidden', 'true');
-    b.innerHTML = '<i></i>';
-    document.body.appendChild(b);
-    var i = b.firstChild, tick = false;
-    function upd() {
-      var h = document.documentElement.scrollHeight - innerHeight;
-      i.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + '%';
-    }
-    addEventListener('scroll', function () {
-      if (tick) return; tick = true;
-      requestAnimationFrame(function () { tick = false; upd(); });
-    }, { passive: true });
-    upd();
-  };
-
-  /* Dotted monochrome orb. Vanilla canvas, 2D arcs only.
-     Visual reference: github.com/Jakubantalik/thinking-orbs (MIT). No code copied. */
-  S.orb = function (canvas, o) {
-    o = o || {};
-    var N = o.density || 480, dpr = Math.min(2, devicePixelRatio || 1);
-    var pts = [], state = 'idle', target = 0, energy = 0, raf = 0, vis = true, t = 0;
-    for (var i = 0; i < N; i++) {
-      var y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(Math.max(0, 1 - y * y));
-      var th = Math.PI * (3 - Math.sqrt(5)) * i;
-      pts.push({ x: Math.cos(th) * r, y: y, z: Math.sin(th) * r, s: Math.random() });
-    }
-    function css(n, f) {
-      var v = getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-      return v || f;
-    }
-    function size() {
-      var w = canvas.clientWidth || 180, h = canvas.clientHeight || w;
-      canvas.width = w * dpr; canvas.height = h * dpr;
-    }
-    var STATES = { idle: 0.16, breathing: 0.16, searching: 0.62, thinking: 0.7, connecting: 0.5,
-      solving: 0.66, retrieving: 0.62, wrong: 0.95, grounded: 0.1, resolved: 0.08 };
-    function draw() {
-      var ctx = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
-      var cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.40;
-      ctx.clearRect(0, 0, w, h);
-      var col = state === 'wrong' ? css('--warn', '#A8501B')
-        : (state === 'grounded' || state === 'resolved') ? css('--green', '#0F7A52')
-        : css('--ink', '#12140F');
-      energy += (target - energy) * 0.07;
-      var breathe = 1 + Math.sin(t / 46) * 0.035 * (1 + energy);
-      for (var i = 0; i < pts.length; i++) {
-        var p = pts[i];
-        var a = t * (0.006 + energy * 0.012) + p.s * energy * 2.2;
-        var ca = Math.cos(a), sa = Math.sin(a);
-        var x = p.x * ca - p.z * sa, z = p.x * sa + p.z * ca, y = p.y;
-        var frac = state === 'wrong' ? 1 + Math.sin(p.s * 31 + t / 9) * 0.22 * energy : 1;
-        var lat = (state === 'grounded' || state === 'resolved')
-          ? 1 - 0.1 * Math.abs(Math.sin(y * 7)) : 1;
-        var rr = R * breathe * frac * lat;
-        var sc = 0.62 + 0.38 * ((z + 1) / 2);
-        ctx.globalAlpha = 0.14 + 0.72 * ((z + 1) / 2);
-        ctx.fillStyle = col;
-        ctx.beginPath();
-        ctx.arc(cx + x * rr, cy + y * rr, Math.max(0.5, 1.5 * dpr * sc), 0, 6.2832);
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-    }
-    function loop() { t++; draw(); raf = requestAnimationFrame(loop); }
-    function start() { if (!raf && vis && !RM.matches) loop(); }
-    function stop() { cancelAnimationFrame(raf); raf = 0; }
-    size(); target = STATES.idle; energy = target; draw();
-    if (RM.matches) { draw(); } else { start(); }
-    addEventListener('resize', function () { size(); draw(); });
-    document.addEventListener('visibilitychange', function () {
-      vis = !document.hidden; if (vis) start(); else stop();
-    });
-    var io = window.IntersectionObserver ? new IntersectionObserver(function (es) {
-      vis = es[0].isIntersecting; if (vis) start(); else stop();
-    }, { threshold: 0 }) : null;
-    if (io) io.observe(canvas);
-    return {
-      setState: function (n) {
-        state = n; target = STATES[n] != null ? STATES[n] : STATES.idle;
-        if (canvas.parentNode) canvas.parentNode.setAttribute('data-state', n);
-        if (RM.matches) draw();
-      },
-      pointAt: function () {},
-      destroy: function () { stop(); if (io) io.disconnect(); }
-    };
-  };
-
-  S.autoPresent = function () {
-    var on = false, dots = null, hint = null;
-    var steps = Array.prototype.slice.call(document.querySelectorAll('.st-step'));
-    var idx = 0;
-    function go(i) {
-      idx = Math.max(0, Math.min(steps.length - 1, i));
-      steps[idx].scrollIntoView({ behavior: RM.matches ? 'auto' : 'smooth', block: 'center' });
-      if (dots) Array.prototype.forEach.call(dots.children, function (b, j) {
-        b.classList.toggle('is-on', j === idx);
-      });
-    }
-    function key(e) {
-      if (e.target && /input|select|textarea/i.test(e.target.tagName)) return;
-      if (e.key === 'p' || e.key === 'P') { toggle(); return; }
-      if (!on) return;
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(idx + 1); }
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); go(idx - 1); }
-      if (e.key === 'Escape') toggle();
-    }
-    function toggle() {
-      on = !on;
-      document.body.classList.toggle('st-presenting', on);
-      document.documentElement.classList.toggle('st-presenting', on);
-      if (on) {
-        dots = document.createElement('div'); dots.className = 'st-present-dots';
-        dots.setAttribute('aria-hidden', 'true');
-        steps.forEach(function () { dots.appendChild(document.createElement('b')); });
-        hint = document.createElement('div'); hint.className = 'st-present-hint';
-        hint.textContent = 'arrows to step · esc to exit';
-        document.body.appendChild(dots); document.body.appendChild(hint);
-        go(idx);
-      } else {
-        if (dots) dots.remove(); if (hint) hint.remove(); dots = hint = null;
-      }
-    }
-    addEventListener('keydown', key);
-    if (/[?&]present=1/.test(location.search)) toggle();
-    return { toggle: toggle };
-  };
-  S.present = function () { return S.autoPresent(); };
-
-  window.Story = S;
-})();
-</script>
-
 <script type="module">
 import { rankAgainst } from './lib/benchmark.js';
 
 const S = window.Story;
 const RM = matchMedia('(prefers-reduced-motion: reduce)');
+const PHONE = matchMedia('(max-width:800px)');
+/* ?reduced=1 is an engine hook; honour it as well as the OS setting */
+const isReduced = () => (S && S.reduced ? S.reduced() : RM.matches);
 const NS = 'http://www.w3.org/2000/svg';
 const $ = (s, r) => (r || document).querySelector(s);
 const el = (t, a, kids) => {
@@ -3310,14 +3133,22 @@ function densityDots(d) {
    100 dots, one per percentile. Dots are kept between renders and moved, so a
    change of peer group morphs the same marks instead of swapping the figure. */
 const swarmState = new WeakMap();
+const swarmArgs = new Map();   // last inputs per figure, so a phone/desktop switch can re-render
 function swarm(svg, d, rate, opts) {
   opts = opts || {};
+  swarmArgs.set(svg, { d, rate });
   const W = svg.viewBox.baseVal.width || 1000;
   const H = svg.viewBox.baseVal.height || 620;
   const big = H > 500;
-  const L = 74, R = 54, top = big ? 96 : 66, base = H - (big ? 116 : 92);
+  /* Phone variant: same figure, far larger type, fewer ticks, and only the
+     labels that carry the point. Re-rendered when the media query changes. */
+  const PH = PHONE.matches;
+  const fsGrid = PH ? 38 : 14;
+  const L = PH ? 46 : 74, R = PH ? 40 : 54;
+  const top = PH ? (big ? 150 : 118) : (big ? 96 : 66);
+  const base = H - (PH ? (big ? 180 : 156) : (big ? 116 : 92));
   const clampN = (v, a, b) => Math.max(a, Math.min(b, v));
-  const step = big ? 17 : 13;
+  const step = PH ? (big ? 26 : 22) : (big ? 17 : 13);
   const vals = densityDots(d);
   const hi = Math.max(d.percentiles.p95 || 1, (rate || 0) * 1.15, 1);
   const x = (v) => L + (Math.min(v, hi) / hi) * (W - L - R);
@@ -3335,7 +3166,7 @@ function swarm(svg, d, rate, opts) {
   }
   const tallest = Math.max(1, Math.ceil(nZero / ZW), ...counts.values());
   const pitch = clampN((base - top - 20) / tallest, 7, step * (big ? 4.6 : 2.4));
-  const rDot = clampN(pitch * 0.30, 3.4, big ? 14 : 8);
+  const rDot = clampN(pitch * 0.30, PH ? 6 : 3.4, PH ? 18 : (big ? 14 : 8));
   const seen = new Map(), dots = [];
   let z = 0;
   for (const v of vals) {
@@ -3376,31 +3207,40 @@ function swarm(svg, d, rate, opts) {
     add(el('rect', { class: 'band', x: x(p75), y: top - 24, width: Math.max(1, x(p90) - x(p75)), height: base - top + 30 }));
   }
   add(el('line', { class: 'axis', x1: L, y1: base + 8, x2: W - R, y2: base + 8 }));
-  for (const k of ['p50', 'p75', 'p90']) {
+  const gridTxt = (x0, y0, anchor, t) => add(el('text', {
+    class: 'gridtx', x: x0, y: y0, 'text-anchor': anchor, style: 'font-size:' + fsGrid + 'px'
+  }, t));
+  for (const k of (PH ? ['p50', 'p90'] : ['p50', 'p75', 'p90'])) {
     const v = d.percentiles[k];
     if (!(v > 0) || v > hi) continue;
     add(el('line', { class: 'gridline', x1: x(v), y1: top - 24, x2: x(v), y2: base + 8 }));
-    add(el('text', { class: 'gridtx', x: x(v), y: top - 34, 'text-anchor': 'middle' }, k + ' = ' + v.toFixed(2)));
+    // on a phone the marked site is the label that matters; a tick label beside
+    // it collides, so tick labels are drawn only when nothing is marked
+    if (PH && (k !== 'p90' || (rate != null && isFinite(rate)))) continue;
+    gridTxt(x(v), top - (PH ? 44 : 34), 'middle', k + (PH ? ' ' : ' = ') + v.toFixed(2));
   }
   const zeroPct = (d.zeroRate * 100).toFixed(0);
-  add(el('text', { class: 'gridtx', x: L, y: base + 38 }, zeroPct + '% reported zero'));
-  add(el('text', { class: 'gridtx', x: W - R, y: base + 38, 'text-anchor': 'end' }, 'TRIR → ' + hi.toFixed(1)));
-  add(el('text', { class: 'gridtx', x: L, y: base + 66 },
-    'n = ' + d.n.toLocaleString() + ' establishments · one dot = one percentile'
-    + (rate != null && isFinite(rate) ? ' · green = a lower rate than this site' : '')));
+  gridTxt(L, base + (PH ? 58 : 38), 'start', zeroPct + '% reported zero');
+  if (!PH) gridTxt(W - R, base + 38, 'end', 'TRIR → ' + hi.toFixed(1));
+  gridTxt(L, base + (PH ? 116 : 66), 'start', PH
+    ? 'n = ' + d.n.toLocaleString() + ' · 1 dot = 1 percentile'
+    : 'n = ' + d.n.toLocaleString() + ' establishments · one dot = one percentile'
+      + (rate != null && isFinite(rate) ? ' · green = a lower rate than this site' : ''));
 
   /* the marked site, with a leader line and the number rendered large */
   if (rate != null && isFinite(rate)) {
     const rx = x(rate);
     add(el('line', { class: 'you', x1: rx, y1: top - 24, x2: rx, y2: base + 8 }));
-    const lx = rx > W * 0.62 ? rx - 150 : rx + 26;
-    const ly = top + (big ? 34 : 18);
-    add(el('path', { class: 'calloutline', d: 'M' + rx + ' ' + (ly + 14) + ' L' + (lx + (rx > W * 0.62 ? 126 : -14)) + ' ' + (ly + 14) }));
+    const labW = PH ? 250 : 150;
+    const lx = rx > W * 0.62 ? rx - labW : rx + (PH ? 18 : 26);
+    const ly = top + (PH ? -96 : (big ? 34 : 18));
+    add(el('path', { class: 'calloutline', d: 'M' + rx + ' ' + (ly + 14) + ' L' + (lx + (rx > W * 0.62 ? labW - 24 : -14)) + ' ' + (ly + 14) }));
     add(el('text', {
-      class: 'bignum-svg', x: lx, y: ly + 24, 'text-anchor': rx > W * 0.62 ? 'start' : 'start',
-      style: 'font-size:' + (big ? 54 : 34) + 'px'
+      class: 'bignum-svg', x: lx, y: ly + (PH ? 78 : 24), 'text-anchor': 'start',
+      style: 'font-size:' + (PH ? 92 : (big ? 54 : 34)) + 'px'
     }, rate.toFixed(2)));
-    add(el('text', { class: 'youtx', x: lx, y: ly + (big ? 50 : 44) }, 'this site'));
+    add(el('text', { class: 'youtx', x: lx, y: ly + (PH ? 124 : (big ? 50 : 44)),
+      style: 'font-size:' + (PH ? 40 : 16) + 'px' }, 'this site'));
   }
 
   /* move the dots */
@@ -3409,7 +3249,7 @@ function swarm(svg, d, rate, opts) {
   st.nodes.forEach((c, i) => {
     c.setAttribute('class', 'dot' + (dots[i].zero ? ' zero' : (dots[i].better ? ' better' : '')));
   });
-  if (RM.matches || opts.instant) {
+  if (isReduced() || opts.instant) {
     st.nodes.forEach((c, i) => { c.setAttribute('cx', to[i].cx); c.setAttribute('cy', to[i].cy); });
     st.cur = to;
   } else {
@@ -3428,6 +3268,11 @@ function swarm(svg, d, rate, opts) {
     setTimeout(snap, 900);
   }
 }
+
+/* redraw both density figures when the page crosses the phone breakpoint */
+PHONE.addEventListener('change', () => {
+  swarmArgs.forEach((a, svg) => { swarmState.delete(svg); swarm(svg, a.d, a.rate, { instant: true }); });
+});
 
 /* ---------- scene 1: verdict list ---------- */
 async function scene1() {
@@ -3451,7 +3296,7 @@ async function scene1() {
     const d = document.createElement('div');
     d.className = 'verdict ' + r.cls;
     d.dataset.i = String(i);
-    if (!RM.matches) d.classList.add('is-dim');
+    if (!isReduced()) d.classList.add('is-dim');
     d.innerHTML = '<div><b></b><span></span></div><em></em>';
     d.querySelector('b').textContent = r.t;
     d.querySelector('span').textContent = r.s;
@@ -3483,10 +3328,11 @@ async function scene4() {
     out.style.color = col;
     const trk = c.querySelector('.track');
     trk.style.color = col;
+    if (isReduced()) trk.firstElementChild.style.transition = 'none';
     trk.title = 'Percentile rank of TRIR 3.20 in this band. The tick marks p90.';
     box.appendChild(c);
     requestAnimationFrame(() => { trk.firstElementChild.style.width = rk.toFixed(1) + '%'; });
-    if (RM.matches) out.textContent = 'p' + Math.round(rk);
+    if (isReduced()) out.textContent = 'p' + Math.round(rk);
     else S.tween(0, rk, (v) => { out.textContent = 'p' + Math.round(v); }, { duration: 900 });
   }
   const t = document.createElement('table');
@@ -3580,8 +3426,6 @@ async function picker() {
 (async function boot() {
   S.progressBar();
   S.reveal(document, { selector: '.st-reveal' });
-  // tools/story.js calls autoPresent() itself; the local fallback does not.
-  if (!S.version) S.autoPresent();
   if (S.field) { try { S.field($('#hero'), { density: 1.1 }); } catch (e) { /* ambient only */ } }
   const orb = S.orb($('#hero-orb'), {
     density: 1400,
@@ -3590,7 +3434,6 @@ async function picker() {
   const stateOut = $('#orb-state');
   orb.setState('searching');
   stateOut.textContent = 'searching';
-  if (S.orb && $('#next-orb')) S.orb($('#next-orb'), { density: 700, state: 'grounded', label: 'Orb in its grounded state' });
   const mapLink = $('#open-map');
   if (mapLink) mapLink.addEventListener('click', (e) => {
     e.preventDefault();
@@ -3620,7 +3463,7 @@ async function picker() {
         stateOut.textContent = step.dataset.orb || 'idle';
         if (scene === 1 && s1) {
           s1.list.querySelectorAll('.verdict').forEach((v, j) => {
-            v.classList.toggle('is-dim', !RM.matches && j >= i);
+            v.classList.toggle('is-dim', !isReduced() && j >= i);
             v.classList.toggle('is-now', j === i - 1);
           });
           const big = $('#v-big'), note = $('#v-note');
