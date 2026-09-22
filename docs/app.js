@@ -1499,8 +1499,10 @@ function applyParams(view) {
   }
 }
 
+// Other sites in the programme link to #view-method and #view-benchmark (the section ids); accept both forms
 const parseHash = () => {
-  const [name] = location.hash.slice(1).split('?');
+  const [raw] = location.hash.slice(1).split('?');
+  const name = raw.replace(/^view-/, '');
   return VIEWS[name] ? name : null;
 };
 
@@ -1555,7 +1557,7 @@ document.addEventListener('click', (e) => {
   const id = a.getAttribute('href').slice(1);
   if (id === 'main') { e.preventDefault(); $('#main').focus(); return; }
   const target = document.getElementById(id);
-  if (target && !VIEWS[id.split('?')[0]]) {
+  if (target && !VIEWS[id.split('?')[0].replace(/^view-/, '')]) {
     e.preventDefault();
     target.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
   }
