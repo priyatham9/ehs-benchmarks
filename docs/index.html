@@ -12,8 +12,9 @@
 <link rel="canonical" href="https://priyatham9.github.io/ehs-benchmarks/" />
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 <nav class="pgm" aria-label="Programme">
-<style>.pgm{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;gap:2px;align-items:center;padding:8px 16px;background:#F7F7F3;color:#101311;border-bottom:2px solid #101311;font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.pgm a{color:#101311;text-decoration:none;padding:6px 9px}.pgm a:hover{background:#EFEFE9}.pgm .x::after{content:"\2197";margin-left:3px;opacity:.7}.pgm .cur{color:#0F7A52;font-weight:700;border-bottom:2px solid #0F7A52}.pgm .t{color:#666D68;margin-left:6px}.pgm .brand{font-weight:700;display:flex;align-items:center;gap:8px;margin-right:6px}.pgm .brand i{width:11px;height:11px;background:#0F7A52;display:inline-block}@media(prefers-color-scheme:dark){.pgm{background:#0A0D0B;color:#EAEFEA;border-color:#EAEFEA}.pgm a{color:#EAEFEA}.pgm a:hover{background:#171D18}.pgm .cur{color:#3FCB88;border-color:#3FCB88}.pgm .brand i{background:#3FCB88}}</style>
+<style>.pgm{position:relative;z-index:5;display:flex;flex-wrap:wrap;gap:2px;align-items:center;padding:8px 16px;border-bottom:2px solid;font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.pgm a{text-decoration:none;padding:6px 9px;border-bottom:2px solid transparent}.pgm a:focus-visible{outline:2px solid currentColor;outline-offset:-2px}.pgm .x::after{content:"\2197";margin-left:3px;opacity:.7}.pgm .cur{font-weight:700}.pgm .t{margin-left:6px}.pgm .brand{font-weight:700;display:flex;align-items:center;gap:8px;margin-right:6px}.pgm .brand i{width:11px;height:11px;display:inline-block}.pgm{background:#F7F7F3;color:#101311;border-color:#101311}.pgm a{color:#101311}.pgm a:hover{background:#EFEFE9}.pgm .cur{color:#0F7A52;border-color:#0F7A52}.pgm .brand i{background:#0F7A52}.pgm .t{color:#666D68}@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .pgm{background:#0A0D0B;color:#EAEFEA;border-color:#EAEFEA}:root:not([data-theme=light]) .pgm a{color:#EAEFEA}:root:not([data-theme=light]) .pgm a:hover{background:#171D18}:root:not([data-theme=light]) .pgm .cur{color:#3FCB88;border-color:#3FCB88}:root:not([data-theme=light]) .pgm .brand i{background:#3FCB88}:root:not([data-theme=light]) .pgm .t{color:#8A918B}}:root[data-theme=dark] .pgm{background:#0A0D0B;color:#EAEFEA;border-color:#EAEFEA}:root[data-theme=dark] .pgm a{color:#EAEFEA}:root[data-theme=dark] .pgm a:hover{background:#171D18}:root[data-theme=dark] .pgm .cur{color:#3FCB88;border-color:#3FCB88}:root[data-theme=dark] .pgm .brand i{background:#3FCB88}:root[data-theme=dark] .pgm .t{color:#8A918B}@media(max-width:760px){.pgm{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:6px 10px;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}.pgm::-webkit-scrollbar{display:none}.pgm>*{flex:none;white-space:nowrap}}</style>
 <span class="brand"><i></i>ehs-benchmarks</span>
 <a class="x" href="https://priyatham9.github.io/">Priyatham Chimmani</a><a href="https://priyatham9.github.io/grounded/">Grounded</a><a href="https://priyatham9.github.io/grounded/paper.html">Paper</a>
 <span class="t">Projects</span><a href="https://priyatham9.github.io/ehs-osha-analysis/">OSHA data quality</a><a href="https://priyatham9.github.io/ehs-ai-grounding-eval/">Grounding eval</a><a href="https://priyatham9.github.io/ehs-human-factors-ontology/">Ontology</a><a href="https://priyatham9.github.io/ehs-risk-sem/">Risk SEM</a><a href="https://priyatham9.github.io/ehs-capitals-calculator/">Calculator</a><a class="cur" aria-current="page" href="https://priyatham9.github.io/ehs-benchmarks/">Benchmarks</a>
@@ -36,143 +37,157 @@
 </div>
 
 <header class="masthead">
-  <div class="wrap masthead-row">
-    <div>
-      <h1><span class="brand-mark">EHS</span> Benchmarks</h1>
-      <p class="tagline">
-        Open injury-rate benchmarks built from OSHA's public Injury Tracking Application
-        data - 1.18&nbsp;million establishment filings and 688,367 individual injury cases.
-        Every figure here is computed from primary records, not copied from a summary table.
-      </p>
-      <p class="meta-strip" id="meta-strip">Loading…</p>
-      <p style="margin:18px 0 0">
-        <a href="story.html" style="display:inline-block;padding:13px 20px;border:2px solid currentColor;color:inherit;text-decoration:none;font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase">
-          Read the story: Compared with whom &rarr;
-        </a>
-      </p>
+  <div class="wrap">
+    <p class="kicker">RPT-005 &middot; Open benchmark &middot; CY2023&ndash;CY2025</p>
+    <h1><span class="brand-mark">EHS</span> Benchmarks</h1>
+    <p class="tagline">
+      Is your injury rate any good? Compare one site against establishments in the same industry
+      and size band, drawn from 1.18&nbsp;million public OSHA filings that were cleaned first,
+      not copied from a summary table.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#benchmark">Benchmark a site &rarr;</a>
+      <a class="btn" href="story.html">Read the story: Compared with whom</a>
     </div>
+    <p class="meta-strip" id="meta-strip">Loading dataset&hellip;</p>
   </div>
 </header>
 
-<nav class="tabs wrap" id="tabs" style="max-width:1180px">
-  <a href="#findings" data-view="findings">Findings</a>
-  <a href="#benchmark" data-view="benchmark">Benchmark my site</a>
-  <a href="#company" data-view="company">Company search</a>
-  <a href="#patterns" data-view="patterns">Injury patterns</a>
-  <a href="#sectors" data-view="sectors">Sectors</a>
-  <a href="#method" data-view="method">Method</a>
+<nav class="tabs" id="tabs" aria-label="Sections">
+  <div class="wrap tabs-inner">
+    <a href="#findings" data-view="findings">Findings</a>
+    <a href="#benchmark" data-view="benchmark">Benchmark my site</a>
+    <a href="#company" data-view="company">Company search</a>
+    <a href="#patterns" data-view="patterns">Injury patterns</a>
+    <a href="#sectors" data-view="sectors">Sectors</a>
+    <a href="#method" data-view="method">Method</a>
+  </div>
 </nav>
 
-<main class="wrap">
+<main class="wrap" id="main" tabindex="-1">
 
 <!-- ================= FINDINGS ================= -->
-<section class="view" id="view-findings">
-  <div class="section-head">
-    <h2>What the raw data actually says</h2>
-    <span class="section-note">CY2023–CY2025</span>
-  </div>
-  <div class="prose">
-    <p>
-      OSHA publishes establishment-level injury data every year. It is the only public source
-      granular enough to answer "is our rate any good?" - and it is close to unusable straight
-      out of the download. These are the things we found that change the answer.
+<section class="view" id="view-findings" aria-labelledby="h-findings">
+  <div class="brief-intro">
+    <p class="kicker">The briefing &middot; four findings, one page</p>
+    <h2 id="h-findings">What the public injury data actually says</h2>
+    <p class="brief-lede">
+      OSHA publishes every establishment's injury summary. Used straight from the download, it tells
+      leaders their rates are seven times better than they are, rewards small sites for luck,
+      and points prevention at the wrong hours and the wrong injuries. Each finding below is
+      computed from the primary filings, with the one question it should prompt in your next review.
     </p>
   </div>
-
-  <div id="findings-tiles"></div>
-
-  <div class="section-head"><h2>Finding 1 - the 200,000-hour trap</h2></div>
-  <div id="finding-hours"></div>
-
-  <div class="section-head"><h2>Finding 2 - zero is not excellence</h2></div>
-  <div id="finding-zero"></div>
-
-  <div class="section-head"><h2>Finding 3 - injuries cluster inside the shift</h2></div>
-  <div id="finding-shift"></div>
+  <div id="briefing" class="loading-block"></div>
 </section>
 
 <!-- ================= BENCHMARK ================= -->
-<section class="view" id="view-benchmark">
+<section class="view" id="view-benchmark" aria-labelledby="h-benchmark">
   <div class="section-head">
-    <h2>Benchmark my site</h2>
+    <h2 id="h-benchmark">Benchmark my site</h2>
     <span class="section-note">percentile against real peers</span>
   </div>
   <div class="prose">
     <p>
-      Enter one establishment's numbers. You are compared against establishments in the same
-      NAICS industry and size band that filed for CY2025 - not against a national average.
-      <strong>A lower percentile is better.</strong>
+      Enter one establishment's numbers for one calendar year. It is ranked against establishments
+      in the same NAICS industry and size band that filed for CY2025, not against a national
+      average. <strong>A lower percentile is better.</strong> The result updates as you type,
+      and the address bar keeps your inputs so the result can be shared.
     </p>
   </div>
 
-  <div class="form-grid" style="margin-top:18px">
-    <label class="field"><span>Sector</span>
-      <select id="bm-sector"></select>
-    </label>
-    <label class="field"><span>Industry (NAICS)</span>
-      <select id="bm-naics"></select>
-    </label>
-    <label class="field"><span>Size band (employees)</span>
-      <select id="bm-band"></select>
-    </label>
-    <label class="field"><span>Hours worked</span>
-      <input id="bm-hours" type="number" min="0" step="1000" value="400000" inputmode="numeric">
-    </label>
-    <label class="field"><span>Recordable cases</span>
-      <input id="bm-cases" type="number" min="0" step="1" value="8" inputmode="numeric">
-    </label>
-    <label class="field"><span>Avg. employees (optional)</span>
-      <input id="bm-emp" type="number" min="0" step="1" placeholder="for data-quality check" inputmode="numeric">
-    </label>
-  </div>
-  <p style="margin-top:16px"><button class="action" id="bm-run" type="button">Compute percentile</button></p>
+  <form class="bm-form" id="bm-form" autocomplete="off" novalidate>
+    <fieldset>
+      <legend><span class="step-no">1</span> Peer group</legend>
+      <div class="field combo">
+        <label class="field-label" for="bm-naics-q">Industry: search by name or NAICS code</label>
+        <div class="combo-box">
+          <input id="bm-naics-q" type="text" role="combobox" aria-expanded="false" aria-controls="bm-naics-list"
+                 aria-autocomplete="list" aria-describedby="bm-naics-note" spellcheck="false"
+                 placeholder="e.g. plastics, hospitals, 3252">
+          <ul id="bm-naics-list" class="combo-list" role="listbox" aria-label="Matching industries" hidden></ul>
+        </div>
+        <p class="field-note" id="bm-naics-note">Loading industries&hellip;</p>
+      </div>
+      <div class="field">
+        <span class="field-label" id="bm-band-label">Size band (annual average employees)</span>
+        <div class="chips" id="bm-band" role="radiogroup" aria-labelledby="bm-band-label"></div>
+      </div>
+    </fieldset>
 
-  <div id="bm-result"></div>
+    <fieldset>
+      <legend><span class="step-no">2</span> Your site, one calendar year</legend>
+      <div class="form-grid">
+        <label class="field"><span class="field-label">Hours worked</span>
+          <input id="bm-hours" type="number" min="1" step="1000" value="625000" inputmode="numeric" required>
+        </label>
+        <label class="field"><span class="field-label">Recordable cases</span>
+          <input id="bm-cases" type="number" min="0" step="1" value="10" inputmode="numeric" required>
+        </label>
+        <label class="field"><span class="field-label">DART cases <em>optional</em></span>
+          <input id="bm-dart" type="number" min="0" step="1" placeholder="days away + restricted" inputmode="numeric">
+        </label>
+        <label class="field"><span class="field-label">Avg. employees <em>optional</em></span>
+          <input id="bm-emp" type="number" min="0" step="1" placeholder="checks the hours" inputmode="numeric">
+        </label>
+      </div>
+      <p class="field-note" id="bm-hint">
+        No hours figure? OSHA's full-time estimate is employees &times; 2,000.
+        <button type="button" class="linkbtn" id="bm-est">Estimate hours from employees</button>
+      </p>
+    </fieldset>
+  </form>
+
+  <div id="bm-result" aria-live="polite"></div>
 </section>
 
 <!-- ================= COMPANY ================= -->
-<section class="view" id="view-company">
+<section class="view" id="view-company" aria-labelledby="h-company">
   <div class="section-head">
-    <h2>Company search</h2>
+    <h2 id="h-company">Company search</h2>
     <span class="section-note" id="company-count"></span>
   </div>
   <div class="prose">
     <p>
       Every employer that filed a 300A summary is here, resolved to a corporate entity by EIN
-      where the filed names agree. Search by name - results show the rolled-up rate across all
-      that company's establishments, with a per-state and per-industry breakdown underneath.
+      where the filed names agree. Results show the rolled-up rate across all of that company's
+      establishments, with a per-year, per-state and per-industry breakdown underneath.
     </p>
   </div>
 
-  <div class="form-grid" style="margin-top:18px; grid-template-columns: 1fr auto;">
-    <label class="field"><span>Company name</span>
-      <input id="co-q" type="search" placeholder="e.g. Costco, Tyson, Georgia-Pacific" autocomplete="off">
+  <div class="search-row">
+    <label class="field"><span class="field-label">Company name</span>
+      <input id="co-q" type="search" placeholder="e.g. Costco, Tyson, Georgia-Pacific" autocomplete="off" spellcheck="false" aria-describedby="co-status">
     </label>
   </div>
+  <p class="field-note" id="co-status" aria-live="polite">Type at least two letters. Press <kbd>/</kbd> to jump here.</p>
   <div id="co-results"></div>
 
-  <div class="section-head"><h2>Largest filers by reported hours</h2></div>
-  <div id="co-top"></div>
+  <div class="section-head">
+    <h2>Largest filers by reported hours</h2>
+    <span class="section-note">click a column to sort &middot; a name to open it</span>
+  </div>
+  <div id="co-top" class="loading-block"></div>
 </section>
 
 <!-- ================= PATTERNS ================= -->
-<section class="view" id="view-patterns">
+<section class="view" id="view-patterns" aria-labelledby="h-patterns">
   <div class="section-head">
-    <h2>How people actually get hurt</h2>
+    <h2 id="h-patterns">How people actually get hurt</h2>
     <span class="section-note">688,367 OIICS-coded cases</span>
   </div>
   <div class="prose">
     <p>
       Rates tell you how much. Case detail tells you what. Every case below is coded to the
-      Occupational Injury and Illness Classification System - event, body part, nature, source.
-      Expand any row to see what it breaks down into and how many days it cost.
+      Occupational Injury and Illness Classification System: event, body part, nature, source.
+      Open any row to see what it breaks down into and how many days away it cost.
     </p>
   </div>
 
-  <div class="section-head"><h2>Event - what happened</h2></div>
-  <div id="pt-events"></div>
+  <div class="section-head"><h2>Event: what happened</h2><span class="section-note">open a row for detail</span></div>
+  <div id="pt-events" class="loading-block"></div>
 
-  <div class="section-head"><h2>Body part injured</h2></div>
+  <div class="section-head"><h2>Body part injured</h2><span class="section-note">open a row for detail</span></div>
   <div id="pt-parts"></div>
 
   <div class="section-head"><h2>Hours into the shift</h2></div>
@@ -183,25 +198,26 @@
 </section>
 
 <!-- ================= SECTORS ================= -->
-<section class="view" id="view-sectors">
+<section class="view" id="view-sectors" aria-labelledby="h-sectors">
   <div class="section-head">
-    <h2>Sector rates and trend</h2>
-    <span class="section-note">hours-weighted, 2023–2025</span>
+    <h2 id="h-sectors">Sector rates and trend</h2>
+    <span class="section-note">hours-weighted, CY2025</span>
   </div>
   <div class="prose">
     <p>
-      Hours-weighted aggregate rates by NAICS sector. Expand a sector to see the industries
-      inside it - sector averages hide enormous spread, and the sub-industry view is where
-      the actionable comparison lives.
+      Hours-weighted aggregate rates by NAICS sector for the latest year, with the three-year
+      trend beside each. Open a sector to see the industries inside it: sector averages hide
+      enormous spread, and the sub-industry view is where the actionable comparison lives.
     </p>
   </div>
-  <div id="sec-table"></div>
+  <div class="toolbar" id="sec-tools"></div>
+  <div id="sec-table" class="loading-block"></div>
 </section>
 
 <!-- ================= METHOD ================= -->
-<section class="view" id="view-method">
-  <div class="section-head"><h2>Method and limitations</h2></div>
-  <div class="prose" id="method-body"></div>
+<section class="view" id="view-method" aria-labelledby="h-method">
+  <div class="section-head"><h2 id="h-method">Method and limitations</h2></div>
+  <div class="prose method" id="method-body"></div>
 </section>
 
 </main>
@@ -209,7 +225,7 @@
 <div class="wrap">
   <nav class="series-nav" aria-label="Report series">
     <a class="sn-item" href="https://priyatham9.github.io/reports/verifiable-answers/">
-      <span class="sn-dir">&larr; Previous · RPT-004</span>
+      <span class="sn-dir">&larr; Previous &middot; RPT-004</span>
       <span class="sn-t">Verifiable Answers</span>
     </a>
     <a class="sn-item sn-home" href="https://priyatham9.github.io/#reports">
@@ -223,19 +239,18 @@
   <div class="wrap">
     <p>
       Source: U.S. OSHA Injury Tracking Application, establishment-specific 300A summary and
-      case detail files (CY2023–CY2025), retrieved from osha.gov. Public domain data.
-      Analysis code MIT licensed - 
+      case detail files (CY2023&ndash;CY2025), retrieved from osha.gov. Public domain data.
+      Analysis code MIT licensed:
       <a href="https://github.com/priyatham9/ehs-benchmarks">github.com/priyatham9/ehs-benchmarks</a>.
     </p>
     <p>
       Not affiliated with or endorsed by OSHA. Figures are derived from self-reported employer
-      filings and inherit their errors; see Method.
+      filings and inherit their errors; see <a href="#method">Method</a>.
     </p>
   </div>
 </footer>
 
 <script type="module" src="app.js"></script>
-<nav aria-label="Programme navigation" style="display:grid;grid-template-columns:1fr 1fr;max-width:1180px;margin:32px auto 48px;border:2px solid currentColor;font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace"><a href="https://priyatham9.github.io/ehs-capitals-calculator/" style="padding:20px 24px;color:inherit;text-decoration:none"><span style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.7">Previous</span><strong>&larr; Cost-benefit calculator</strong></a><a href="https://priyatham9.github.io/grounded/" style="padding:20px 24px;color:inherit;text-decoration:none;text-align:right;border-left:2px solid currentColor"><span style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.7">Next</span><strong>Grounded &rarr;</strong></a></nav>
 
 <!-- Wayfinder only. The story engine is inlined here so this page carries the
      same bottom path bar and site map as every other page. No other behaviour
@@ -2954,7 +2969,10 @@ html.st-printing:root,html.st-printing:root[data-theme="dark"],html.st-printing:
   var DOOR_LABEL = { story: "Story", project: "Project page", tool: "Tool" };
 
   function detectCurrent() {
-    var parts = location.pathname.split("/").filter(Boolean);
+    // the canonical URL knows where the page lives even on a preview host or localhost
+    var path = location.pathname, canon = document.querySelector('link[rel="canonical"]');
+    if (canon && canon.href) { try { path = new URL(canon.href).pathname; } catch (e) { } }
+    var parts = path.split("/").filter(Boolean);
     var key = null, file = parts.length ? parts[parts.length - 1] : "";
     for (var i = 0; i < parts.length; i++) if (REPO_KEY[parts[i]]) key = REPO_KEY[parts[i]];
     if (!key) return null;
