@@ -451,6 +451,7 @@ async function renderFindings() {
   const briefing = $('#briefing');
   briefing.classList.remove('loading-block');
   briefing.replaceChildren(
+    coldOpen(f),
     summaryStrip(f, chemDist, firstFour, days),
     findingHours(f),
     findingZero(chemDist),
@@ -460,6 +461,154 @@ async function renderFindings() {
     el('div', { class: 'section-head' }, el('h2', {}, 'Use the data')),
     doors(),
   );
+}
+
+/**
+ * The cold open: 1,000 dots stand for the 1.18M filings. The red ones are the
+ * filings that fail the hours test. Weighted by the hours they report, every
+ * dot is resized so its area is its share of hours, and the red few swallow
+ * the frame. Areas are exact to the published shares; if the red dots would
+ * not fit, both sizes shrink together so the ratio is never exaggerated.
+ */
+function coldOpen(f) {
+  const N = 1000;
+  const bad = Math.round((f.excludedShare / 100) * N);
+  const hShare = f.hoursDiscardedShare / 100;
+  const areaRatio = (hShare / bad) / ((1 - hShare) / (N - bad));
+  // a fixed shuffle so the red dots land in the same places on every visit
+  let seed = 7;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const order = [...Array(N).keys()];
+  for (let i = N - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+  const isBad = new Set(order.slice(0, bad));
+
+  const canvas = el('canvas', { class: 'co-canvas', role: 'img',
+    'aria-label': `1,000 dots stand for ${fmt(f.totalRows)} filings; ${bad} red dots are the ${pct(f.excludedShare, 2)} that fail the hours test. Resized by hours reported, the red dots hold ${pct(f.hoursDiscardedShare)} of the area.` });
+  const caption = el('p', { class: 'co-caption', 'aria-live': 'polite' });
+  const stage = el('div', { class: 'co-stage' }, canvas);
+  let state = 'count', W = 0, H = 0, dpr = 1, cur = null, target = null, raf = 0;
+
+  const grid = (count, x0, y0, w, h) => {
+    const cols = Math.max(1, Math.ceil(Math.sqrt((count * w) / h)));
+    const rows = Math.ceil(count / cols);
+    const cell = Math.min(w / cols, h / rows);
+    const ox = x0 + (w - cols * cell) / 2, oy = y0 + (h - rows * cell) / 2;
+    return { cell, at: (k) => [ox + (k % cols + 0.5) * cell, oy + (Math.floor(k / cols) + 0.5) * cell] };
+  };
+  const layout = (which) => {
+    const pad = 6, out = new Array(N);
+    if (which === 'count') {
+      const g = grid(N, pad, pad, W - pad * 2, H - pad * 2);
+      // in reading order: the red few are scattered through the file, as they are in the real data
+      for (let id = 0; id < N; id++) { const [x, y] = g.at(id); out[id] = { x, y, r: g.cell * 0.34 }; }
+      return out;
+    }
+    const gap = Math.max(10, W * 0.02);
+    const gw = Math.max(40, (W - pad * 2 - gap) * (1 - hShare));
+    const rw = W - pad * 2 - gap - gw;
+    const gg = grid(N - bad, pad, pad, gw, H - pad * 2);
+    const gr = grid(bad, pad + gw + gap, pad, rw, H - pad * 2);
+    let rGray = gg.cell * 0.36, rRed = rGray * Math.sqrt(areaRatio);
+    const maxRed = gr.cell * 0.47;
+    if (rRed > maxRed) { rGray *= maxRed / rRed; rRed = maxRed; }
+    let gi = 0, ri = 0;
+    order.forEach((id) => {
+      if (isBad.has(id)) { const [x, y] = gr.at(ri++); out[id] = { x, y, r: rRed }; }
+      else { const [x, y] = gg.at(gi++); out[id] = { x, y, r: rGray }; }
+    });
+    return out;
+  };
+  const colors = () => {
+    const cs = getComputedStyle(document.documentElement);
+    return { ok: cs.getPropertyValue('--ink-3').trim() || '#7C8078', bad: cs.getPropertyValue('--bad').trim() || '#8C2F1D' };
+  };
+  const draw = (pts) => {
+    const ctx = canvas.getContext('2d');
+    const c = colors();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    for (const pass of [false, true]) {          // red dots on top
+      ctx.fillStyle = pass ? c.bad : c.ok;
+      ctx.globalAlpha = pass ? 1 : 0.55;
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        if (isBad.has(i) !== pass) continue;
+        const p = pts[i];
+        ctx.moveTo(p.x + p.r, p.y);
+        ctx.arc(p.x, p.y, Math.max(0.35, p.r), 0, Math.PI * 2);
+      }
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  };
+  const setCaption = () => {
+    caption.replaceChildren(...(state === 'count'
+      ? [el('b', {}, `Count the filings.`), ` 1,000 dots stand for ${fmt(f.totalRows)} filings. The `, el('span', { class: 'co-red' }, `${bad} red dots`), ` are the ${pct(f.excludedShare, 2)} that fail a simple hours test.`]
+      : [el('b', {}, `Now weigh them by hours.`), ` Each dot's area is its share of reported hours. The same `, el('span', { class: 'co-red' }, `${bad} red dots`), ` hold ${pct(f.hoursDiscardedShare)} of every hour filed, so they set the denominator for everyone.`]));
+  };
+  const go = (which, instant = false) => {
+    state = which;
+    setCaption();
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === which)));
+    target = layout(which);
+    if (!cur || instant || reduced()) { cancelAnimationFrame(raf); cur = target.map((p) => ({ ...p })); draw(cur); return; }
+    const from = cur.map((p) => ({ ...p }));
+    const t0 = performance.now(), dur = 1300, spread = 450;
+    cancelAnimationFrame(raf);
+    const ease = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+    const frame = (t) => {
+      let done = true;
+      for (let i = 0; i < N; i++) {
+        const delay = isBad.has(i) ? spread : ((i % 97) / 97) * spread;
+        let k = (t - t0 - delay) / dur;
+        if (k < 1) done = false;
+        k = ease(Math.max(0, Math.min(1, k)));
+        const a = from[i], b = target[i];
+        cur[i] = { x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k, r: a.r + (b.r - a.r) * k };
+      }
+      draw(cur);
+      if (!done && !document.hidden) raf = requestAnimationFrame(frame);
+      else { cur = target.map((p) => ({ ...p })); draw(cur); }
+    };
+    raf = requestAnimationFrame(frame);
+  };
+  const buttons = [['count', 'Count the filings'], ['hours', 'Weigh by hours']].map(([v, label]) =>
+    el('button', { type: 'button', class: 'chip', 'data-v': v, 'aria-pressed': 'false', onclick: () => go(v) }, label));
+
+  const size = () => {
+    const w = Math.round(stage.clientWidth);
+    if (!w || w === W) return;
+    W = w; H = Math.round(Math.max(240, Math.min(420, W * (W < 560 ? 0.78 : 0.36))));
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = `${W}px`; canvas.style.height = `${H}px`;
+    cur = null;
+    go(state, true);
+  };
+  if ('ResizeObserver' in window) new ResizeObserver(size).observe(stage);
+  else addEventListener('resize', size);
+  requestAnimationFrame(size);
+  // repaint in the new palette when the theme changes
+  new MutationObserver(() => cur && draw(cur)).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => cur && draw(cur));
+
+  // play once, the first time the scene is mostly on screen
+  if (reduced() || !('IntersectionObserver' in window)) setTimeout(() => go('hours', true), 0);
+  else {
+    const io = new IntersectionObserver((es) => {
+      if (!es.some((e) => e.isIntersecting)) return;
+      io.disconnect();
+      setTimeout(() => { if (state === 'count') go('hours'); }, 1100);
+    }, { threshold: 0.55 });
+    io.observe(stage);
+  }
+  setCaption();
+
+  return el('section', { class: 'cold-open', 'aria-label': 'The whole problem in one picture' },
+    el('div', { class: 'co-head' },
+      el('p', { class: 'brief-strip-k' }, 'The whole problem in one picture'),
+      el('div', { class: 'chips', role: 'group', 'aria-label': 'How to weigh the filings' }, buttons)),
+    stage, caption);
 }
 
 /** Share of all days away carried by each event, from counts and mean durations. */

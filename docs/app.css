@@ -1090,3 +1090,36 @@ body.combo-open .st-way { opacity: 0; pointer-events: none; transition: opacity 
   .moves b { font-size: 17px; }
   .moves > div { padding: 10px; }
 }
+
+/* ---------- cold open: the data becomes the graphic ---------- */
+.cold-open {
+  position: relative;
+  margin: 26px 0 0;
+  padding: 18px 18px 16px;
+  border: 2px solid var(--rule);
+  background:
+    radial-gradient(ellipse 60% 70% at 78% 55%, color-mix(in srgb, var(--bad) 10%, transparent), transparent 70%),
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1.4px) 0 0 / 14px 14px,
+    var(--paper);
+}
+.co-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.co-head .brief-strip-k { margin: 0; }
+.co-stage { width: 100%; }
+.co-canvas { display: block; }
+.co-caption { margin: 12px 0 0; font-size: 14px; line-height: 1.6; color: var(--ink-2); max-width: 78ch; min-height: 3.2em; }
+.co-caption b { color: var(--ink); }
+.co-red { color: var(--bad); font-weight: 700; }
+
+/* kinetic headlines: each finding's headline wipes up into place */
+.finding-top h2 { transition: clip-path 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); clip-path: inset(0 0 0 0); }
+.finding:not(.is-in) .finding-top h2 { clip-path: inset(0 0 100% 0); transform: translateY(12px); }
+.big-stat { overflow: hidden; }
+.finding .big-n { transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s, opacity 0.6s ease 0.15s; }
+.finding:not(.is-in) .big-n { transform: translateY(60%); opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .finding-top h2, .finding .big-n { transition: none !important; }
+}
+@media print {
+  .finding:not(.is-in) .finding-top h2 { clip-path: none; transform: none; }
+  .finding:not(.is-in) .big-n { transform: none; opacity: 1; }
+}
