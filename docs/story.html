@@ -644,6 +644,9 @@ html.st-printing:root,html.st-printing:root[data-theme="dark"],html.st-printing:
 
 /* ---------- hero ---------- */
 .story-hero{border-bottom:var(--st-hair);padding:28px 0 40px}
+/* the hero's field canvas bleeds past the right edge; clip it instead of scrolling the page sideways */
+.story-hero{overflow-x:clip}
+.stage-card details{max-width:100%;overflow-x:auto}
 .story-hero .st-hero{align-items:center}
 .story-crumb{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 22px}
 .story-crumb a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--rule-soft)}
@@ -855,7 +858,7 @@ html.st-printing .mult.is-worst{box-shadow:none!important;border:1.2pt solid #00
 <body>
 
 <nav class="pgm" aria-label="Programme">
-<style>.pgm{position:relative;display:flex;flex-wrap:wrap;gap:2px;align-items:center;padding:8px 16px;background:#F7F7F3;color:#101311;border-bottom:2px solid #101311;font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.pgm a{color:#101311;text-decoration:none;padding:6px 9px}.pgm a:hover{background:#EFEFE9}.pgm .x::after{content:"\2197";margin-left:3px;opacity:.7}.pgm .cur{color:#0F7A52;font-weight:700;border-bottom:2px solid #0F7A52}.pgm .t{color:#666D68;margin-left:6px}.pgm .brand{font-weight:700;display:flex;align-items:center;gap:8px;margin-right:6px}.pgm .brand i{width:11px;height:11px;background:#0F7A52;display:inline-block}@media(prefers-color-scheme:dark){.pgm{background:#0A0D0B;color:#EAEFEA;border-color:#EAEFEA}.pgm a{color:#EAEFEA}.pgm a:hover{background:#171D18}.pgm .cur{color:#3FCB88;border-color:#3FCB88}.pgm .brand i{background:#3FCB88}}</style>
+<style>.pgm{position:relative;z-index:5;display:flex;flex-wrap:wrap;gap:2px;align-items:center;padding:8px 16px;border-bottom:2px solid;font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.pgm a{text-decoration:none;padding:6px 9px;border-bottom:2px solid transparent}.pgm a:focus-visible{outline:2px solid currentColor;outline-offset:-2px}.pgm .x::after{content:"\2197";margin-left:3px;opacity:.7}.pgm .cur{font-weight:700}.pgm .t{margin-left:6px}.pgm .brand{font-weight:700;display:flex;align-items:center;gap:8px;margin-right:6px}.pgm .brand i{width:11px;height:11px;display:inline-block}.pgm{background:#F7F7F3;color:#101311;border-color:#101311}.pgm a{color:#101311}.pgm a:hover{background:#EFEFE9}.pgm .cur{color:#0F7A52;border-color:#0F7A52}.pgm .brand i{background:#0F7A52}.pgm .t{color:#666D68}@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .pgm{background:#0A0D0B;color:#EAEFEA;border-color:#EAEFEA}:root:not([data-theme=light]) .pgm a{color:#EAEFEA}:root:not([data-theme=light]) .pgm a:hover{background:#171D18}:root:not([data-theme=light]) .pgm .cur{color:#3FCB88;border-color:#3FCB88}:root:not([data-theme=light]) .pgm .brand i{background:#3FCB88}:root:not([data-theme=light]) .pgm .t{color:#8A918B}}:root[data-theme=dark] .pgm{background:#0A0D0B;color:#EAEFEA;border-color:#EAEFEA}:root[data-theme=dark] .pgm a{color:#EAEFEA}:root[data-theme=dark] .pgm a:hover{background:#171D18}:root[data-theme=dark] .pgm .cur{color:#3FCB88;border-color:#3FCB88}:root[data-theme=dark] .pgm .brand i{background:#3FCB88}:root[data-theme=dark] .pgm .t{color:#8A918B}@media(max-width:760px){.pgm{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:6px 10px;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}.pgm::-webkit-scrollbar{display:none}.pgm>*{flex:none;white-space:nowrap}}</style>
 <span class="brand"><i></i>ehs-benchmarks</span>
 <a class="x" href="https://priyatham9.github.io/">Priyatham Chimmani</a><a href="https://priyatham9.github.io/grounded/">Grounded</a><a href="https://priyatham9.github.io/grounded/paper.html">Paper</a>
 <span class="t">Projects</span><a href="https://priyatham9.github.io/ehs-osha-analysis/">OSHA data quality</a><a href="https://priyatham9.github.io/ehs-ai-grounding-eval/">Grounding eval</a><a href="https://priyatham9.github.io/ehs-human-factors-ontology/">Ontology</a><a href="https://priyatham9.github.io/ehs-risk-sem/">Risk SEM</a><a href="https://priyatham9.github.io/ehs-capitals-calculator/">Calculator</a><a class="cur" aria-current="page" href="https://priyatham9.github.io/ehs-benchmarks/">Benchmarks</a>
@@ -917,7 +920,7 @@ html.st-printing .mult.is-worst{box-shadow:none!important;border:1.2pt solid #00
     <figure class="stage-card st-figure">
       <div class="verdict-head">
         <span class="st-bignum" id="v-big" aria-hidden="true">3.20<small>TRIR, the one number that never changes</small></span>
-        <div class="vh-note" id="v-note">600,000 hours, 10 recordable cases, CY2025.</div>
+        <div class="vh-note" id="v-note">625,000 hours, 10 recordable cases, CY2025.</div>
       </div>
       <div class="verdicts" id="v-list" data-st-spotlight role="img" aria-label="The same rate of 3.20 scores below the national average, above the sector aggregate, at the 76th percentile of its industry, and at the 93rd percentile among same-size peers."></div>
       <figcaption id="v-cap">Source: docs/data/national.json, docs/data/sectors.json, docs/data/benchmarks/32.json. Percentile rank computed by docs/lib/benchmark.js.</figcaption>
@@ -926,7 +929,7 @@ html.st-printing .mult.is-worst{box-shadow:none!important;border:1.2pt solid #00
   <div class="st-steps">
     <div class="st-step" data-orb="idle" data-step="0" data-note="This is a normal plant with a normal number. Keep your eye on it, because it is the only thing on this page that stays still.">
       <span class="label">The site</span>
-      <h3>600,000 hours and 10 recordable cases give a TRIR of 3.20</h3>
+      <h3>625,000 hours and 10 recordable cases give a TRIR of 3.20</h3>
       <p>One plastics resin plant, NAICS 3252, about 300 employees, CY2025. The rate is fixed for the rest of this page. Only the comparison group changes.</p>
     </div>
     <div class="st-step" data-orb="searching" data-step="1" data-note="This is the slide most of us have presented. It is true, and it is the weakest comparison available. Watch what happens when we narrow the group.">
@@ -3217,7 +3220,10 @@ html.st-printing .mult.is-worst{box-shadow:none!important;border:1.2pt solid #00
   var DOOR_LABEL = { story: "Story", project: "Project page", tool: "Tool" };
 
   function detectCurrent() {
-    var parts = location.pathname.split("/").filter(Boolean);
+    // the canonical URL knows where the page lives even on a preview host or localhost
+    var path = location.pathname, canon = document.querySelector('link[rel="canonical"]');
+    if (canon && canon.href) { try { path = new URL(canon.href).pathname; } catch (e) { } }
+    var parts = path.split("/").filter(Boolean);
     var key = null, file = parts.length ? parts[parts.length - 1] : "";
     for (var i = 0; i < parts.length; i++) if (REPO_KEY[parts[i]]) key = REPO_KEY[parts[i]];
     if (!key) return null;
@@ -4005,7 +4011,19 @@ const EXAMPLE = { sector: '32', naics: '3252', band: '250-499', rate: 3.20 };
     const next = now === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
     localStorage.setItem('ehs-theme', next);
+    label();
   });
+  // say the action, not the state: the icon shows where the button goes
+  function label() {
+    if (!btn) return;
+    const dark = (root.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
+    btn.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} mode`);
+    btn.setAttribute('title', `Switch to ${dark ? 'light' : 'dark'} mode`);
+  }
+  label();
+  // the programme bar scrolls sideways on a phone: start it at this project
+  const cur = $('.pgm .cur');
+  if (cur) cur.parentElement.scrollLeft = Math.max(0, cur.offsetLeft - 60);
 })();
 
 /* ---------- data ---------- */
@@ -4138,7 +4156,7 @@ function swarm(svg, d, rate, opts) {
   gridTxt(L, base + (PH ? 116 : 66), 'start', PH
     ? 'n = ' + d.n.toLocaleString() + ' · 1 dot = 1 percentile'
     : 'n = ' + d.n.toLocaleString() + ' establishments · one dot = one percentile'
-      + (rate != null && isFinite(rate) ? ' · green = a lower rate than this site' : ''));
+      + (rate != null && isFinite(rate) ? ' · green = above zero but below this site · pale = reported zero' : ''));
 
   /* the marked site, with a leader line and the number rendered large */
   if (rate != null && isFinite(rate)) {
@@ -4389,7 +4407,7 @@ async function picker() {
           } else {
             big.innerHTML = '';
             big.append('3.20', Object.assign(document.createElement('small'), { textContent: 'TRIR, the one number that never changes' }));
-            note.textContent = '600,000 hours, 10 recordable cases, CY2025.';
+            note.textContent = '625,000 hours, 10 recordable cases, CY2025.';
           }
         }
         if (scene === 2 && i === 2) {
