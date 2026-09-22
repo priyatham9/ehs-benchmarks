@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F7F7F3"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#0F7A52"/>
+  <rect x="80" y="92" width="22" height="22" fill="#0F7A52"/>
+  <text x="118" y="112" font-family="IBM Plex Mono, Menlo, monospace" font-size="24" font-weight="600" letter-spacing="3" fill="#101311">EHS BENCHMARKS</text>
+  <text x="80" y="250" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="76" font-weight="800" letter-spacing="-1.5" fill="#101311">Compared with whom:</text>
+  <text x="80" y="340" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="56" font-weight="600" fill="#101311">the same TRIR ranks <tspan fill="#0F7A52" font-weight="800">p76</tspan> or <tspan fill="#0F7A52" font-weight="800">p93</tspan></text>
+  <line x1="80" y1="430" x2="1120" y2="430" stroke="#101311" stroke-width="2"/>
+  <line x1="80" y1="470" x2="1120" y2="470" stroke="#D9DAD3" stroke-width="2"/>
+  <line x1="870" y1="455" x2="870" y2="485" stroke="#0F7A52" stroke-width="4"/>
+  <line x1="1047" y1="455" x2="1047" y2="485" stroke="#0F7A52" stroke-width="4"/>
+  <circle cx="870" cy="470" r="9" fill="#F7F7F3" stroke="#0F7A52" stroke-width="4"/>
+  <circle cx="1047" cy="470" r="9" fill="#0F7A52"/>
+  <text x="80" y="560" font-family="IBM Plex Mono, Menlo, monospace" font-size="22" letter-spacing="2" fill="#666D68">OPEN OSHA INJURY-RATE BENCHMARKS · 1.18M PUBLIC FILINGS</text>
+</svg>
