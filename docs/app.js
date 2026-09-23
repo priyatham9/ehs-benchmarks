@@ -197,6 +197,119 @@ function responsive(container, draw) {
   return container;
 }
 
+
+/* ==========================================================================
+   Motion layer (GSAP from cdnjs, loaded by the page before this module).
+   Everything here is optional: without GSAP, under reduced motion, or in
+   print, the content is already in its final state.
+   ========================================================================== */
+let gsapReady = false;
+const G = () => {
+  const g = window.gsap;
+  if (!g || reduced() || /[?&](reduced|print)=1/.test(location.search)) return null;
+  if (!gsapReady) {
+    gsapReady = true;
+    g.registerPlugin(...[window.ScrollTrigger, window.SplitText, window.Flip].filter(Boolean));
+  }
+  return g;
+};
+const isPhone = () => matchMedia('(max-width: 899.98px)').matches;
+
+/** Spring hover lift and press squash. Transforms only; touch skips hover. */
+function springy(node, amt = 1) {
+  const g = G();
+  if (!g || !node || node.__spring) return node;
+  node.__spring = 1;
+  const qs = g.quickTo(node, 'scale', { duration: 0.55, ease: 'elastic.out(1.1,0.5)' });
+  const qy = g.quickTo(node, 'y', { duration: 0.55, ease: 'elastic.out(1.1,0.5)' });
+  node.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') { qs(1 + 0.03 * amt); qy(-3 * amt); } });
+  node.addEventListener('pointerleave', () => { qs(1); qy(0); });
+  node.addEventListener('pointerdown', () => qs(1 - 0.05 * amt));
+  node.addEventListener('pointerup', (e) => { qs(e.pointerType === 'touch' ? 1 : 1 + 0.03 * amt); if (e.pointerType === 'touch') qy(0); });
+  return node;
+}
+
+/** Masked word reveal for headlines rendered after load. */
+function splitIn(node) {
+  const g = G();
+  if (!g || !window.SplitText || !node || node.__split) return;
+  node.__split = 1;
+  window.SplitText.create(node, {
+    type: 'words', mask: 'words', aria: 'auto',
+    onSplit: (self) => g.from(self.words, {
+      yPercent: 110, duration: 0.85, ease: 'expo.out', stagger: 0.04,
+      scrollTrigger: { trigger: node, start: 'top 88%', once: true },
+    }),
+  });
+}
+
+/** Count a number written in the node up from zero when it enters. */
+function countIn(node) {
+  const g = G();
+  if (!g || !node) return;
+  const m = /^([^\d-]*)(-?[\d,]*\.?\d+)(.*)$/.exec(node.textContent.trim());
+  if (!m) return;
+  const final = node.textContent, dec = (m[2].split('.')[1] || '').length, to = parseFloat(m[2].replace(/,/g, ''));
+  const o = { v: 0 };
+  node.setAttribute('aria-label', final.trim());
+  const paint = () => { node.textContent = m[1] + o.v.toFixed(dec) + m[3]; };
+  paint();
+  g.to(o, { v: to, duration: 1.6, ease: 'power3.out', onUpdate: paint, onComplete: () => { node.textContent = final; },
+    scrollTrigger: { trigger: node, start: 'top 90%', once: true } });
+}
+
+/** Tab strip: one green pill slides between tabs on a spring (Flip-style, transform only). */
+let tabPill = null;
+function moveTabPill(a, instant) {
+  const g = G();
+  const inner = a?.parentElement;
+  if (!g || !inner) return;
+  if (!tabPill) {
+    tabPill = el('span', { class: 'tab-pill', 'aria-hidden': 'true' });
+    inner.prepend(tabPill);
+    inner.classList.add('has-pill');
+  }
+  const vars = { x: a.offsetLeft, scaleX: a.offsetWidth / 100, scaleY: 1 };
+  if (instant) g.set(tabPill, vars);
+  else g.to(tabPill, { ...vars, duration: 0.7, ease: 'elastic.out(1,0.8)' });
+}
+
+/** A view that has just been shown rises into place, child by child. */
+function enterView(section) {
+  const g = G();
+  if (!g) return;
+  const kids = [...section.children].slice(0, 8);
+  g.fromTo(kids, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'expo.out', stagger: 0.06, clearProps: 'transform,opacity,visibility' });
+}
+
+/** Rank readout: springs from the previous rank to the new one. */
+let lastRank = null;
+function springRank(node, to) {
+  const g = G();
+  const from = lastRank;
+  lastRank = to;
+  if (!g || from == null || from === to) return;
+  const o = { v: from };
+  node.textContent = `p${from}`;
+  g.to(o, { v: to, duration: 0.9, ease: 'elastic.out(1,0.6)', onUpdate: () => { node.textContent = `p${Math.round(o.v)}`; } });
+  g.fromTo(node, { scale: 1.12 }, { scale: 1, duration: 0.8, ease: 'elastic.out(1.2,0.45)' });
+}
+
+/** Wire the motion layer onto a freshly rendered block of the page. */
+function animateBlock(root) {
+  if (!G() || !root) return;
+  root.querySelectorAll('.finding h2, .monday h2, .brief-intro h2').forEach(splitIn);
+  root.querySelectorAll('.brief-n').forEach(countIn);
+  root.querySelectorAll('.door, .brief-card, .btn, .chip').forEach((n) => springy(n));
+  const g = G();
+  root.querySelectorAll('.finding-visual, .big-stat').forEach((n) => {
+    g.from(n, { autoAlpha: 0, y: 36, scale: 0.96, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: n, start: 'top 85%', once: true } });
+  });
+  if (!isPhone()) root.querySelectorAll('.brief-cards').forEach((n) => {
+    g.from(n.children, { autoAlpha: 0, y: 40, rotate: 1.5, duration: 0.9, ease: 'expo.out', stagger: 0.08, scrollTrigger: { trigger: n, start: 'top 88%', once: true } });
+  });
+}
+
 /** A segmented toggle. `options`: [{value, label}]. Returns the element. */
 function segmented(label, options, value, onChange) {
   const group = el('div', { class: 'chips', role: 'group', 'aria-label': label });
@@ -461,6 +574,7 @@ async function renderFindings() {
     el('div', { class: 'section-head' }, el('h2', {}, 'Use the data')),
     doors(),
   );
+  animateBlock(briefing);
 }
 
 /**
@@ -1174,7 +1288,7 @@ function runBenchmark() {
         el('div', { class: 'result-rank plain' }, rate.toFixed(2))),
       el('div', {},
         el('div', { class: 'tile-label' }, 'Percentile · lower is better'),
-        el('div', { class: `result-rank ${rankClass(r)}` }, `p${r}`)),
+        el('div', { class: `result-rank ${rankClass(r)}`, 'data-rank': r }, `p${r}`)),
       el('div', {},
         el('div', { class: 'tile-label' }, 'Peer group'),
         el('div', { class: 'tile-sub', style: 'font-size:13px;color:var(--ink)' }, peerName),
@@ -1229,6 +1343,18 @@ function runBenchmark() {
       } }, 'Reset to the story example'),
       el('a', { class: 'btn', href: 'story.html' }, 'Why the peer group matters')),
   ));
+  const g = G();
+  if (g) {
+    const rk = out.querySelector('[data-rank]');
+    springRank(rk, r);
+    const key = `${dist.naics}|${dist.sizeBand}`;
+    if (out.__group !== key) {
+      out.__group = key;
+      g.from(out.querySelectorAll('.bandrank-track i'), { scaleX: 0, transformOrigin: '0 50%', duration: 0.9, ease: 'elastic.out(1,0.7)', stagger: 0.05 });
+      g.from(out.querySelectorAll('.moves > div'), { autoAlpha: 0, y: 18, duration: 0.6, ease: 'expo.out', stagger: 0.06 });
+    }
+    out.querySelectorAll('.btn').forEach((n) => springy(n));
+  }
 }
 
 /* ==========================================================================
@@ -1466,8 +1592,11 @@ async function renderSectors() {
       if (sortBy === 'change') return (b.change ?? -1e9) - (a.change ?? -1e9);
       return (b.latest[sortBy] ?? 0) - (a.latest[sortBy] ?? 0);
     });
-    list.replaceChildren(...sorted.map(sectorRow));
+    const before = window.Flip && G() && list.children.length ? window.Flip.getState(list.children) : null;
+    list.replaceChildren(...sorted.map((r) => (rowCache[r.code] ??= sectorRow(r))));
+    if (before) window.Flip.from(before, { duration: 0.65, ease: 'expo.out', stagger: 0.012 });
   };
+  const rowCache = {};
   const sectorRow = ({ code, d, years, latest, change }) => {
     const tone = latest.trir > nat.trir * 1.25 ? 'bad' : latest.trir > nat.trir ? 'warn' : '';
     const det = el('details', { class: 'sec-row' },
@@ -1665,6 +1794,7 @@ async function show(name, { initial = false } = {}) {
       a.setAttribute('aria-current', 'page');
       // keep the active tab visible when the tab strip scrolls sideways on a phone
       a.parentElement.scrollLeft = Math.max(0, a.offsetLeft - 16);
+      moveTabPill(a, initial);
     } else a.removeAttribute('aria-current');
   }
   document.title = `${$(`#view-${view} h2`)?.textContent ?? 'EHS Benchmarks'} · EHS Benchmarks`;
@@ -1675,6 +1805,7 @@ async function show(name, { initial = false } = {}) {
     const top = tabs.getBoundingClientRect().top + scrollY;
     if (scrollY > top) scrollTo({ top });
   }
+  if (changed && !initial) enterView($(`#view-${view}`));
   if (started.has(view) && location.hash.includes('?')) applyParams(view);
   if (!started.has(view)) {
     started.add(view);

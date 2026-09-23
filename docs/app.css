@@ -1123,3 +1123,16 @@ body.combo-open .st-way { opacity: 0; pointer-events: none; transition: opacity 
   .finding:not(.is-in) .finding-top h2 { clip-path: none; transform: none; }
   .finding:not(.is-in) .big-n { transform: none; opacity: 1; }
 }
+
+/* ---------- motion layer: sliding tab pill ---------- */
+.tabs-inner.has-pill { position: relative; }
+.tabs-inner.has-pill > a { position: relative; z-index: 1; background: transparent; }
+.tabs-inner.has-pill > a[aria-current='page'] { background: transparent; }
+.tab-pill {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 100px; z-index: 0;
+  background: var(--green); transform-origin: 0 50%; pointer-events: none;
+}
+@media print { .tab-pill { display: none; } }
+.masthead h1 { will-change: auto; }
+.tabs-inner.has-pill > a[aria-current='page']:hover { background: transparent; color: var(--paper); }
+:root[data-theme='dark'] .tabs-inner.has-pill > a[aria-current='page']:hover { color: #06120C; }
