@@ -188,7 +188,7 @@ describe('rankAgainst', () => {
   });
 
   it('describes a bottom-quartile rate as such', () => {
-    expect(rankAgainst(12, chem).interpretation).toContain('worst quartile');
+    expect(rankAgainst(12, chem).interpretation).toMatch(/worst (quartile|decile)/);
   });
 
   it('says how many peers perform better using the rank itself above the median', () => {

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Compared with whom - EHS Benchmarks</title>
-<meta name="description" content="A TRIR of 3.20 beats the national average and sits in the worst decile of its own peer group. A scrollable walkthrough of how the peer group decides the verdict, built on 1.18 million OSHA establishment filings.">
+<meta name="description" content="A TRIR of 3.20 beats the all-filer average and sits in the worst decile of its own peer group. A scrollable walkthrough of how the peer group decides the verdict, built on 375,635 CY2025 OSHA establishment filings.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230F7A52'/%3E%3Ctext x='8' y='12' font-family='monospace' font-size='11' font-weight='700' text-anchor='middle' fill='white'%3EB%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -961,7 +961,7 @@ html.st-printing .mult.is-worst{box-shadow:none!important;border:1.2pt solid #00
 .arc-prog [data-m-progress]{width:100%}
 html:not(.m-desk) .arc-prog{display:none}
 @media(max-width:899.98px){.arc-grid{grid-template-columns:1fr}}
-.m-desk .story-hero h1{font-size:clamp(3rem,7.6vw,6.4rem)}
+.m-desk .story-hero h1{font-size:clamp(3rem,6.4vw,6rem)}
 .arc-src{margin-top:12px;font-family:var(--font-mono);font-size:.7rem;color:var(--muted,var(--ink-3))}
 .st-presenting .arc{display:none!important}
 </style>
@@ -1008,7 +1008,7 @@ html:not(.m-desk) .arc-prog{display:none}
       <div class="hero-nums" data-st-spotlight data-m-hero-part="text">
         <div class="hero-num good"><em data-m-count>p76</em><span>Rank against NAICS 3252, all sizes</span></div>
         <div class="hero-num bad"><em data-m-count>p93</em><span>Rank against NAICS 3252 at 250 to 499 employees</span></div>
-        <div class="hero-num"><em data-m-count>1.18M</em><span>Establishment filings behind the peer groups</span></div>
+        <div class="hero-num"><em data-m-count>376K</em><span>CY2025 establishment filings behind the peer groups</span></div>
       </div>
     </div>
     <div>
@@ -1025,7 +1025,7 @@ html:not(.m-desk) .arc-prog{display:none}
       <ol class="arc-steps">
         <li data-m-step="0"><span class="arc-k">Problem</span><b>The site's TRIR is 3.20, and a TRIR on its own carries no verdict.</b></li>
         <li data-m-step="1" data-m-dim><span class="arc-k">Evidence</span><b>Against all filers it looks fine. Against its own industry it does not.</b></li>
-        <li data-m-step="2" data-m-dim><span class="arc-k">Method</span><b>Rank it inside 1.18M cleaned filings, same NAICS code, same size band.</b></li>
+        <li data-m-step="2" data-m-dim><span class="arc-k">Method</span><b>Rank it among CY2025 filers with the same NAICS code and size band.</b></li>
         <li data-m-step="3" data-m-dim class="is-key"><span class="arc-k">Finding</span><b>p76 against the industry becomes p93 against same-size peers.</b></li>
         <li data-m-step="4" data-m-dim><span class="arc-k">So what</span><b>Fix the peer group in writing before anyone computes the rank.</b></li>
       </ol>
@@ -1067,7 +1067,7 @@ html:not(.m-desk) .arc-prog{display:none}
         <span class="st-bignum" id="v-big" aria-hidden="true">3.20<small>TRIR, the one number that never changes</small></span>
         <div class="vh-note" id="v-note">625,000 hours, 10 recordable cases, CY2025.</div>
       </div>
-      <div class="verdicts" id="v-list" data-st-spotlight role="img" aria-label="The same rate of 3.20 scores below the national average, above the sector aggregate, at the 76th percentile of its industry, and at the 93rd percentile among same-size peers."></div>
+      <div class="verdicts" id="v-list" data-st-spotlight role="img" aria-label="The same rate of 3.20 scores below the all-filer average, above the sector aggregate, at the 76th percentile of its industry, and at the 93rd percentile among same-size peers."></div>
       <figcaption id="v-cap">Source: docs/data/national.json, docs/data/sectors.json, docs/data/benchmarks/32.json. Percentile rank computed by docs/lib/benchmark.js.</figcaption>
     </figure>
   </div></div>
@@ -1079,7 +1079,7 @@ html:not(.m-desk) .arc-prog{display:none}
     </div>
     <div class="st-step" data-orb="searching" data-step="1" data-note="This is the slide most of us have presented. It is true, and it is the weakest comparison available. Watch what happens when we narrow the group.">
       <span class="label">Verdict 1</span>
-      <h3>Against all filers, 3.20 is 8% below the 3.49 national rate</h3>
+      <h3>Against all filers, 3.20 is 8% below the 3.49 all-filer rate</h3>
       <p>3.49 is the hours-weighted aggregate across 375,635 CY2025 filings. This is the comparison that usually reaches the board deck.</p>
     </div>
     <div class="st-step" data-orb="searching" data-step="2" data-note="Same plant, same rate, one step narrower, and the sign flips. Ask the room which of these two slides they would have sent to the board.">
@@ -1133,7 +1133,7 @@ html:not(.m-desk) .arc-prog{display:none}
 </section>
 
 <!-- ============ SCENE 3 ============ -->
-<section class="st-chapter" data-m-reveal data-num="03" data-key="20 pts">
+<section class="st-chapter" data-m-reveal data-num="03" data-key="21 pts">
   <h2 data-m-split="words">Changing the peer group moves the same rate by more than 20 percentile points</h2>
   <p>Move the dropdowns yourself. If a menu can change the benchmark, the menu is part of the reported number.</p>
 </section>
@@ -1156,7 +1156,7 @@ html:not(.m-desk) .arc-prog{display:none}
   <div class="st-steps">
     <div class="st-step" data-orb="searching" data-step="0" data-note="This one is live, so try it in the room. Change the industry code or the size band and read the number out loud.">
       <span class="label">Try it</span>
-      <h3>Keep 3.20 fixed and the rank moves up to 20 points</h3>
+      <h3>Keep 3.20 fixed and the rank moves by 21 points or more</h3>
       <p>Pick a different industry code or size band in the picker. The rate on the left never changes. Only the percentile does.</p>
     </div>
     <div class="st-step" data-orb="connecting" data-step="1" data-note="Small groups move a lot. Ask your team how many of the peer groups in your own deck have fewer than fifty sites in them.">
@@ -1195,7 +1195,7 @@ html:not(.m-desk) .arc-prog{display:none}
     <div class="st-step" data-orb="wrong" data-step="1" data-note="Small sites work fewer hours, so more of them genuinely report nothing. That floor is what a large plant gets measured against.">
       <span class="label">Why</span>
       <h3>63% of the 20 to 49 band reported zero, against 45% industry-wide</h3>
-      <p>Fewer exposure hours produce more true zeros, which pins the lower half of that band to the floor. Ranking a 300-person plant against it says nothing about the plant.</p>
+      <p>Fewer exposure hours produce more zero-case years, which pins the lower half of that band to the floor. Ranking a 300-person plant against it says nothing about the plant.</p>
     </div>
     <div class="st-step" data-orb="grounded" data-step="2" data-note="This is the ask for your analytics team. Rank every site in its own band and show the spread instead of one company number.">
       <span class="label">Practice</span>
@@ -1224,11 +1224,12 @@ html:not(.m-desk) .arc-prog{display:none}
 
 <!-- ============ MONDAY ============ -->
 <div class="monday" data-st-reveal>
+    <li>Peer groups use CY2025 Form 300A filings only, with TRIR = recordable cases &times; 200,000 / hours worked. Filings under 10,000 hours, with zero hours, or with implausible hours per employee are left out. Only establishments required to file with OSHA's Injury Tracking Application are in the file, so small and exempt-industry sites are missing.</li>
   <span class="label">What a leader does Monday</span>
   <h3 data-m-split="words">Fix the peer group before you fix the rate</h3>
   <ol data-m-reveal data-m-stagger="0.1" data-m-from="left">
     <li>For each site, write down its six-digit NAICS code and its employee size band. Do this before anyone computes a percentile.</li>
-    <li>Re-rank every site against that fixed group. Expect some sites that looked fine against the national average to move into the worst quartile.</li>
+    <li>Re-rank every site against that fixed group. Expect some sites that looked fine against the all-filer average to move into the worst quartile.</li>
     <li>Put n next to every percentile in the deck. Any group under about 50 establishments gets a caveat line, not a headline.</li>
     <li>Stop reporting a single enterprise-wide rate against a national average. Report the distribution of site ranks instead.</li>
   </ol>

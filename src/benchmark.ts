@@ -133,7 +133,7 @@ function interpret(rate: number, rank: number, dist: BenchmarkDistribution): str
       `of a strong safety program.`;
   }
   if (rank <= 25) {
-    return `${rate.toFixed(2)} places in the best quartile — better than roughly ${better}% of ${peer}.`;
+    return `${rate.toFixed(2)} places in the best quartile, better than roughly ${better}% of ${peer}.`;
   }
   if (rank <= 50) {
     return `${rate.toFixed(2)} is better than about ${better}% of ${peer}, just inside the top half.`;
@@ -141,5 +141,8 @@ function interpret(rate: number, rank: number, dist: BenchmarkDistribution): str
   if (rank <= 75) {
     return `${rate.toFixed(2)} is worse than the median for ${peer}; about ${ahead}% perform better.`;
   }
-  return `${rate.toFixed(2)} falls in the worst quartile for ${peer} — about ${ahead}% perform better.`;
+  if (rank >= 90) {
+    return `${rate.toFixed(2)} falls in the worst decile for ${peer}; about ${ahead}% perform better.`;
+  }
+  return `${rate.toFixed(2)} falls in the worst quartile for ${peer}; about ${ahead}% perform better.`;
 }

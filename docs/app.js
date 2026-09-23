@@ -744,7 +744,7 @@ function summaryStrip(f, chemDist, firstFour, days) {
   return el('section', { class: 'brief-strip', 'aria-label': 'The briefing in 60 seconds' },
     el('p', { class: 'brief-strip-k' }, 'In 60 seconds'),
     el('div', { class: 'brief-cards' },
-      card('#f-hours', `${f.errorFactor}×`, 'how much better the raw OSHA file makes every injury rate look', 'bad'),
+      card('#f-hours', `${f.errorFactor}×`, 'how much better the raw OSHA file makes the national injury rate look', 'bad'),
       card('#f-zero', chemDist ? pct(chemDist.zeroRate * 100, 0) : '—', 'of chemical plants report zero recordables: zero is the most common result, not a trophy'),
       card('#f-shift', pct(firstFour, 0), 'of injuries happen in the first four hours of a shift, not at the tired end'),
       card('#f-days', pct(days.top2, 0), 'of all days away come from just two kinds of event'),
@@ -825,14 +825,14 @@ function findingHours(f) {
 
   return finding({
     id: 'f-hours', no: 1,
-    headline: `The raw file makes every rate look ${f.errorFactor}× too good`,
+    headline: `The raw file makes the national rate look ${f.errorFactor}× too good`,
     lede: `A rate is injuries divided by hours worked. A few employers typed their hours wrong by factors of millions, ` +
       `and those few filings swamp the denominator for everyone. One site in ${worst.state} reported ` +
       `${sci(worst.hours)} hours for ${fmt(worst.employees)} employees: more hours than the entire U.S. workforce works in a year.`,
     stat: bigStat(countUp(el('span', { class: 'big-n' }), f.errorFactor, { decimals: 2, suffix: '×' }),
       'how far off a national benchmark is when the hours column is summed as published', 'bad'),
     visual: el('div', {}, gauge, split,
-      el('p', { class: 'fig-note' }, `Only ${pct(f.excludedShare, 2)} of filings fail a simple test (100 to 4,000 hours per employee per year), yet they carry ${pct(f.hoursDiscardedShare)} of every hour reported.`)),
+      el('p', { class: 'fig-note' }, `Only ${pct(f.excludedShare, 2)} of filings fail a simple test (100 to 4,000 hours per employee per year), yet they carry ${pct(f.hoursDiscardedShare)} of every hour reported. The OSHA data-quality project screens 120 to 4,500 hours over CY2016 to CY2024 and finds 29.7×: the size of the error depends on the years and the window, the direction does not.`)),
     meaning: 'Any benchmark, vendor dashboard or board slide built on the raw OSHA file tells you your rate is excellent when it may be average. The error always flatters, so nobody complains about it.',
     ask: '"Where does our comparison number come from, and was the hours column screened before it was averaged?"',
     extra: [
@@ -926,7 +926,7 @@ function findingShift(o, { firstFour, lateShare, peak }) {
     stat: bigStat(countUp(el('span', { class: 'big-n' }), firstFour, { decimals: 1, suffix: '%' }),
       'of timed injuries occur in the first four hours of the shift'),
     visual: el('div', {}, el('div', { class: 'visual-head' }, toggle), box, note),
-    meaning: 'Start-up is the risky part of the day: set-up, first lifts, changeovers, people arriving to a job already moving. Pre-shift briefings and the first hour of supervision probably buy more than end-of-shift fatigue rules.',
+    meaning: 'These are counts, not rates per hour of exposure: most shifts end near hour eight, so fewer people are at work in the late hours. What the counts do show is where the volume is: set-up, first lifts, changeovers. Pre-shift briefings and first-hour supervision reach more injuries than end-of-shift fatigue rules alone.',
     ask: '"What does the first hour of a shift look like on our floor, and who is watching it?"',
   });
 }
