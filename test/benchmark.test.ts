@@ -191,6 +191,15 @@ describe('rankAgainst', () => {
     expect(rankAgainst(12, chem).interpretation).toContain('worst quartile');
   });
 
+  it('says how many peers perform better using the rank itself above the median', () => {
+    const r = rankAgainst(12, chem);
+    expect(r.interpretation).toContain(`about ${Math.round(r.percentileRank)}% perform better`);
+    const mid = rankAgainst(chem.percentiles.p75, chem);
+    if (mid.percentileRank > 50 && mid.percentileRank <= 75) {
+      expect(mid.interpretation).toContain(`about ${Math.round(mid.percentileRank)}% perform better`);
+    }
+  });
+
   it('rejects a negative rate', () => {
     expect(() => rankAgainst(-1, chem)).toThrow(RangeError);
   });

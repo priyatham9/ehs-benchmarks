@@ -1722,7 +1722,8 @@ document.addEventListener('keydown', (e) => {
 });
 
 (function boot() {
-  const stored = localStorage.getItem('ehs-theme');
+  let stored = null;
+  try { stored = localStorage.getItem('ehs-theme'); } catch (_) { /* storage blocked */ }
   if (stored) document.documentElement.dataset.theme = stored;
 
   const toggle = $('#theme-toggle');
@@ -1741,7 +1742,7 @@ document.addEventListener('keydown', (e) => {
   toggle.addEventListener('click', () => {
     const next = isDark() ? 'light' : 'dark';
     document.documentElement.dataset.theme = next;
-    localStorage.setItem('ehs-theme', next);
+    try { localStorage.setItem('ehs-theme', next); } catch (_) { /* storage blocked */ }
     labelToggle();
   });
   // Follow the system if the visitor has never made an explicit choice.

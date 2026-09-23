@@ -64,6 +64,12 @@ describe('trir', () => {
     expect(trir(empty, { employeeHours: 200_000 }).value).toBe(0);
   });
 
+  it('throws on NaN case counts rather than returning NaN', () => {
+    expect(() => trir({ ...empty, otherRecordableCases: Number.NaN }, { employeeHours: 200_000 })).toThrow(
+      RangeError,
+    );
+  });
+
   it('throws on negative case counts rather than returning a negative rate', () => {
     expect(() => trir({ ...empty, otherRecordableCases: -1 }, { employeeHours: 200_000 })).toThrow(
       RangeError,

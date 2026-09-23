@@ -73,8 +73,8 @@ function computeRate(
     });
   }
 
-  if (cases < 0) {
-    throw new RangeError(`Case count cannot be negative (received ${cases}).`);
+  if (!Number.isFinite(cases) || cases < 0) {
+    throw new RangeError(`Case count must be a non-negative finite number (received ${cases}).`);
   }
 
   const computable = Number.isFinite(hours) && hours > 0;

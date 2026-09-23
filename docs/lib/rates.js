@@ -36,8 +36,8 @@ function computeRate(cases, hoursWorked, options, extraFlags = []) {
                 `time — do NOT multiply this rate by ${(12 / months).toFixed(2)} to annualize it.`,
         });
     }
-    if (cases < 0) {
-        throw new RangeError(`Case count cannot be negative (received ${cases}).`);
+    if (!Number.isFinite(cases) || cases < 0) {
+        throw new RangeError(`Case count must be a non-negative finite number (received ${cases}).`);
     }
     const computable = Number.isFinite(hours) && hours > 0;
     return {

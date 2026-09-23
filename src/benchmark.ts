@@ -120,7 +120,10 @@ export function rankAgainst(rate: number, dist: BenchmarkDistribution): Benchmar
 }
 
 function interpret(rate: number, rank: number, dist: BenchmarkDistribution): string {
+  // rank = share of peers with a LOWER (better) rate. So 100 - rank is the
+  // share this establishment beats, and rank itself is the share beating it.
   const better = Math.round(100 - rank);
+  const ahead = Math.round(rank);
   const peer = `${dist.n.toLocaleString()} establishments in NAICS ${dist.naics}` +
     (dist.sizeBand === 'all' ? '' : ` at ${dist.sizeBand} employees`);
 
@@ -136,7 +139,7 @@ function interpret(rate: number, rank: number, dist: BenchmarkDistribution): str
     return `${rate.toFixed(2)} is better than about ${better}% of ${peer}, just inside the top half.`;
   }
   if (rank <= 75) {
-    return `${rate.toFixed(2)} is worse than the median for ${peer}; about ${better}% perform better.`;
+    return `${rate.toFixed(2)} is worse than the median for ${peer}; about ${ahead}% perform better.`;
   }
-  return `${rate.toFixed(2)} falls in the worst quartile for ${peer} — only about ${better}% perform better.`;
+  return `${rate.toFixed(2)} falls in the worst quartile for ${peer} — about ${ahead}% perform better.`;
 }
