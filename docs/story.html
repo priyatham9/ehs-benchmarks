@@ -744,12 +744,12 @@ html{overflow-x:clip}
 /* the hero's field canvas bleeds past the right edge; clip it instead of scrolling the page sideways */
 .story-hero{overflow-x:clip}
 .stage-card details{max-width:100%;overflow-x:auto}
-.story-hero .st-hero{align-items:center}
-.story-crumb{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 22px}
+.story-hero .st-hero{align-items:start}
+.story-crumb{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 22px}
 .story-crumb a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--rule-soft)}
 .story-crumb a:hover{color:var(--green);border-color:var(--green)}
 .story-crumb b{color:var(--ink);font-weight:600}
-.story-kicker{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin:0 0 16px}
+.story-kicker{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin:0 0 16px}
 .story-hero h1{font-size:clamp(2.6rem,6.4vw,5.2rem);line-height:.98;letter-spacing:-.03em;margin:0 0 20px;font-stretch:112%}
 .story-thesis{font-size:clamp(1.1rem,1.35vw,1.45rem);line-height:1.5;color:var(--ink-2);max-width:48ch;margin:0 0 30px}
 .hero-nums{display:flex;gap:clamp(24px,4vw,64px);flex-wrap:wrap;align-items:flex-end;border-top:var(--st-hair);padding-top:20px}
@@ -757,8 +757,8 @@ html{overflow-x:clip}
 .hero-num em{display:block;font-family:var(--font-mono);font-style:normal;font-weight:700;font-variant-numeric:tabular-nums;font-size:clamp(2.6rem,5vw,4.2rem);line-height:.92;letter-spacing:-.04em}
 .hero-num.good em{color:var(--green)}
 .hero-num.bad em{color:var(--bad,var(--warn))}
-.hero-num span{display:block;margin-top:9px;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);line-height:1.45;max-width:22ch}
-.orb-state{display:block;margin-top:14px;text-align:center;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
+.hero-num span{display:block;margin-top:9px;font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);line-height:1.45;max-width:22ch}
+.orb-state{display:block;margin-top:14px;text-align:center;font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
 
 /* ---------- scenes ---------- */
 /* a wider stage than the engine default: the figure is the point of this page */
@@ -770,8 +770,8 @@ html{overflow-x:clip}
 .st-companion .st-companion-orb{width:124px;height:124px}
 /* keep the sticky stage fully on screen through the last step of a scene */
 .st-scene .st-step:last-child{min-height:92vh}
-.st-companion .st-companion-cap{font-size:.6875rem;letter-spacing:.2em}
-.st-step .label{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.st-companion .st-companion-cap{font-size:.8125rem;letter-spacing:.2em}
+.st-step .label{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
 .st-step h3{font-family:var(--font-sans);font-weight:700}
 .st-step p{max-width:44ch}
 .stage-card{border:var(--st-hair);border-radius:var(--st-radius);background:var(--surface);padding:clamp(16px,1.5vw,22px)}
@@ -812,7 +812,7 @@ svg.st-chart .bignum-svg{fill:var(--bad,var(--warn));font-weight:700;letter-spac
 
 /* ---------- scene 3: picker ---------- */
 .picker{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:18px}
-.picker label{display:block;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.picker label{display:block;font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
 .picker select,.picker input{width:100%;padding:11px 12px;border:var(--st-hair);border-radius:var(--st-radius-sm);background:var(--paper);color:var(--ink);font-family:var(--font-mono);font-size:.9rem}
 .readout{margin-top:16px;border-top:var(--st-hair);padding-top:16px;font-size:1.05rem;line-height:1.55;color:var(--ink-2);display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 24px;align-items:center}
 .readout .rk-big{font-family:var(--font-mono);font-weight:700;font-variant-numeric:tabular-nums;font-size:clamp(2.6rem,5vw,4rem);line-height:.92;letter-spacing:-.04em;color:var(--green)}
@@ -836,30 +836,30 @@ svg.st-chart .bignum-svg{fill:var(--bad,var(--warn));font-weight:700;letter-spac
 /* ---------- honesty, monday, next ---------- */
 .honesty{border:1px solid color-mix(in srgb, var(--warn) 55%, transparent);border-radius:var(--st-radius);background:var(--surface);padding:clamp(22px,2.4vw,34px);margin:26px 0}
 .honesty h3{margin:0 0 14px;font-size:clamp(1.3rem,2.2vw,1.8rem)}
-.honesty ul{margin:0;padding-left:22px;color:var(--ink-2);line-height:1.65;font-size:1.05rem;max-width:80ch}
+.honesty ul{margin:0;padding-left:22px;color:var(--ink-2);line-height:1.6;font-size:1.125rem;max-width:72ch}
 .honesty li{margin-bottom:10px}
 
 .monday{border:var(--st-hair);border-radius:var(--st-radius);background:var(--green-soft);padding:clamp(24px,2.6vw,38px);margin:34px 0}
-.monday .label{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.monday .label{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
 .monday h3{margin:12px 0 14px;font-size:clamp(1.5rem,3.2vw,2.4rem);letter-spacing:-.02em}
-.monday ol{margin:0;padding-left:24px;line-height:1.7;color:var(--ink-2);max-width:68ch;font-size:1.05rem}
+.monday ol{margin:0;padding-left:24px;line-height:1.6;color:var(--ink-2);max-width:68ch;font-size:1.125rem}
 
 .nextcard{display:block;border:var(--st-hair);border-radius:var(--st-radius);background:var(--surface);padding:clamp(28px,3.4vw,54px);margin:48px 0 18px;text-decoration:none;color:inherit;transition:background .25s var(--st-ease),border-color .25s var(--st-ease)}
 .nextcard:hover{background:var(--green-soft)}
-.nextcard .label{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green);display:block;margin-bottom:14px}
+.nextcard .label{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green);display:block;margin-bottom:14px}
 .nextcard h3{margin:0 0 12px;font-size:clamp(1.8rem,4vw,3rem);letter-spacing:-.025em;line-height:1.04}
 .nextcard p{margin:0;color:var(--ink-2);font-size:clamp(1rem,1.2vw,1.2rem);max-width:46ch}
 .story-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:0 0 56px;font-family:var(--font-mono)}
 .story-nav a{padding:22px 24px;color:inherit;text-decoration:none;border:var(--st-hair);border-radius:var(--st-radius-sm)}
 .story-nav a:hover{background:var(--surface)}
-.story-nav span{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:7px}
+.story-nav span{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:7px}
 .story-nav strong{font-family:var(--font-sans);font-size:1.05rem}
 
 details.data-table{margin-top:14px;font-family:var(--font-mono);font-size:.8125rem}
 details.data-table{max-width:100%;overflow:hidden}
 details.data-table[open]{overflow-x:auto}
 #mult-table{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
-details.data-table summary{cursor:pointer;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;font-size:.6875rem}
+details.data-table summary{cursor:pointer;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;font-size:.8125rem}
 details.data-table table{border-collapse:collapse;margin-top:12px;width:100%}
 details.data-table th,details.data-table td{border:1px solid var(--rule-soft);padding:6px 9px;text-align:right}
 details.data-table th:first-child,details.data-table td:first-child{text-align:left}
@@ -958,28 +958,70 @@ html.st-printing .mult.is-worst{box-shadow:none!important;border:1.2pt solid #00
 .arc-steps{list-style:none;margin:0;padding:0;display:grid;gap:clamp(12px,2.2vh,22px)}
 .arc-steps li{border-left:3px solid var(--rule-soft,#ccc);padding:2px 0 2px 16px}
 .arc-steps li.is-key{border-left-color:var(--bad,var(--warn))}
-.arc-k{display:block;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,var(--ink-3))}
+.arc-k{display:block;font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted,var(--ink-3))}
 .arc-steps b{display:block;font-size:clamp(1.02rem,1.5vw,1.28rem);line-height:1.25;letter-spacing:-.01em;margin-top:2px}
 .arc-title{font-size:clamp(1.9rem,3.6vw,3rem);line-height:1.02;letter-spacing:-.025em;margin:0 0 clamp(16px,3vh,28px);font-stretch:108%;max-width:18ch}
 .arc-fig{margin:0;min-width:0;border:var(--st-hair);border-radius:var(--st-radius,14px);padding:clamp(16px,2.4vw,28px);background:var(--surface)}
 .arc-fig svg{display:block;width:100%;height:auto;overflow:visible}
-.arc-fig .lab{font-family:var(--font-mono);font-size:15px;fill:var(--ink-2,var(--ink))}
-.arc-fig .val{font-family:var(--font-mono);font-size:15px;font-weight:700;fill:var(--ink)}
+.arc-fig .lab{font-family:var(--font-mono);font-size:16px;fill:var(--ink-2,var(--ink))}
+.arc-fig .val{font-family:var(--font-mono);font-size:16px;font-weight:700;fill:var(--ink)}
 .arc-fig .bar{fill:var(--ink-3,#8a918b)}
 .arc-fig .bar.peer{fill:var(--accent)}
 .arc-fig .site{stroke:var(--bad,var(--warn));stroke-width:3;fill:none}
-.arc-fig .site-lab{font-family:var(--font-mono);font-size:15px;font-weight:700;fill:var(--bad,var(--warn))}
+.arc-fig .site-lab{font-family:var(--font-mono);font-size:16px;font-weight:700;fill:var(--bad,var(--warn))}
 .arc-verdict{display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px);align-items:baseline;margin-top:14px;border-top:var(--st-hair);padding-top:14px}
 .arc-verdict em{font-family:var(--font-mono);font-style:normal;font-weight:700;font-size:clamp(2.2rem,4.4vw,3.6rem);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
 .arc-verdict .good{color:var(--green,var(--accent))}.arc-verdict .bad{color:var(--bad,var(--warn))}
-.arc-verdict span{display:block;font-family:var(--font-mono);font-size:.72rem;color:var(--muted,var(--ink-3));letter-spacing:.06em;text-transform:uppercase;margin-top:6px}
+.arc-verdict span{display:block;font-family:var(--font-mono);font-size:.8125rem;color:var(--muted,var(--ink-3));letter-spacing:.06em;text-transform:uppercase;margin-top:6px}
 .arc-prog{margin-top:18px;background:var(--rule-soft,#ddd);height:3px;border-radius:3px;overflow:hidden}
 .arc-prog [data-m-progress]{width:100%}
 html:not(.m-desk) .arc-prog{display:none}
 @media(max-width:899.98px){.arc-grid{grid-template-columns:1fr}}
-.m-desk .story-hero h1{font-size:clamp(3rem,6.4vw,6rem)}
-.arc-src{margin-top:12px;font-family:var(--font-mono);font-size:.7rem;color:var(--muted,var(--ink-3))}
+@media (min-width:900px){.story-hero h1{font-size:clamp(3rem,6.4vw,6rem)}}
+.arc-src{margin-top:12px;font-family:var(--font-mono);font-size:.8125rem;line-height:1.5;color:var(--muted,var(--ink-3))}
 .st-presenting .arc{display:none!important}
+
+/* ---------- R8: readable at rest, shareable, figures with their numbers ---------- */
+.pgm{font-size:12px!important;letter-spacing:.05em!important}
+[id]{scroll-margin-top:24px}
+h1,h2,h3{text-wrap:balance}
+.st-step p,.honesty li,.monday li,.story-thesis,.st-chapter p{text-wrap:pretty}
+/* every step stays readable; the active one is marked instead of the others being faded */
+.st-scene .st-step{opacity:1}
+.st-scene .st-step:not(.is-active) h3{color:var(--ink-2)}
+.st-scene .st-step .label{position:relative}
+.st-scene .st-step.is-active .label::before{content:"";position:absolute;left:-16px;top:.1em;bottom:.1em;width:3px;background:var(--green)}
+/* scene 1: rows not yet reached are outlined, not faded, so their text stays AA */
+.verdict.is-dim > *{opacity:1}
+.verdict.is-dim{background:transparent;border-style:dashed}
+.verdict.is-dim em{color:var(--ink-3)}
+.monday .label{color:color-mix(in srgb,var(--green) 78%,var(--ink))}
+.fig-title{font-family:var(--font-mono);font-size:.8125rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin:0 0 4px;line-height:1.4}
+.fig-sub{font-family:var(--font-mono);font-size:.8125rem;color:var(--ink-3);margin:0 0 12px;line-height:1.5;max-width:70ch}
+details.data-table summary{color:var(--green);font-weight:600;font-size:.8125rem;display:inline-flex;align-items:center;min-height:32px}
+details.data-table summary:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.picker label{font-size:.75rem}
+.picker select,.picker input{min-height:44px;font-size:1rem}
+.readout{font-size:1.0625rem}
+.stage-card figcaption{font-size:.8125rem;letter-spacing:.02em}
+/* copy-link on chapter headings */
+.st-chapter .copy-link{position:absolute;right:clamp(20px,5vw,60px);top:clamp(52px,8.5vh,104px);z-index:2}
+.copy-link{display:inline-grid;place-items:center;width:40px;height:40px;padding:0;background:transparent;color:var(--ink-3);border:1px solid var(--rule-soft);border-radius:8px;cursor:pointer}
+.copy-link svg{width:18px;height:18px}
+.copy-link:hover,.copy-link:focus-visible{color:var(--green);border-color:var(--green)}
+.copy-link:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.copy-link .copied{position:absolute;right:calc(100% + 8px);top:50%;transform:translateY(-50%);white-space:nowrap;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--green);font-weight:600;background:var(--paper);padding:2px 6px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.st-chapter h2{padding-right:52px}
+@media (max-width:1100px) and (min-width:900px){.arc-fig .lab,.arc-fig .val,.arc-fig .site-lab{font-size:18px}}
+@media (max-width:600px){
+  .pgm a,a.crumb,#theme-toggle,.chip{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}
+  nav.st-way .st-way-btn{min-width:44px!important;min-height:44px!important}
+  details.data-table summary{min-height:44px}
+  .copy-link{width:44px;height:44px}
+  .arc-fig .lab,.arc-fig .val,.arc-fig .site-lab{font-size:22px}
+  .arc-fig svg{overflow:visible}
+}
 </style>
 </head>
 <body>
@@ -1048,30 +1090,39 @@ html:not(.m-desk) .arc-prog{display:none}
       <div class="arc-prog" aria-hidden="true"><span data-m-progress></span></div>
     </div>
     <figure class="arc-fig" data-m-reveal data-m-from="right" data-m-start="top 60%">
-      <svg viewBox="0 0 560 290" role="img" aria-label="Benchmark rates compared with the site's 3.20: all filers 3.49, NAICS sector 32 at 2.34, NAICS 3252 median 0.57, same-size peers 0.77.">
+      <p class="fig-title" id="arc-fig-t">Hours-weighted TRIR by comparison group, CY2025</p>
+      <p class="fig-sub">Recordable cases &times; 200,000 &divide; hours worked, summed across each group. The red line is the example site at 3.20.</p>
+      <svg viewBox="0 0 560 330" role="img" aria-labelledby="arc-fig-t" aria-describedby="arc-fig-d">
+        <desc id="arc-fig-d">Aggregate TRIR compared with the site's 3.20: all filers 3.49, NAICS sector 32 2.34, NAICS 3252 all sizes 1.37, NAICS 3252 at 250 to 499 employees 0.77. The site is below only the first.</desc>
         <g data-m-bars="x" data-m-at="1" data-m-bar=".bar">
-          <text class="lab" x="0" y="34">All filers</text><rect class="bar" x="170" y="16" width="330" height="26" rx="4"/><text class="val" x="510" y="35">3.49</text>
-          <text class="lab" x="0" y="94">Sector 32</text><rect class="bar" x="170" y="76" width="221" height="26" rx="4"/><text class="val" x="401" y="95">2.34</text>
-          <text class="lab" x="0" y="154">NAICS 3252 p50</text><rect class="bar peer" x="170" y="136" width="54" height="26" rx="4"/><text class="val" x="234" y="155">0.57</text>
-          <text class="lab" x="0" y="214">Same size</text><rect class="bar peer" x="170" y="196" width="73" height="26" rx="4"/><text class="val" x="253" y="215">0.77</text>
+          <text class="lab" x="0" y="20">All filers, CY2025</text><rect class="bar" x="0" y="30" width="440.0" height="26" rx="4"/><text class="val" x="450.0" y="50">3.49</text><text class="lab" x="0" y="94">NAICS sector 32</text><rect class="bar" x="0" y="104" width="295.0" height="26" rx="4"/><text class="val" x="305.0" y="124">2.34</text><text class="lab" x="0" y="168">NAICS 3252, all sizes</text><rect class="bar peer" x="0" y="178" width="172.7" height="26" rx="4"/><text class="val" x="182.7" y="198">1.37</text><text class="lab" x="0" y="242">NAICS 3252, 250–499 employees</text><rect class="bar peer" x="0" y="252" width="97.1" height="26" rx="4"/><text class="val" x="107.1" y="272">0.77</text>
         </g>
         <g data-m-draw data-m-at="2">
-          <line class="site" x1="472" y1="4" x2="472" y2="236"/>
+          <line class="site" x1="403.4" y1="22" x2="403.4" y2="292"/>
         </g>
-        <text class="site-lab" x="472" y="262" text-anchor="middle">site 3.20</text>
+        <text class="site-lab" x="403.4" y="320" text-anchor="middle">site 3.20</text>
       </svg>
       <div class="arc-verdict">
-        <div><em class="good" data-m-count data-m-at="3">p76</em><span>vs NAICS 3252</span></div>
-        <div><em class="bad" data-m-count data-m-at="3.4">p93</em><span>vs same-size peers</span></div>
+        <div><em class="good">p76</em><span>rank vs NAICS 3252</span></div>
+        <div><em class="bad">p93</em><span>rank vs same-size peers</span></div>
       </div>
-      <figcaption class="arc-src">Rates from docs/data/national.json, sectors.json and benchmarks/32.json.</figcaption>
+      <details class="data-table"><summary>Data: the numbers in this figure</summary>
+        <table><thead><tr><th>Comparison group, CY2025</th><th>Establishments</th><th>Aggregate TRIR</th><th>Site 3.20 vs group</th></tr></thead>
+        <tbody>
+          <tr><td>All filers</td><td>375,635</td><td>3.49</td><td>8% below</td></tr>
+          <tr><td>NAICS sector 32</td><td>20,388</td><td>2.34</td><td>37% above</td></tr>
+          <tr><td>NAICS 3252, all sizes</td><td>478</td><td>1.37</td><td>p76</td></tr>
+          <tr><td>NAICS 3252, 250&ndash;499 employees</td><td>34</td><td>0.77</td><td>p93</td></tr>
+        </tbody></table>
+      </details>
+      <figcaption class="arc-src">Source: OSHA Injury Tracking Application, Form 300A, CY2025. Rates from docs/data/national.json, sectors.json and benchmarks/32.json; ranks from docs/lib/benchmark.js.</figcaption>
     </figure>
   </div>
 </section>
 <main class="story-wrap" id="story-main">
 
 <!-- ============ SCENE 1 ============ -->
-<section class="st-chapter" data-m-reveal data-num="01" data-key="p93">
+<section class="st-chapter" id="same-rate-two-verdicts" data-m-reveal data-num="01" data-key="p93">
   <h2 data-m-split="words">The same TRIR of 3.20 scores p76 against its industry and p93 against its true peers</h2>
   <p>A rate carries no verdict on its own. Whoever picks the comparison group picks the answer.</p>
 </section>
@@ -1079,12 +1130,13 @@ html:not(.m-desk) .arc-prog{display:none}
   <div class="st-scene-rail" aria-hidden="true"></div>
   <div class="st-stage"><div class="st-stage-inner">
     <figure class="stage-card st-figure">
+      <p class="fig-title">One TRIR, four comparison groups, CY2025</p>
       <div class="verdict-head">
         <span class="st-bignum" id="v-big" aria-hidden="true">3.20<small>TRIR, the one number that never changes</small></span>
         <div class="vh-note" id="v-note">625,000 hours, 10 recordable cases, CY2025.</div>
       </div>
-      <div class="verdicts" id="v-list" data-st-spotlight role="img" aria-label="The same rate of 3.20 scores below the all-filer average, above the sector aggregate, at the 76th percentile of its industry, and at the 93rd percentile among same-size peers."></div>
-      <figcaption id="v-cap">Source: docs/data/national.json, docs/data/sectors.json, docs/data/benchmarks/32.json. Percentile rank computed by docs/lib/benchmark.js.</figcaption>
+      <div class="verdicts" id="v-list" data-st-spotlight role="list" aria-label="The same rate of 3.20 against four comparison groups"></div>
+      <figcaption id="v-cap">Source: OSHA Injury Tracking Application, Form 300A, CY2025. Files: docs/data/national.json, docs/data/sectors.json, docs/data/benchmarks/32.json. Percentile rank computed by docs/lib/benchmark.js.</figcaption>
     </figure>
   </div></div>
   <div class="st-steps">
@@ -1117,7 +1169,7 @@ html:not(.m-desk) .arc-prog{display:none}
 </section>
 
 <!-- ============ SCENE 2 ============ -->
-<section class="st-chapter" data-m-reveal data-num="02" data-key="45%">
+<section class="st-chapter" id="zero-mass" data-m-reveal data-num="02" data-key="45%">
   <h2 data-m-split="words">45% of this industry reported zero cases, so the average describes almost nobody</h2>
   <p>The aggregate is 1.37 and the median is 0.57. A mean quoted against this shape flatters everyone above it.</p>
 </section>
@@ -1125,8 +1177,11 @@ html:not(.m-desk) .arc-prog{display:none}
   <div class="st-scene-rail" aria-hidden="true"></div>
   <div class="st-stage"><div class="st-stage-inner">
     <figure class="stage-card st-figure">
+      <p class="fig-title" id="swarm2-t">NAICS 3252, all sizes: TRIR of 478 CY2025 establishments</p>
+      <p class="fig-sub">Recordable cases per 200,000 hours. One dot per percentile; the marked site is 3.20.</p>
       <svg id="swarm-2" class="st-chart" viewBox="0 0 1000 680" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Dot density of the NAICS 3252 peer distribution. A large mass sits at zero, the bulk sits below 3, and a long right tail runs past 14. The marked site at 3.20 sits inside that tail."></svg>
-      <figcaption>Each dot is one percent of the peer group, placed by interpolating the published percentile curve in docs/data/benchmarks/32.json. Dots at zero are drawn at the reported zero share, not interpolated. Dots are a reconstruction of the distribution's shape, not individual filings.</figcaption>
+      <details class="data-table"><summary>Data: the percentiles behind the dots</summary><div id="swarm2-table"></div></details>
+      <figcaption>Source: OSHA Injury Tracking Application, Form 300A, CY2025. Each dot is one percent of the peer group, placed by interpolating the published percentile curve in docs/data/benchmarks/32.json. Dots at zero are drawn at the reported zero share, not interpolated. Dots are a reconstruction of the distribution's shape, not individual filings.</figcaption>
     </figure>
   </div></div>
   <div class="st-steps">
@@ -1149,7 +1204,7 @@ html:not(.m-desk) .arc-prog{display:none}
 </section>
 
 <!-- ============ SCENE 3 ============ -->
-<section class="st-chapter" data-m-reveal data-num="03" data-key="21 pts">
+<section class="st-chapter" id="peer-group-moves-rank" data-m-reveal data-num="03" data-key="29 pts">
   <h2 data-m-split="words">Changing the peer group moves the same rate by more than 20 percentile points</h2>
   <p>Move the dropdowns yourself. If a menu can change the benchmark, the menu is part of the reported number.</p>
 </section>
@@ -1157,23 +1212,25 @@ html:not(.m-desk) .arc-prog{display:none}
   <div class="st-scene-rail" aria-hidden="true"></div>
   <div class="st-stage"><div class="st-stage-inner">
     <figure class="stage-card st-figure">
+      <p class="fig-title">Pick a peer group: where a TRIR ranks, CY2025</p>
       <p class="picker-print" aria-hidden="true">Peer group: NAICS 3252, 250 to 499 employees. TRIR 3.20.</p>
       <div class="picker">
         <div><label for="p-sector">Sector</label><select id="p-sector"></select></div>
         <div><label for="p-naics">Industry (NAICS)</label><select id="p-naics"></select></div>
         <div><label for="p-band">Size band</label><select id="p-band"></select></div>
-        <div><label for="p-rate">Your TRIR</label><input id="p-rate" type="number" min="0" step="0.01" value="3.20" inputmode="decimal"></div>
+        <div><label for="p-rate">TRIR (cases per 200,000 h)</label><input id="p-rate" type="number" min="0" step="0.01" value="3.20" inputmode="decimal"></div>
       </div>
       <svg id="swarm-3" class="st-chart" viewBox="0 0 1000 440" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Dot density of the selected peer group with the entered rate marked."></svg>
-      <div class="readout" id="p-readout"><span class="rk-big">p--</span><div class="rk-txt"><p>Choose a peer group.</p></div></div>
-      <figcaption>Live from docs/data/benchmarks/&lt;sector&gt;.json. Rank computed by the same rankAgainst() the Benchmark tab uses, imported from docs/lib/benchmark.js.</figcaption>
+      <div class="readout" id="p-readout" aria-live="polite" aria-atomic="true"><span class="rk-big">p--</span><div class="rk-txt"><p>Choose a peer group.</p></div></div>
+      <details class="data-table"><summary>Data: the selected group&rsquo;s percentiles</summary><div id="swarm3-table"></div></details>
+      <figcaption>Source: OSHA Injury Tracking Application, Form 300A, CY2025, live from docs/data/benchmarks/&lt;sector&gt;.json. Rank computed by the same rankAgainst() the Benchmark tab uses, imported from docs/lib/benchmark.js.</figcaption>
     </figure>
   </div></div>
   <div class="st-steps">
     <div class="st-step" data-orb="searching" data-step="0" data-note="This one is live, so try it in the room. Change the industry code or the size band and read the number out loud.">
       <span class="label">Try it</span>
-      <h3>Keep 3.20 fixed and the rank moves by 21 points or more</h3>
-      <p>Pick a different industry code or size band in the picker. The rate on the left never changes. Only the percentile does.</p>
+      <h3>Keep 3.20 fixed: all of sector 32 gives p64, same-size resin peers give p93</h3>
+      <p>Pick a different industry code or size band in the picker. The rate you entered never changes. Only the percentile does.</p>
     </div>
     <div class="st-step" data-orb="connecting" data-step="1" data-note="Small groups move a lot. Ask your team how many of the peer groups in your own deck have fewer than fifty sites in them.">
       <span class="label">Small n</span>
@@ -1189,7 +1246,7 @@ html:not(.m-desk) .arc-prog{display:none}
 </section>
 
 <!-- ============ SCENE 4 ============ -->
-<section class="st-chapter" data-m-reveal data-num="04" data-key="21 pts">
+<section class="st-chapter" id="size-band" data-m-reveal data-num="04" data-key="21 pts">
   <h2 data-m-split="words">Size band alone swings the verdict from p72 to p93</h2>
   <p>Industry held fixed at NAICS 3252. Only the employee band changes, and the rank moves 21 points.</p>
 </section>
@@ -1197,9 +1254,10 @@ html:not(.m-desk) .arc-prog{display:none}
   <div class="st-scene-rail" aria-hidden="true"></div>
   <div class="st-stage"><div class="st-stage-inner">
     <figure class="stage-card st-figure">
+      <p class="fig-title">Rank of TRIR 3.20 in each NAICS 3252 size band, CY2025</p>
       <div class="multiples" id="mult-4" data-st-spotlight role="img" aria-label="The same rate of 3.20 ranked against each published employee size band inside NAICS 3252: 20 to 49 scores p75, 50 to 99 scores p72, 100 to 249 scores p80, and 250 to 499 scores p93."></div>
-      <details class="data-table"><summary>Show the numbers</summary><div id="mult-table"></div></details>
-      <figcaption>Source: docs/data/benchmarks/32.json, keys 3252|&lt;band&gt;. Rank for TRIR 3.20 in each band.</figcaption>
+      <details class="data-table"><summary>Data: the numbers in this figure</summary><div id="mult-table"></div></details>
+      <figcaption>Source: OSHA Injury Tracking Application, Form 300A, CY2025; docs/data/benchmarks/32.json, keys 3252|&lt;band&gt;. Rank for TRIR 3.20 in each band.</figcaption>
     </figure>
   </div></div>
   <div class="st-steps">
@@ -1222,11 +1280,11 @@ html:not(.m-desk) .arc-prog{display:none}
 </section>
 
 <!-- ============ HONESTY ============ -->
-<section class="st-chapter" data-m-reveal data-num="05" data-key="7">
+<section class="st-chapter" id="limits" data-m-reveal data-num="05" data-key="7">
   <h2 data-m-split="words">Every percentile on this page is interpolated from 7 breakpoints, not a computed rank</h2>
   <p>The limits of the method, written down before anyone quotes a number from it.</p>
 </section>
-<div class="honesty" data-st-reveal>
+<div class="honesty" id="limits-list" data-st-anchor data-st-reveal>
   <h3 data-m-split="words">Limits, stated up front</h3>
   <ul data-m-reveal data-m-stagger="0.07">
     <li>These are self-reported employer filings. Under-reporting is not visible in this data and is not corrected for anywhere on this page.</li>
@@ -1240,14 +1298,14 @@ html:not(.m-desk) .arc-prog{display:none}
 </div>
 
 <!-- ============ MONDAY ============ -->
-<div class="monday" data-st-reveal>
+<div class="monday" id="monday" data-st-anchor data-st-reveal>
   <span class="label">What a leader does Monday</span>
   <h3 data-m-split="words">Fix the peer group before you fix the rate</h3>
   <ol data-m-reveal data-m-stagger="0.1" data-m-from="left">
     <li>For each site, write down its six-digit NAICS code and its employee size band. Do this before anyone computes a percentile.</li>
     <li>Re-rank every site against that fixed group. Expect some sites that looked fine against the all-filer average to move into the worst quartile.</li>
     <li>Put n next to every percentile in the deck. Any group under about 50 establishments gets a caveat line, not a headline.</li>
-    <li>Stop reporting a single enterprise-wide rate against a national average. Report the distribution of site ranks instead.</li>
+    <li>Stop reporting a single enterprise-wide rate against an all-filer or national average. Report the distribution of site ranks instead.</li>
   </ol>
 </div>
 
@@ -1260,18 +1318,19 @@ html:not(.m-desk) .arc-prog{display:none}
 </a>
 
 <nav class="story-nav">
-  <a data-m-spring href="index.html"><span>This project</span><strong>&larr; Benchmark tools and data</strong></a>
+  <a data-m-spring href="index.html#benchmark"><span>Try it on your site</span><strong>Benchmark a site &rarr;</strong></a>
   <a data-m-spring href="https://priyatham9.github.io/grounded/"><span>Hub</span><strong>All six instruments</strong></a>
   <a data-m-spring href="#" id="open-map"><span>Everything else</span><strong>or open the map (M)</strong></a>
 </nav>
 
 </main>
 
+<p id="sr-status" class="sr-only" role="status" aria-live="polite"></p>
 <footer class="site">
   <div class="wrap">
     <p>
-      Source: U.S. OSHA Injury Tracking Application, establishment-specific 300A summary files
-      (CY2023&ndash;CY2025), retrieved from osha.gov. Public domain data. Analysis code MIT licensed -
+      Source: U.S. OSHA Injury Tracking Application, establishment-specific Form 300A summary files
+      (CY2023&ndash;CY2025; the peer groups on this page use CY2025), retrieved from osha.gov. Public domain data. Analysis code MIT licensed -
       <a href="https://github.com/priyatham9/ehs-benchmarks">github.com/priyatham9/ehs-benchmarks</a>.
     </p>
     <p>Not affiliated with or endorsed by OSHA. Press <kbd>P</kbd> for presenter mode.</p>
@@ -5344,6 +5403,41 @@ function densityDots(d) {
   return out;
 }
 
+/* ---------- data tables for the density figures ---------- */
+const pctRows = (d) => [['Establishments (n)', d.n.toLocaleString()], ['Share reporting zero', Math.round(d.zeroRate * 100) + '%']]
+  .concat(PK.map((k) => [k === 'p50' ? 'p50 (median)' : k, d.percentiles[k].toFixed(2)]))
+  .concat([['Hours-weighted aggregate', d.aggregate.toFixed(2)]]);
+/* Story.dataTable (engine v2.2) when present; otherwise fill the page's own disclosure. */
+const engineTables = new Map();
+function figureTable(fig, fallbackBox, opts) {
+  if (S && S.dataTable && fig) {
+    const own = fallbackBox && fallbackBox.closest('details');
+    if (own) own.remove();
+    const prev = engineTables.get(fig);
+    const wasOpen = prev && prev.open;
+    if (prev) prev.remove();
+    const d = S.dataTable(fig, opts);
+    if (d && wasOpen) d.open = true;
+    engineTables.set(fig, d);
+    return true;
+  }
+  return false;
+}
+function pctTable(box, d, label, fig, caption) {
+  if (figureTable(fig, box, { caption, columns: [label, 'TRIR'], rows: pctRows(d), source: 'OSHA ITA Form 300A, CY2025 (docs/data/benchmarks/' + String(d.naics).slice(0, 2) + '.json)' })) return;
+  if (!box) return;
+  const t = document.createElement('table');
+  t.innerHTML = '<thead><tr><th>' + label + '</th><th>TRIR</th></tr></thead>';
+  const tb = document.createElement('tbody');
+  for (const r of pctRows(d)) {
+    const tr = document.createElement('tr');
+    for (const c of r) { const td = document.createElement('td'); td.textContent = c; tr.appendChild(td); }
+    tb.appendChild(tr);
+  }
+  t.appendChild(tb);
+  box.replaceChildren(t);
+}
+
 /* ---------- swarm chart ----------
    100 dots, one per percentile. Dots are kept between renders and moved, so a
    change of peer group morphs the same marks instead of swapping the figure. */
@@ -5358,10 +5452,13 @@ function swarm(svg, d, rate, opts) {
   /* Phone variant: same figure, far larger type, fewer ticks, and only the
      labels that carry the point. Re-rendered when the media query changes. */
   const PH = PHONE.matches;
-  const fsGrid = PH ? 38 : 14;
+  // keep figure text at 12.5px or more at the size the SVG is actually drawn
+  const drawnW = svg.getBoundingClientRect().width || W;
+  const minU = Math.ceil(12.5 * W / drawnW);
+  const fsGrid = Math.max(PH ? 38 : 14, minU);
   const L = PH ? 46 : 74, R = PH ? 40 : 54;
   const top = PH ? (big ? 150 : 118) : (big ? 96 : 66);
-  const base = H - (PH ? (big ? 180 : 156) : (big ? 116 : 92));
+  const base = H - (PH ? (big ? 180 : 156) : (big ? 124 : 112));
   const clampN = (v, a, b) => Math.max(a, Math.min(b, v));
   const step = PH ? (big ? 26 : 22) : (big ? 17 : 13);
   const vals = densityDots(d);
@@ -5437,10 +5534,12 @@ function swarm(svg, d, rate, opts) {
   const zeroPct = (d.zeroRate * 100).toFixed(0);
   gridTxt(L, base + (PH ? 58 : 38), 'start', zeroPct + '% reported zero');
   if (!PH) gridTxt(W - R, base + 38, 'end', 'TRIR → ' + hi.toFixed(1));
-  gridTxt(L, base + (PH ? 116 : 66), 'start', PH
+  gridTxt(L, base + (PH ? 116 : 38 + fsGrid * 1.5), 'start', PH
     ? 'n = ' + d.n.toLocaleString() + ' · 1 dot = 1 percentile'
-    : 'n = ' + d.n.toLocaleString() + ' establishments · one dot = one percentile'
-      + (rate != null && isFinite(rate) ? ' · green = above zero but below this site · pale = reported zero' : ''));
+    : 'n = ' + d.n.toLocaleString() + ' establishments · one dot = one percentile');
+  if (!PH && rate != null && isFinite(rate)) {
+    gridTxt(L, base + 38 + fsGrid * 2.9, 'start', 'green = above zero, below this site · pale = reported zero');
+  }
 
   /* the marked site, with a leader line and the number rendered large */
   if (rate != null && isFinite(rate)) {
@@ -5455,7 +5554,7 @@ function swarm(svg, d, rate, opts) {
       style: 'font-size:' + (PH ? 92 : (big ? 54 : 34)) + 'px'
     }, rate.toFixed(2)));
     add(el('text', { class: 'youtx', x: lx, y: ly + (PH ? 124 : (big ? 50 : 44)),
-      style: 'font-size:' + (PH ? 40 : 16) + 'px' }, 'this site'));
+      style: 'font-size:' + Math.max(PH ? 40 : 16, minU) + 'px' }, 'this site'));
   }
 
   /* move the dots */
@@ -5501,7 +5600,7 @@ async function scene1() {
   const rPeers = rankAgainst(EXAMPLE.rate, dPeers);
 
   const rows = [
-    { t: 'All filers, CY2025', s: n25.establishments.toLocaleString() + ' establishments · aggregate TRIR ' + n25.trir.toFixed(2), v: '− 8%', cls: 'good', cap: 'Below the national average', note: 'Hours-weighted across every 300A filed for CY2025.' },
+    { t: 'All filers, CY2025', s: n25.establishments.toLocaleString() + ' establishments · aggregate TRIR ' + n25.trir.toFixed(2), v: '− 8%', cls: 'good', cap: 'Below the all-filer rate', note: 'Hours-weighted across every 300A filed for CY2025.' },
     { t: 'NAICS sector 32', s: s32.est.toLocaleString() + ' establishments · aggregate TRIR ' + s32.trir.toFixed(2), v: '+ 37%', cls: 'mid', cap: 'Above its own sector', note: 'Same rate, narrowed to NAICS sector 32.' },
     { t: 'NAICS 3252, all sizes', s: dIndustry.n.toLocaleString() + ' establishments · median ' + dIndustry.percentiles.p50.toFixed(2), v: 'p' + Math.round(rIndustry.percentileRank), cls: 'mid', cap: 'Worst quartile of the industry', note: 'Median for this industry is ' + dIndustry.percentiles.p50.toFixed(2) + '.' },
     { t: 'NAICS 3252, 250–499 employees', s: dPeers.n.toLocaleString() + ' establishments · median ' + dPeers.percentiles.p50.toFixed(2), v: 'p' + Math.round(rPeers.percentileRank), cls: 'bad', cap: 'Worst decile of its peer group', note: 'n = ' + dPeers.n + ' establishments. Quote this rank only with the n beside it.' }
@@ -5510,6 +5609,7 @@ async function scene1() {
   list.replaceChildren(...rows.map((r, i) => {
     const d = document.createElement('div');
     d.className = 'verdict ' + r.cls;
+    d.setAttribute('role', 'listitem');
     d.dataset.i = String(i);
     if (!isReduced()) d.classList.add('is-dim');
     d.innerHTML = '<div><b></b><span></span></div><em></em>';
@@ -5563,6 +5663,12 @@ async function scene4() {
     tb.appendChild(tr);
   }
   t.appendChild(tb);
+  if (figureTable(box.closest('figure'), $('#mult-table'), {
+    caption: 'Rank of TRIR 3.20 in each NAICS 3252 size band, CY2025',
+    columns: ['Size band', 'n', 'Zero %', 'Median', 'Aggregate', 'Rank of 3.20'],
+    rows: rows.map((r) => [r.band + ' employees', r.n, (r.zero * 100).toFixed(0) + '%', r.med.toFixed(2), r.agg.toFixed(2), 'p' + Math.round(r.rk)]),
+    source: 'OSHA ITA Form 300A, CY2025 (docs/data/benchmarks/32.json)'
+  })) return;
   $('#mult-table').replaceChildren(t);
 }
 
@@ -5611,6 +5717,8 @@ async function picker() {
     const [kn, kb] = key.split('|');
     const d = toDist(bench[key], kn, kb);
     swarm($('#swarm-3'), d, isFinite(rate) ? rate : null);
+    const gname = 'NAICS ' + kn + (kb === 'all' ? ', all sizes' : ', ' + kb + ' employees');
+    pctTable($('#swarm3-table'), d, gname, $('#swarm-3').closest('figure'), 'TRIR percentiles of the selected group: ' + gname + ', CY2025');
     if (!isFinite(rate) || rate < 0) { say('Enter a non-negative rate.'); return; }
     const r = rankAgainst(rate, d);
     const rk = r.percentileRank;
@@ -5637,8 +5745,41 @@ async function picker() {
   await run();
 }
 
+/* ---------- shareable chapter headings ---------- */
+const LINK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
+const engineV22 = () => !!(S && S.anchors && S.dataTable);
+function shareChapters() {
+  if (engineV22()) return;           // the engine places its own copy-link anchors
+  const status = document.getElementById('sr-status');
+  document.querySelectorAll('.st-chapter[id], .monday[id], .honesty[id]').forEach((sec) => {
+    const h = sec.querySelector('h2, h3');
+    const what = h ? h.textContent.trim() : sec.id;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'copy-link';
+    b.innerHTML = LINK_ICON;
+    b.setAttribute('aria-label', 'Copy link to: ' + what);
+    b.title = 'Copy link';
+    b.addEventListener('click', async () => {
+      const url = location.origin + location.pathname + '#' + sec.id;
+      let ok = true;
+      try { await navigator.clipboard.writeText(url); } catch (e) { ok = false; }
+      const old = b.querySelector('.copied'); if (old) old.remove();
+      const tag = document.createElement('span');
+      tag.className = 'copied'; tag.setAttribute('aria-hidden', 'true');
+      tag.textContent = ok ? 'Link copied' : 'Copy failed';
+      b.appendChild(tag);
+      if (status) { status.textContent = ''; setTimeout(() => { status.textContent = ok ? 'Link copied' : 'Copy failed. The link is ' + url; }, 30); }
+      setTimeout(() => tag.remove(), 1800);
+    });
+    if (sec.classList.contains('st-chapter')) sec.appendChild(b);
+    else { b.style.cssText = 'position:absolute;right:16px;top:16px'; sec.style.position = 'relative'; sec.appendChild(b); }
+  });
+}
+
 /* ---------- boot ---------- */
 (async function boot() {
+  shareChapters();
   S.progressBar();
   S.reveal(document, { selector: '.st-reveal' });
   if (S.field) { try { S.field($('#hero'), { density: 1.1 }); } catch (e) { /* ambient only */ } }
@@ -5660,6 +5801,7 @@ async function picker() {
     s1 = await scene1();
     const b32 = await getJSON('data/benchmarks/32.json');
     swarm($('#swarm-2'), toDist(b32['3252|all'], '3252', 'all'), EXAMPLE.rate, { instant: true });
+    pctTable($('#swarm2-table'), toDist(b32['3252|all'], '3252', 'all'), 'NAICS 3252, all sizes', $('#swarm-2').closest('figure'), 'TRIR percentiles, NAICS 3252, all sizes, CY2025');
     await scene4();
     await picker();
   } catch (e) {

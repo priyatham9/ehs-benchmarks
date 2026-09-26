@@ -26,8 +26,62 @@ const el = (tag, attrs = {}, ...kids) => {
 const fmt = (n, d = 0) =>
   n == null || Number.isNaN(n) ? '—' : Number(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
 const pct = (n, d = 1) => (n == null ? '—' : `${Number(n).toFixed(d)}%`);
-const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || /[?&](reduced|print)=1/.test(location.search);
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/* ---- round 8: shareable headings, figure furniture, a polite status line ---- */
+
+/** Story engine v2.2+ builds copy-link anchors itself; the page only fills in when it is absent. */
+const engineAnchors = () => !!(window.Story && window.Story.anchors && window.Story.dataTable);
+const refreshAnchors = () => { if (engineAnchors()) { try { window.Story.anchors(); } catch (e) { console.error(e); } } };
+
+/** One polite status line for the whole page (copy confirmations). */
+function srSay(msg) {
+  const n = document.getElementById('sr-status');
+  if (!n) return;
+  n.textContent = '';
+  setTimeout(() => { n.textContent = msg; }, 30);
+}
+
+const LINK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
+
+/** A small "copy link" button for a heading. `hash` is the fragment without '#'. */
+function copyLinkBtn(hash, what) {
+  const b = el('button', { type: 'button', class: 'copy-link', 'aria-label': `Copy link to ${what}`, title: 'Copy link', html: LINK_ICON });
+  b.addEventListener('click', async () => {
+    const url = `${location.origin}${location.pathname}#${hash}`;
+    let ok = true;
+    try { await navigator.clipboard.writeText(url); } catch { ok = false; }
+    b.querySelector('.copied')?.remove();
+    const tag = el('span', { class: 'copied', 'aria-hidden': 'true' }, ok ? 'Link copied' : 'Copy failed');
+    b.append(tag);
+    srSay(ok ? 'Link copied' : `Copy failed. The link is ${url}`);
+    setTimeout(() => tag.remove(), 1800);
+  });
+  return b;
+}
+
+/** Wrap an existing heading with a copy-link button in a flex row. */
+function shareHeading(h, hash, what) {
+  if (!h || h.parentElement?.classList.contains('h-row')) return;
+  const row = el('div', { class: 'h-row' });
+  h.replaceWith(row);
+  row.append(h, copyLinkBtn(hash, what));
+}
+
+/** A "Data" disclosure holding the plotted numbers as a real table. */
+function figData(headers, rows, summary = 'Data: the numbers in this figure') {
+  const d = el('details', { class: 'fig-data' }, el('summary', {}, summary));
+  let built = false;
+  d.addEventListener('toggle', () => {
+    if (d.open && !built) { built = true; d.append(table(headers, rows)); }
+  });
+  return d;
+}
+const figTitle = (title, sub) => [el('p', { class: 'fig-title' }, title), sub ? el('p', { class: 'fig-sub' }, sub) : null];
+const figSrc = (text) => el('p', { class: 'fig-src' }, text);
+const SRC_300A = 'Source: OSHA Injury Tracking Application, Form 300A establishment summaries.';
+const SRC_CASES = 'Source: OSHA Injury Tracking Application case detail file for CY2024 (Forms 300 and 301). Only establishments with 100+ employees in designated industries submit case detail.';
 
 const cache = new Map();
 
@@ -344,17 +398,20 @@ function svg(tag, attrs = {}, ...kids) {
  */
 function columnsInto(container, values, labels, {
   height = 240, highlight = [], fmtValue = (v) => fmt(v), unit = 'cases', bracket = null, dim = null,
-  tipLabel = (i) => labels[i],
+  tipLabel = (i) => labels[i], xLabel = 'Bin',
 } = {}) {
   const wrap = el('div', { class: 'chart-wrap' });
   const tip = el('div', { class: 'chart-tip', 'aria-hidden': 'true' });
   const box = el('div');
   wrap.append(box, tip);
-  container.replaceChildren(wrap);
+  const total = values.reduce((a, b) => a + b, 0) || 1;
+  container.replaceChildren(wrap, figData(
+    [xLabel, { label: unit[0].toUpperCase() + unit.slice(1), num: true }, { label: 'Share', num: true }],
+    values.map((v, i) => [labels[i], num(fmtValue(v)), num(pct((v / total) * 100))])));
   const hi = new Set(highlight);
   responsive(box, (width) => {
     const phone = width < 520;
-    const padL = phone ? 40 : 52, padR = 6, padB = 28, padT = bracket ? 40 : 14;
+    const padL = phone ? 44 : 56, padR = 6, padB = 30, padT = bracket ? 42 : 14;
     const max = Math.max(...values, 1);
     const plotW = width - padL - padR;
     const plotH = height - padB - padT;
@@ -431,15 +488,20 @@ function percentileStrip(p, rate, rank, zeroRate) {
     for (const [a, b, op] of bands) {
       root.append(svg('rect', { class: 'bar', x: x(a), y: bandY, width: Math.max(0, x(b) - x(a)), height: bandH, opacity: op }));
     }
-    // group ticks that share a position
+    // Label ticks by priority (median, p90, p75, p25). Equal values share one
+    // label; a label that would collide with a different value is left to the
+    // Data table rather than merged into a wrong one.
     const ticks = [];
-    for (const [key, label] of [['p25', 'p25'], ['p50', 'median'], ['p75', 'p75'], ['p90', 'p90']]) {
-      if (phone && key === 'p25') continue;
+    const gap = phone ? 96 : 124;
+    for (const [key, label] of [['p50', 'median'], ['p90', 'p90'], ['p75', 'p75'], ['p25', 'p25']]) {
       const v = p[key];
-      const prev = ticks[ticks.length - 1];
-      if (prev && Math.abs(x(v) - x(prev.v)) < (phone ? 64 : 84)) prev.labels.push(label);
-      else ticks.push({ v, labels: [label] });
+      const same = ticks.find((t) => t.v === v);
+      if (same) { same.labels.push(label); continue; }
+      if (ticks.some((t) => Math.abs(x(v) - x(t.v)) < gap)) continue;
+      ticks.push({ v, labels: [label] });
     }
+    ticks.sort((a, b) => a.v - b.v);
+    for (const t of ticks) t.labels.sort((a, b) => ['p25', 'median', 'p75', 'p90'].indexOf(a) - ['p25', 'median', 'p75', 'p90'].indexOf(b));
     for (const t of ticks) {
       const text = t.v === 0 && zeroRate ? `${t.labels.join(' = ')} = 0` : `${t.labels.join('/')} ${t.v.toFixed(2)}`;
       root.append(
@@ -575,6 +637,7 @@ async function renderFindings() {
     doors(),
   );
   animateBlock(briefing);
+  refreshAnchors();
 }
 
 /**
@@ -720,9 +783,19 @@ function coldOpen(f) {
 
   return el('section', { class: 'cold-open', 'aria-label': 'The whole problem in one picture' },
     el('div', { class: 'co-head' },
-      el('p', { class: 'brief-strip-k' }, 'The whole problem in one picture'),
+      el('div', {},
+        el('p', { class: 'brief-strip-k' }, 'The whole problem in one picture'),
+        el('p', { class: 'fig-sub' }, `1,000 dots stand for ${fmt(f.totalRows)} Form 300A filings, CY${f.years[0]}–CY${f.years[f.years.length - 1]}`)),
       el('div', { class: 'chips', role: 'group', 'aria-label': 'How to weigh the filings' }, buttons)),
-    stage, caption);
+    stage, caption,
+    figData(['Measure', { label: 'Value', num: true }], [
+      ['Form 300A filings, all years', num(fmt(f.totalRows))],
+      ['Filings that fail the hours test (zero hours, or outside 100–4,000 hours per employee)', num(fmt(f.excludedImplausible + f.excludedZeroHours))],
+      ['Their share of filings', num(pct(f.excludedShare, 2))],
+      ['Their share of all hours reported', num(pct(f.hoursDiscardedShare))],
+      ['Red dots out of 1,000', num(bad)],
+    ]),
+    figSrc(SRC_300A));
 }
 
 /** Share of all days away carried by each event, from counts and mean durations. */
@@ -744,7 +817,7 @@ function summaryStrip(f, chemDist, firstFour, days) {
   return el('section', { class: 'brief-strip', 'aria-label': 'The briefing in 60 seconds' },
     el('p', { class: 'brief-strip-k' }, 'In 60 seconds'),
     el('div', { class: 'brief-cards' },
-      card('#f-hours', `${f.errorFactor}×`, 'how much better the raw OSHA file makes the national injury rate look', 'bad'),
+      card('#f-hours', `${f.errorFactor}×`, 'how much better the raw ITA file makes the all-filer injury rate look', 'bad'),
       card('#f-zero', chemDist ? pct(chemDist.zeroRate * 100, 0) : '—', 'of chemical plants report zero recordables: zero is the most common result, not a trophy'),
       card('#f-shift', pct(firstFour, 0), 'of injuries happen in the first four hours of a shift, not at the tired end'),
       card('#f-days', pct(days.top2, 0), 'of all days away come from just two kinds of event'),
@@ -756,7 +829,8 @@ function finding({ id, no, headline, lede, stat, visual, meaning, ask, extra = [
   return revealOnView(el('article', { class: 'finding', id, 'aria-labelledby': `${id}-h` },
     el('div', { class: 'finding-top' },
       el('p', { class: 'finding-k' }, `Finding ${no} of 4`),
-      el('h2', { id: `${id}-h` }, headline),
+      engineAnchors() ? el('h2', { id: `${id}-h` }, headline)
+        : el('div', { class: 'h-row' }, el('h2', { id: `${id}-h` }, headline), copyLinkBtn(id, `finding ${no}`)),
       el('p', { class: 'finding-lede' }, lede)),
     el('div', { class: 'finding-body' },
       el('div', { class: 'finding-stat' }, stat),
@@ -787,12 +861,12 @@ function findingHours(f) {
     needle.style.left = `${(to / maxScale) * 100}%`;
     gauge.classList.toggle('is-raw', m === 'raw');
     note.textContent = m === 'raw'
-      ? `Summed straight from the file, the U.S. national rate reads ${f.naiveTrir.toFixed(2)}: a workforce that looks ${f.errorFactor}× safer than it is.`
-      : `With the ${fmt(f.excludedImplausible + f.excludedZeroHours)} impossible filings removed, the rate is ${f.correctedTrir.toFixed(2)} recordables per 100 full-time workers.`;
+      ? `Summed straight from the file, the all-filer rate reads ${f.naiveTrir.toFixed(2)}: a workforce that looks ${f.errorFactor}× safer than it is.`
+      : `With the ${fmt(f.excludedImplausible + f.excludedZeroHours)} impossible filings removed, the all-filer rate is ${f.correctedTrir.toFixed(2)} recordable cases per 200,000 hours (100 full-time workers).`;
   };
   const gauge = el('div', { class: 'gauge' },
     el('div', { class: 'gauge-head' },
-      el('span', { class: 'gauge-k' }, 'National TRIR, CY2023–CY2025'),
+      el('span', { class: 'gauge-k' }, `All-filer TRIR, CY${f.years[0]}–CY${f.years[f.years.length - 1]}`),
       segmented('Which file', [{ value: 'raw', label: 'As published' }, { value: 'clean', label: 'Cleaned' }], 'clean', setMode)),
     rateNode,
     el('div', { class: 'gauge-track', 'aria-hidden': 'true' },
@@ -825,13 +899,22 @@ function findingHours(f) {
 
   return finding({
     id: 'f-hours', no: 1,
-    headline: `The raw file makes the national rate look ${f.errorFactor}× too good`,
-    lede: `A rate is injuries divided by hours worked. A few employers typed their hours wrong by factors of millions, ` +
+    headline: `The raw file makes the all-filer rate look ${f.errorFactor}× too good`,
+    lede: `TRIR is recordable cases × 200,000 divided by hours worked. A few employers typed their hours wrong by factors of millions, ` +
       `and those few filings swamp the denominator for everyone. One site in ${worst.state} reported ` +
       `${sci(worst.hours)} hours for ${fmt(worst.employees)} employees: more hours than the entire U.S. workforce works in a year.`,
     stat: bigStat(countUp(el('span', { class: 'big-n' }), f.errorFactor, { decimals: 2, suffix: '×' }),
-      'how far off a national benchmark is when the hours column is summed as published', 'bad'),
-    visual: el('div', {}, gauge, split,
+      'how far off an all-filer benchmark is when the hours column is summed as published', 'bad'),
+    visual: el('div', {}, ...figTitle(`All-filer TRIR as published and cleaned, CY${f.years[0]}–CY${f.years[f.years.length - 1]}`, 'Recordable cases × 200,000 ÷ hours worked, summed over every Form 300A filing'),
+      gauge, split,
+      figData(['Measure', { label: 'Value', num: true }], [
+        ['All-filer TRIR, as published', num(f.naiveTrir.toFixed(2))],
+        ['All-filer TRIR, hours screened', num(f.correctedTrir.toFixed(2))],
+        ['Ratio (cleaned ÷ as published)', num(`${f.errorFactor}×`)],
+        ['Share of filings failing the hours test', num(pct(f.excludedShare, 2))],
+        ['Share of all reported hours they carry', num(pct(f.hoursDiscardedShare))],
+      ]),
+      figSrc(SRC_300A),
       el('p', { class: 'fig-note' }, `Only ${pct(f.excludedShare, 2)} of filings fail a simple test (100 to 4,000 hours per employee per year), yet they carry ${pct(f.hoursDiscardedShare)} of every hour reported. The OSHA data-quality project screens 120 to 4,500 hours over CY2016 to CY2024 and finds 29.7×: the size of the error depends on the years and the window, the direction does not.`)),
     meaning: 'Any benchmark, vendor dashboard or board slide built on the raw OSHA file tells you your rate is excellent when it may be average. The error always flatters, so nobody complains about it.',
     ask: '"Where does our comparison number come from, and was the hours column screened before it was averaged?"',
@@ -874,13 +957,6 @@ function findingZero(chemDist) {
     el('span', {}, el('i', { class: 'lg mid' }), 'median to p90'),
     el('span', {}, el('i', { class: 'lg hi' }), `worst tenth, above ${chemDist.trir.p90.toFixed(2)}`));
 
-  const ladder = el('div', { class: 'bars compact' },
-    PKEYS.map((k) => barRow({
-      label: k === 'p50' ? 'p50 (median)' : k,
-      value: chemDist.trir[k], max: chemDist.trir.p99,
-      valueText: chemDist.trir[k] === 0 ? '0 (zero)' : chemDist.trir[k].toFixed(2),
-      tone: chemDist.trir[k] >= chemDist.trir.p90 ? 'bad' : '',
-    })));
 
   return finding({
     id: 'f-zero', no: 2,
@@ -890,8 +966,14 @@ function findingZero(chemDist) {
       'one injury moves the rate by about two points, so a clean year is often a small site having an ordinary year.',
     stat: bigStat(countUp(el('span', { class: 'big-n' }), zeros, { suffix: '%' }),
       `of ${fmt(chemDist.n)} chemical plants reported zero recordables`),
-    visual: el('div', {}, waffle, legend,
-      drill('The percentile ladder behind the squares', () => ladder)),
+    visual: el('div', {}, ...figTitle(`NAICS 325 chemical manufacturing: TRIR by percentile, CY2025 filers (n = ${fmt(chemDist.n)})`, 'One square per percentile of establishments; recordable cases per 200,000 hours'),
+      waffle, legend,
+      figData(['Percentile', { label: 'TRIR', num: true }], [
+        ['Share reporting zero', num(pct(chemDist.zeroRate * 100, 0))],
+        ...PKEYS.map((k) => [k === 'p50' ? 'p50 (median)' : k, num(chemDist.trir[k].toFixed(2))]),
+        ['Hours-weighted aggregate', num(chemDist.trir.aggregate.toFixed(2))],
+      ], 'Data: the percentile ladder behind the squares'),
+      figSrc(`${SRC_300A} Peer file docs/data/benchmarks/32.json, key 325|all.`)),
     meaning: 'A zero on a scorecard mostly measures how few hours were worked. Averages hide this entirely: the mean is pulled up by the worst tenth, and "we had zero" sits beside plants that had one bad month.',
     ask: '"Which of our zero-injury sites are small enough that one case would put them in the bottom quartile?"',
   });
@@ -902,7 +984,7 @@ function findingShift(o, { firstFour, lateShare, peak }) {
   const labels = o.hourIntoShift.map((_, i) => `${i}`);
   let view = 'real';
   const draw = () => columnsInto(box, o.hourIntoShift, labels, {
-    tipLabel: (i) => `hour ${i}`,
+    tipLabel: (i) => `hour ${i}`, xLabel: 'Full hours into shift',
     highlight: view === 'real' ? [0, 1, 2, 3] : [8, 9, 10, 11, 12, 13, 14, 15],
     bracket: view === 'real' ? [0, 3, `first four hours: ${pct(firstFour)}`] : [8, 15, `hours 8+: ${pct(lateShare)}`],
   });
@@ -925,7 +1007,8 @@ function findingShift(o, { firstFour, lateShare, peak }) {
       'Injuries climb from the first hour, peak early and fall steadily after the midpoint.',
     stat: bigStat(countUp(el('span', { class: 'big-n' }), firstFour, { decimals: 1, suffix: '%' }),
       'of timed injuries occur in the first four hours of the shift'),
-    visual: el('div', {}, el('div', { class: 'visual-head' }, toggle), box, note),
+    visual: el('div', {}, ...figTitle('Injuries by full hours since the shift began, CY2024 cases', `Count of cases; ${fmt(o.withShiftTiming)} cases record both the shift start and the incident time`),
+      el('div', { class: 'visual-head' }, toggle), box, note, figSrc(SRC_CASES)),
     meaning: 'These are counts, not rates per hour of exposure: most shifts end near hour eight, so fewer people are at work in the late hours. What the counts do show is where the volume is: set-up, first lifts, changeovers. Pre-shift briefings and first-hour supervision reach more injuries than end-of-shift fatigue rules alone.',
     ask: '"What does the first hour of a shift look like on our floor, and who is watching it?"',
   });
@@ -942,7 +1025,7 @@ function findingDays(days) {
   const rows = [...new Set([...top, exp].filter(Boolean))];
   const box = el('div', { class: 'slope' });
   responsive(box, (width) => {
-    const phone = width < 560;
+    const phone = width < 720;
     if (phone) {
       // a slope chart needs width for its labels; on a phone each event gets a pair of bars
       const maxV = Math.max(...rows.map((r) => Math.max(r.caseShare, r.dayShare)));
@@ -954,7 +1037,7 @@ function findingDays(days) {
           el('span', { class: `pair-bar pd ${r.dayShare > r.caseShare ? 'up' : ''}`, style: `width:${(r.dayShare / maxV) * 78}%` }, pct(r.dayShare, 0)))));
     }
     const H = 40 + rows.length * 44;
-    const x1 = phone ? 54 : 250, x2 = width - (phone ? 54 : 250);
+    const x1 = phone ? 54 : 284, x2 = width - (phone ? 54 : 284);
     const maxV = Math.max(...rows.map((r) => Math.max(r.caseShare, r.dayShare)));
     const yOf = (() => {
       // rank order on each side, so lines cross where priorities change
@@ -995,7 +1078,11 @@ function findingDays(days) {
       `${exp ? pct(exp.caseShare, 0) : 'many'} of cases, only ${exp ? pct(exp.dayShare, 1) : 'a sliver'} of days away.`,
     stat: bigStat(countUp(el('span', { class: 'big-n' }), days.top2, { decimals: 0, suffix: '%' }),
       `of ${fmtCompact(Math.round(days.totalDays))} days away come from these two events`, 'bad'),
-    visual: el('div', {}, box,
+    visual: el('div', {}, ...figTitle('Share of cases against share of days away, by OIICS event, CY2024 cases', `Percent of all coded cases and of ${fmtCompact(Math.round(days.totalDays))} days away from work`),
+      box,
+      figData(['Event (OIICS)', { label: 'Cases', num: true }, { label: 'Share of cases', num: true }, { label: 'Share of days away', num: true }, { label: 'Mean days away', num: true }],
+        [...rows].sort((a, b) => b.dayShare - a.dayShare).map((r) => [r.t, num(fmt(r.n)), num(pct(r.caseShare)), num(pct(r.dayShare)), num(r.mean ? r.mean.toFixed(1) : '—')])),
+      figSrc(`${SRC_CASES} Days away = days-away cases × their mean days away.`),
       el('p', { class: 'fig-note' }, 'Each event\'s share of all coded cases against its share of all days away from work. Red marks an event that costs more time than its case count suggests; green, less. On wide screens, line width follows days lost.')),
     meaning: 'A top-ten list ranked by case count tells you what happens most, not what costs most. Manual handling and walking surfaces are unglamorous, and they are where the lost time is.',
     ask: '"If we ranked our injuries by days lost instead of by count, what would move to the top?"',
@@ -1004,14 +1091,15 @@ function findingDays(days) {
 
 function mondayQuestions(f, chemDist, firstFour, days) {
   const q = [
-    ['Check the denominator', `Before trusting any benchmark, confirm the hours were screened. Unscreened, the U.S. rate reads ${f.naiveTrir.toFixed(2)} instead of ${f.correctedTrir.toFixed(2)}.`],
+    ['Check the denominator', `Before trusting any benchmark, confirm the hours were screened. Unscreened, the all-filer rate reads ${f.naiveTrir.toFixed(2)} instead of ${f.correctedTrir.toFixed(2)}.`],
     ['Fix the peer group first', 'Rank each site against its own industry and size band, and write the n beside every percentile. The same plant can rank p72 or p93 depending on the band.'],
     ['Stop celebrating small zeros', `${chemDist ? pct(chemDist.zeroRate * 100, 0) : 'Many'} of chemical plants reported zero. Report hours alongside every zero.`],
     ['Move effort to the start of the shift and to lost time', `${pct(firstFour, 0)} of injuries fall in the first four hours; ${pct(days.top2, 0)} of days away come from handling and same-level falls.`],
   ];
-  return revealOnView(el('section', { class: 'monday', 'aria-labelledby': 'monday-h' },
+  return revealOnView(el('section', { class: 'monday', id: 'monday', 'data-st-anchor': '', 'aria-labelledby': 'monday-h' },
     el('p', { class: 'finding-k' }, 'What to do on Monday'),
-    el('h2', { id: 'monday-h' }, 'Four changes to your next safety review'),
+    engineAnchors() ? el('h2', { id: 'monday-h' }, 'Four changes to your next safety review')
+      : el('div', { class: 'h-row' }, el('h2', { id: 'monday-h' }, 'Four changes to your next safety review'), copyLinkBtn('monday', 'the four changes')),
     el('ol', {}, q.map(([t, d]) => el('li', {}, el('b', {}, t), el('span', {}, d)))),
     el('div', { class: 'cta-row' },
       el('a', { class: 'btn btn-primary', href: '#benchmark' }, 'Benchmark one of your sites →'),
@@ -1022,7 +1110,7 @@ function doors() {
   const door = (href, k, t, d) => el('a', { class: 'door', href },
     el('span', { class: 'door-k' }, k), el('span', { class: 'door-t' }, t), el('span', { class: 'door-d' }, d));
   return el('div', { class: 'doors' },
-    door('#benchmark', 'Tool', 'Benchmark my site', 'Your rate against the same industry and size band, with the n beside it.'),
+    door('#benchmark', 'Tool', 'Benchmark a site', 'Your rate against the same industry and size band, with the n beside it.'),
     door('#company', 'Search', 'Look up an employer', '228,584 employers rolled up across their establishments.'),
     door('#patterns', 'Explore', 'How people get hurt', 'Event, body part and timing for 688,367 coded cases.'));
 }
@@ -1050,41 +1138,72 @@ function industryEntry(code, v) {
   return { code, sector: v.s, title, sub, level, hay: `${code} ${title} ${sub}`.toLowerCase() };
 }
 
+const parseNum = (v) => {
+  const t = String(v ?? '').replace(/[,\s_]/g, '');
+  return t === '' ? null : Number(t);
+};
+let bmTouched = false;
+const FIELDS = ['hours', 'cases', 'dart', 'emp'];
+
 async function initBenchmark() {
   naicsCatalog = await load('naics-catalog.json');
   industries = Object.entries(naicsCatalog).map(([c, v]) => industryEntry(c, v))
     .sort((a, b) => a.code.localeCompare(b.code));
   Object.assign(bm, readParams());
   setupCombo();
-  $('#bm-naics-note').textContent = `${fmt(industries.length)} industries across ${Object.keys(SECTOR_NAMES).length} sectors. Broader codes pool more establishments.`;
-  for (const id of ['bm-hours', 'bm-cases', 'bm-dart', 'bm-emp']) {
-    const input = $(`#${id}`);
-    const key = id.slice(3);
+  $('#bm-naics-note').textContent = `${fmt(industries.length)} industries across ${Object.keys(SECTOR_NAMES).length} sectors. Use ↑ ↓ and Enter to choose. Broader codes pool more establishments.`;
+  for (const key of FIELDS) {
+    const input = $(`#bm-${key}`);
     if (bm[key] !== '' && bm[key] != null) input.value = bm[key];
-    input.addEventListener('input', () => { bm[key] = input.value; scheduleRun(); });
+    input.addEventListener('input', () => { bm[key] = input.value; bmTouched = true; scheduleRun(); });
+    input.addEventListener('blur', () => { input.dataset.touched = '1'; runBenchmark(); });
   }
   $('#bm-form').addEventListener('submit', (e) => { e.preventDefault(); runBenchmark(); });
   $('#bm-est').addEventListener('click', () => {
-    const emp = Number($('#bm-emp').value);
-    if (!(emp > 0)) { $('#bm-emp').focus(); $('#bm-emp').setAttribute('aria-invalid', 'true'); return; }
-    $('#bm-emp').removeAttribute('aria-invalid');
-    $('#bm-hours').value = bm.hours = emp * 2000;
+    const emp = parseNum($('#bm-emp').value);
+    const err = $('#bm-emp-err');
+    if (!(emp > 0)) {
+      $('#bm-emp').setAttribute('aria-invalid', 'true');
+      err.textContent = 'Enter the average number of employees first, then estimate the hours.';
+      err.hidden = false;
+      $('#bm-emp').focus();
+      return;
+    }
+    bmTouched = true;
+    $('#bm-hours').value = bm.hours = String(Math.round(emp * 2000));
     runBenchmark();
   });
+  $('#bm-reset').addEventListener('click', resetBenchmark);
   await selectIndustry(bm.naics, { keepBand: true });
+}
+
+function resetBenchmark() {
+  Object.assign(bm, BM_DEFAULT);
+  for (const key of FIELDS) {
+    const input = $(`#bm-${key}`);
+    input.value = bm[key] ?? '';
+    delete input.dataset.touched;
+  }
+  bmTouched = true;
+  if (current === 'benchmark') history.replaceState(null, '', '#benchmark');
+  selectIndustry(bm.naics, { keepBand: true });
+  srSay('Inputs reset to the example site.');
 }
 
 function readParams() {
   const q = new URLSearchParams(location.hash.split('?')[1] || '');
   const out = {};
-  for (const k of ['naics', 'band', 'hours', 'cases', 'dart', 'emp']) if (q.has(k)) out[k] = q.get(k);
+  for (const k of ['naics', 'band', ...FIELDS]) if (q.has(k)) out[k] = q.get(k);
   if (out.naics && !naicsCatalog[out.naics]) delete out.naics;
   return out;
 }
 
 function writeParams() {
   const q = new URLSearchParams();
-  for (const k of ['naics', 'band', 'hours', 'cases', 'dart', 'emp']) if (bm[k] !== '' && bm[k] != null) q.set(k, bm[k]);
+  for (const k of ['naics', 'band', ...FIELDS]) {
+    const v = FIELDS.includes(k) ? String(bm[k] ?? '').replace(/[,\s_]/g, '') : bm[k];
+    if (v !== '' && v != null) q.set(k, v);
+  }
   history.replaceState(null, '', `#benchmark?${q}`);
 }
 
@@ -1142,7 +1261,7 @@ function setupCombo() {
     li.scrollIntoView({ block: 'nearest' });
     input.setAttribute('aria-activedescendant', li.id);
   };
-  const choose = (i) => { close(); selectIndustry(i.code); };
+  const choose = (i) => { close(); bmTouched = true; selectIndustry(i.code); };
 
   input.addEventListener('focus', () => { input.select(); paint(); });
   input.addEventListener('input', paint);
@@ -1193,6 +1312,7 @@ async function selectIndustry(code, { keepBand = false } = {}) {
 
 function setBand(b) {
   bm.band = b;
+  bmTouched = true;
   for (const c of $('#bm-band').children) {
     const on = c.dataset.band === b;
     c.setAttribute('aria-checked', String(on));
@@ -1211,27 +1331,50 @@ function findDist(naics, band) {
   return null;
 }
 
+const NAICS_LEVEL = { 2: 'sector', 3: 'subsector', 4: 'industry group', 5: 'industry', 6: 'national industry' };
+const bandText = (b) => (b === 'all' ? 'all sizes' : `${b.replace('-', '–')} employees`);
+
+/** Inline validation: returns parsed values and paints each field's own message. */
+function validateBenchmark() {
+  const v = Object.fromEntries(FIELDS.map((k) => [k, parseNum($(`#bm-${k}`).value)]));
+  const err = {};
+  if (v.hours == null) err.hours = 'Enter the hours worked in the year, for example 625000.';
+  else if (!Number.isFinite(v.hours) || v.hours <= 0) err.hours = 'Hours worked must be a number above zero.';
+  if (v.cases == null) err.cases = 'Enter the number of recordable cases (0 if none).';
+  else if (!Number.isInteger(v.cases) || v.cases < 0) err.cases = 'Recordable cases must be a whole number, 0 or more.';
+  if (v.dart != null) {
+    if (!Number.isInteger(v.dart) || v.dart < 0) err.dart = 'DART cases must be a whole number, 0 or more.';
+    else if (v.cases != null && Number.isInteger(v.cases) && v.dart > v.cases) err.dart = `DART cases cannot exceed the ${v.cases} recordable cases.`;
+  }
+  if (v.emp != null && (!Number.isInteger(v.emp) || v.emp <= 0)) err.emp = 'Employees must be a whole number above zero, or leave it blank.';
+  for (const k of FIELDS) {
+    const input = $(`#bm-${k}`), box = $(`#bm-${k}-err`);
+    // an empty required field is only flagged once the visitor has left it
+    const show = err[k] && (input.value.trim() !== '' || input.dataset.touched);
+    input.setAttribute('aria-invalid', String(!!show));
+    box.textContent = show ? err[k] : '';
+    box.hidden = !show;
+  }
+  return { v, err };
+}
+
 function runBenchmark() {
   const out = $('#bm-result');
-  const hoursIn = $('#bm-hours'), casesIn = $('#bm-cases');
-  const hours = Number(hoursIn.value);
-  const cases = Number(casesIn.value);
-  const dartIn = $('#bm-dart').value, empIn = $('#bm-emp').value;
-  const dartCases = dartIn === '' ? null : Number(dartIn);
-  const employees = empIn === '' ? undefined : Number(empIn);
-  bm.hours = hoursIn.value; bm.cases = casesIn.value; bm.dart = dartIn; bm.emp = empIn;
-  if (location.hash.startsWith('#benchmark')) writeParams();
+  const live = $('#bm-live');
+  for (const k of FIELDS) bm[k] = $(`#bm-${k}`).value.trim();
+  if (current === 'benchmark' && bmTouched) writeParams();
 
-  const badHours = !(Number.isFinite(hours) && hours > 0);
-  const badCases = !(Number.isFinite(cases) && cases >= 0 && Number.isInteger(cases));
-  const badDart = dartCases != null && !(Number.isInteger(dartCases) && dartCases >= 0 && dartCases <= cases);
-  hoursIn.setAttribute('aria-invalid', String(badHours));
-  casesIn.setAttribute('aria-invalid', String(badCases));
-  $('#bm-dart').setAttribute('aria-invalid', String(badDart));
-  if (badHours || badCases) {
-    out.replaceChildren(el('p', { class: 'error-note' }, 'Enter hours worked above zero and a whole number of recordable cases.'));
+  const { v, err } = validateBenchmark();
+  if (err.hours || err.cases) {
+    out.replaceChildren(el('div', { class: 'result-empty' },
+      'The rank appears here once hours worked (above zero) and recordable cases (a whole number) are filled in.'));
+    if (bmTouched) live.textContent = 'No result yet: check the highlighted field.';
     return;
   }
+  const hours = v.hours, cases = v.cases;
+  const badDart = !!err.dart;
+  const dartCases = v.dart == null || badDart ? null : v.dart;
+  const employees = v.emp == null || err.emp ? undefined : v.emp;
 
   const rate = trir(
     { deaths: 0, daysAwayCases: 0, jobTransferCases: 0, otherRecordableCases: cases },
@@ -1241,7 +1384,8 @@ function runBenchmark() {
 
   const found = findDist(bm.naics, bm.band);
   if (!found) {
-    out.replaceChildren(el('p', { class: 'error-note' }, 'No peer group of at least 30 establishments exists for this industry or any broader code in its sector.'));
+    out.replaceChildren(el('div', { class: 'result-empty' }, 'No peer group of at least 30 establishments exists for this industry or any broader code in its sector. Try the 2-digit sector.'));
+    if (bmTouched) live.textContent = 'No peer group of 30 or more establishments for this industry.';
     return;
   }
   const { dist, naics: dNaics, band: dBand, widened } = found;
@@ -1251,7 +1395,16 @@ function runBenchmark() {
   const ranked = rankAgainst(rate, toDist(dist, dNaics, dBand));
   const r = Math.round(ranked.percentileRank);
   const flags = checkPlausibility({ hours, employees, totalCases: cases });
-  const peerName = `NAICS ${dNaics} · ${dBand === 'all' ? 'all sizes' : `${dBand} employees`}`;
+  const peerName = `NAICS ${dNaics} · ${bandText(dBand)}`;
+  const peerEntry = industries.find((x) => x.code === dNaics);
+  const zeroPct = Math.round(dist.zeroRate * 100);
+  const verdictText = rate === 0 && dist.zeroRate > 0
+    ? `A TRIR of 0.00 ties with the ${zeroPct}% of these peers that reported no recordable case; that shared position scores p${r}.`
+    : r >= 99
+      ? `A TRIR of ${rate.toFixed(2)} is at or above the 99th percentile of these peers: almost every one reported a lower rate.`
+      : `A TRIR of ${rate.toFixed(2)} ranks p${r}: about ${r}% of these peers reported a lower rate${r > 90 ? ', which puts the site in the worst tenth' : r > 75 ? ', which puts the site in the worst quartile' : r <= 50 ? ', so the site is better than the median' : ''}.`;
+  const peerSentence = `${fmt(dist.n)} CY2025 establishments in NAICS ${dNaics}, ${bandText(dBand)}`;
+  const liveText = `${verdictText} Peers: ${peerSentence}. Lower is better.`;
   const oneCase = 200000 / hours;
   const casesFor = (target) => Math.max(0, Math.floor((target * hours) / 200000 + 1e-9));
   const casesTxt = (n) => `${fmt(n)} case${n === 1 ? '' : 's'}`;
@@ -1281,7 +1434,9 @@ function runBenchmark() {
     setTimeout(() => { copyBtn.textContent = 'Copy link to this result'; }, 1800);
   } }, 'Copy link to this result');
 
+  if (bmTouched) live.textContent = liveText;
   out.replaceChildren(el('div', { class: 'result-card' },
+    el('p', { class: 'result-verdict' }, ...verdictText.split(`p${r}`).flatMap((part, i) => (i ? [el('b', {}, `p${r}`), part] : [part]))),
     el('div', { class: 'result-top' },
       el('div', {},
         el('div', { class: 'tile-label' }, 'Your TRIR'),
@@ -1291,12 +1446,24 @@ function runBenchmark() {
         el('div', { class: `result-rank ${rankClass(r)}`, 'data-rank': r }, `p${r}`)),
       el('div', {},
         el('div', { class: 'tile-label' }, 'Peer group'),
-        el('div', { class: 'tile-sub', style: 'font-size:13px;color:var(--ink)' }, peerName),
-        el('div', { class: 'tile-sub' }, `${fmt(dist.n)} establishments · ${pct(dist.zeroRate * 100, 0)} reported zero · median ${dist.trir.p50.toFixed(2)}`),
+        el('div', { class: 'tile-sub', style: 'font-size:14px;color:var(--ink)' }, `n = ${fmt(dist.n)} establishments`),
+        el('div', { class: 'tile-sub' }, `${pct(dist.zeroRate * 100, 0)} reported zero · median ${dist.trir.p50.toFixed(2)}`),
         widened ? el('p', { class: 'caveat' }, `The exact group had under 30 filers, so it was widened to ${peerName}.`) : null,
         dist.n < 50 ? el('p', { class: 'caveat' }, `Small group: quote this rank only with "n = ${dist.n}" beside it.`) : null)),
-    el('p', { class: 'result-lede' }, ranked.interpretation),
-    percentileStrip(dist.trir, rate, ranked.percentileRank, dist.zeroRate),
+    el('p', { class: 'formula' }, `TRIR = ${fmt(cases)} × 200,000 ÷ ${fmt(hours)} hours = ${rate.toFixed(2)}`),
+    el('p', { class: 'peer-def' },
+      el('b', {}, 'Compared with: '),
+      `${peerSentence}${peerEntry ? `, ${NAICS_LEVEL[dNaics.length] ?? 'code'} “${peerEntry.title.replace(/…$/, '')}”` : ''}. `,
+      'Peers are Form 300A filings to OSHA’s Injury Tracking Application for CY2025 with at least 10,000 hours and 100 to 4,000 hours per employee; groups under 30 filers are not published. ',
+      'The percentile is interpolated between seven published breakpoints. Lower is better.'),
+    el('figure', { class: 'fig', style: 'margin-top:22px' },
+      ...figTitle('Where this TRIR sits among its peers', `${peerName} · CY2025 · recordable cases per 200,000 hours · shading steps at p25, median, p75 and p90`),
+      percentileStrip(dist.trir, rate, ranked.percentileRank, dist.zeroRate),
+      figData(['Metric', ...PKEYS.map((p) => ({ label: p, num: true })), { label: 'Hours-weighted', num: true }], [
+        ['TRIR', ...PKEYS.map((p) => num(dist.trir[p].toFixed(2))), num(dist.trir.aggregate.toFixed(2))],
+        ['DART', ...PKEYS.map((p) => num(dist.dart[p].toFixed(2))), num(dist.dart.aggregate.toFixed(2))],
+      ], `Data: peer percentiles (n = ${fmt(dist.n)}, ${zeroPct}% reported zero)`),
+      figSrc(`${SRC_300A} CY2025 peer file docs/data/benchmarks/${dNaics.slice(0, 2)}.json.`)),
 
     el('h3', { class: 'subhead' }, 'What would change the verdict', el('span', {}, `at ${fmt(hours)} hours`)),
     el('div', { class: 'moves' },
@@ -1306,13 +1473,13 @@ function runBenchmark() {
       el('div', {}, el('span', {}, 'Into the worst tenth at'), el('b', {}, `${fmt(casesFor(dist.trir.p90) + 1)}+ cases`), el('span', {}, `above p90 ${dist.trir.p90.toFixed(2)}`))),
 
     ranks.length > 1 ? el('div', {},
-      el('h3', { class: 'subhead' }, 'Same site, every size band',
+      el('h3', { class: 'subhead' }, 'Compared with whom: the same site in every size band',
         el('span', {}, spread >= 10 ? `the band alone moves the rank ${spread} points` : `rank moves ${spread} points across bands`)),
       el('div', { class: 'bandrank' }, bandRows.map((x) => {
         const cur = x.b === dBand;
         if (!x.d) {
           return el('div', { class: 'bandrank-row is-off' },
-            el('span', { class: 'bandrank-lab' }, x.b === 'all' ? 'All sizes' : x.b), el('span', { class: 'muted', style: 'font-size:11px' }, 'fewer than 30 filers'), el('span'));
+            el('span', { class: 'bandrank-lab' }, x.b === 'all' ? 'All sizes' : x.b), el('span', { class: 'muted', style: 'font-size:12px' }, 'fewer than 30 filers'), el('span'));
         }
         return el('div', { class: `bandrank-row ${rankClass(x.rank)} ${cur ? 'is-cur' : ''}` },
           el('span', { class: 'bandrank-lab' }, x.b === 'all' ? 'All sizes' : x.b, ' ', el('small', {}, `n ${fmt(x.d.n)}`)),
@@ -1327,20 +1494,9 @@ function runBenchmark() {
       el('h3', {}, 'Data-quality flags'),
       el('ul', { style: 'margin:6px 0 0;padding-left:18px' },
         flags.map((fl) => el('li', {}, `${fl.severity.toUpperCase()}: ${fl.message}`)))) : null,
-    badDart ? el('p', { class: 'caveat' }, 'DART cases must be a whole number no larger than the recordable cases.') : null,
-
-    drill('Full percentile table for this peer group', () =>
-      table(['Metric', ...PKEYS.map((p) => ({ label: p, num: true })), { label: 'Hours-weighted', num: true }], [
-        ['TRIR', ...PKEYS.map((p) => num(dist.trir[p].toFixed(2))), num(dist.trir.aggregate.toFixed(2))],
-        ['DART', ...PKEYS.map((p) => num(dist.dart[p].toFixed(2))), num(dist.dart.aggregate.toFixed(2))],
-      ])),
     el('div', { class: 'result-actions' },
       copyBtn,
-      el('button', { type: 'button', class: 'btn', onclick: () => {
-        Object.assign(bm, BM_DEFAULT);
-        $('#bm-hours').value = bm.hours; $('#bm-cases').value = bm.cases; $('#bm-dart').value = ''; $('#bm-emp').value = '';
-        selectIndustry(bm.naics, { keepBand: true });
-      } }, 'Reset to the story example'),
+      el('button', { type: 'button', class: 'btn', onclick: resetBenchmark }, 'Reset to the example'),
       el('a', { class: 'btn', href: 'story.html' }, 'Why the peer group matters')),
   ));
   const g = G();
@@ -1682,7 +1838,8 @@ async function renderMethod() {
   $('#method-body').replaceChildren(
     el('h3', {}, 'Source'),
     el('p', {}, `OSHA Injury Tracking Application establishment-specific 300A summary files for ${f.years.join(', ')}, ` +
-      `plus the CY2024–2025 case detail file. ${fmt(f.totalRows)} establishment filings and ${fmt(f.caseRows)} coded cases. ` +
+      `plus the CY2024 case detail file (Forms 300 and 301, as published through 31 December 2025). ` +
+      `${fmt(f.totalRows)} establishment filings and ${fmt(f.caseRows)} coded cases. ` +
       `Built ${f.generated}.`),
 
     el('h3', {}, 'Rate definitions'),
@@ -1698,9 +1855,11 @@ async function renderMethod() {
       `calculator on this site and the benchmark tables cannot disagree.` }),
 
     el('h3', {}, 'Percentiles'),
-    el('p', {}, 'Nearest-rank, computed on establishments with at least 10,000 hours in the most recent year, in peer ' +
-      'groups of at least 30 filers. Interpolation is avoided because these distributions spike at zero and ' +
-      'interpolating would invent rates no establishment reported.'),
+    el('p', {}, 'Peer groups use the most recent year (CY2025) only. Each group publishes seven breakpoints (p10, p25, ' +
+      'p50, p75, p90, p95, p99), computed by nearest rank on establishments with at least 10,000 hours, in groups of ' +
+      'at least 30 filers; the breakpoints themselves are not interpolated, because these distributions spike at zero. ' +
+      'A site\'s percentile rank is then interpolated between those breakpoints, with the share reporting zero as an ' +
+      'anchor, so it approximates a rank rather than computing an order statistic on the full group.'),
 
     el('h3', {}, 'Days away by event'),
     el('p', {}, 'Finding 4 weights each OIICS event by its days-away cases times their mean days away, and divides by all ' +
@@ -1722,6 +1881,9 @@ async function renderMethod() {
         'problem; a low rate may reflect reporting culture rather than injury frequency.'),
       el('li', {}, 'A single year of establishment data is a small sample. At 200,000 hours one extra case moves TRIR ' +
         'by a full point. Treat any single-establishment rate as noisy.'),
+      el('li', {}, 'Case detail (Forms 300 and 301) is submitted only by establishments with 100 or more employees in ' +
+        'designated industries, so the injury-pattern figures describe larger sites in higher-hazard industries, ' +
+        'not every filer of a 300A summary.'),
       el('li', {}, 'OIICS codes in the case detail file are model-predicted by OSHA (the "_pred" columns), not ' +
         'human-assigned. They are reliable in aggregate and should not be trusted for any individual case.'),
       el('li', {}, 'Year-over-year comparisons are not a fixed panel. The set of establishments that file changes each ' +
@@ -1755,8 +1917,8 @@ async function renderMethod() {
    ========================================================================== */
 
 const VIEWS = {
-  findings: renderFindings,
   benchmark: initBenchmark,
+  findings: renderFindings,
   company: initCompany,
   patterns: renderPatterns,
   sectors: renderSectors,
@@ -1781,21 +1943,41 @@ function applyParams(view) {
 const parseHash = () => {
   const [raw] = location.hash.slice(1).split('?');
   const name = raw.replace(/^view-/, '');
-  return VIEWS[name] ? name : null;
+  if (VIEWS[name]) return name;
+  // finding anchors are built after load, so route them to their view by name
+  if (/^(f-|monday)/.test(raw)) return 'findings';
+  return null;
 };
+const DEFAULT_VIEW = 'benchmark';
+
+/** Bring a deep-linked element into view once its view has rendered. */
+function scrollToHashTarget() {
+  const [raw] = location.hash.slice(1).split('?');
+  if (!raw || VIEWS[raw.replace(/^view-/, '')]) return;
+  const t = document.getElementById(raw);
+  if (!t) return;
+  t.classList.add('is-in');
+  t.scrollIntoView({ block: 'start' });
+}
 
 async function show(name, { initial = false } = {}) {
-  const view = VIEWS[name] ? name : 'findings';
+  const view = VIEWS[name] ? name : DEFAULT_VIEW;
   const changed = view !== current;
   current = view;
-  for (const s of document.querySelectorAll('section.view')) s.classList.toggle('active', s.id === `view-${view}`);
-  for (const a of document.querySelectorAll('nav.tabs a')) {
-    if (a.dataset.view === view) {
-      a.setAttribute('aria-current', 'page');
+  for (const s of document.querySelectorAll('section.view')) {
+    const on = s.id === `view-${view}`;
+    s.classList.toggle('active', on);
+    s.hidden = !on;
+  }
+  for (const a of document.querySelectorAll('nav.tabs a[role="tab"]')) {
+    const on = a.dataset.view === view;
+    a.setAttribute('aria-selected', String(on));
+    a.tabIndex = on ? 0 : -1;
+    if (on) {
       // keep the active tab visible when the tab strip scrolls sideways on a phone
       a.parentElement.scrollLeft = Math.max(0, a.offsetLeft - 16);
       moveTabPill(a, initial);
-    } else a.removeAttribute('aria-current');
+    }
   }
   document.title = `${$(`#view-${view} h2`)?.textContent ?? 'EHS Benchmarks'} · EHS Benchmarks`;
   // Switching tabs lands at the top of the new view, not the top of the page:
@@ -1806,11 +1988,17 @@ async function show(name, { initial = false } = {}) {
     if (scrollY > top) scrollTo({ top });
   }
   if (changed && !initial) enterView($(`#view-${view}`));
+  if (changed) requestAnimationFrame(refreshAnchors);
   if (started.has(view) && location.hash.includes('?')) applyParams(view);
   if (!started.has(view)) {
     started.add(view);
     try {
       await VIEWS[view]();
+      if (!initial || location.hash) {
+        // charts size themselves on the next frames; settle the scroll after they do
+        requestAnimationFrame(scrollToHashTarget);
+        setTimeout(scrollToHashTarget, 450);
+      }
     } catch (err) {
       started.delete(view);
       $(`#view-${view}`).append(el('p', { class: 'error-note' }, `Could not load this view: ${err.message}. `,
@@ -1836,12 +2024,44 @@ document.addEventListener('click', (e) => {
   if (!a) return;
   const id = a.getAttribute('href').slice(1);
   if (id === 'main') { e.preventDefault(); $('#main').focus(); return; }
+  const vname = id.split('?')[0].replace(/^view-/, '');
+  if (VIEWS[vname] && vname === current && !id.includes('?')) {
+    // the view is already open (the hero button on first visit): bring it into view
+    e.preventDefault();
+    if (location.hash !== `#${vname}`) history.pushState(null, '', `#${vname}`);
+    const tabs = $('#tabs');
+    scrollTo({ top: tabs.getBoundingClientRect().top + scrollY, behavior: reduced() ? 'auto' : 'smooth' });
+    return;
+  }
   const target = document.getElementById(id);
-  if (target && !VIEWS[id.split('?')[0].replace(/^view-/, '')]) {
+  if (target && !VIEWS[vname]) {
     e.preventDefault();
     target.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
   }
 });
+
+/* ARIA tabs: arrows, Home and End move focus along the tab strip; Enter or Space opens the tab. */
+$('#tabs [role="tablist"]')?.addEventListener('keydown', (e) => {
+  const tabs = [...e.currentTarget.querySelectorAll('[role="tab"]')];
+  const i = tabs.indexOf(document.activeElement);
+  if (i < 0) return;
+  let j = null;
+  if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+  else if (e.key === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length;
+  else if (e.key === 'Home') j = 0;
+  else if (e.key === 'End') j = tabs.length - 1;
+  else if (e.key === ' ') { e.preventDefault(); tabs[i].click(); return; }
+  if (j == null) return;
+  e.preventDefault();
+  tabs.forEach((t, k) => { t.tabIndex = k === j ? 0 : -1; });
+  tabs[j].focus();
+});
+
+/* Section headings get a copy-link button; the link opens that tab. */
+for (const [view, what] of [['benchmark', 'the benchmark tool'], ['findings', 'the findings'], ['company', 'company search'], ['patterns', 'injury patterns'], ['sectors', 'sector rates'], ['method', 'the method']]) {
+  if (engineAnchors()) $(`#view-${view}`)?.setAttribute('data-st-anchor', '');
+  else shareHeading($(`#h-${view}`), view, what);
+}
 
 document.addEventListener('keydown', (e) => {
   if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -1853,6 +2073,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 (function boot() {
+  if (location.hash.length > 1 && 'scrollRestoration' in history) history.scrollRestoration = 'manual';
   let stored = null;
   try { stored = localStorage.getItem('ehs-theme'); } catch (_) { /* storage blocked */ }
   if (stored) document.documentElement.dataset.theme = stored;
@@ -1890,5 +2111,5 @@ document.addEventListener('keydown', (e) => {
       `${fmt(f.totalRows)} filings · ${fmt(f.caseRows)} coded cases · CY${f.years[0]}–CY${f.years[f.years.length - 1]} · built ${f.generated}`;
   }).catch(() => { $('#meta-strip').textContent = 'Data unavailable'; });
 
-  show(parseHash() || 'findings', { initial: true });
+  show(parseHash() || DEFAULT_VIEW, { initial: true });
 })();

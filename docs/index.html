@@ -52,9 +52,9 @@
     <p class="kicker">RPT-005 &middot; Open benchmark &middot; CY2023&ndash;CY2025</p>
     <h1 data-m-split="chars"><span class="brand-mark">EHS</span> Benchmarks</h1>
     <p class="tagline" data-m-hero-part="text">
-      Is your injury rate any good? Compare one site against establishments in the same industry
-      and size band among CY2025 filers, taken from 1.18&nbsp;million public OSHA filings (CY2023 to CY2025) that were cleaned first,
-      not copied from a summary table.
+      Is your injury rate any good? Rank one site&rsquo;s TRIR against CY2025 establishments in the same
+      industry and size band, drawn from 1.18&nbsp;million OSHA Injury Tracking Application filings
+      (CY2023 to CY2025) that were screened for impossible hours first.
     </p>
     <div class="cta-row" data-m-hero-part="text">
       <a class="btn btn-primary" data-m-spring href="#benchmark">Benchmark a site &rarr;</a>
@@ -65,45 +65,29 @@
 </header>
 
 <nav class="tabs" id="tabs" aria-label="Sections">
-  <div class="wrap tabs-inner">
-    <a href="#findings" data-view="findings">Findings</a>
-    <a href="#benchmark" data-view="benchmark">Benchmark my site</a>
-    <a href="#company" data-view="company">Company search</a>
-    <a href="#patterns" data-view="patterns">Injury patterns</a>
-    <a href="#sectors" data-view="sectors">Sectors</a>
-    <a href="#method" data-view="method">Method</a>
+  <div class="wrap tabs-inner" role="tablist" aria-label="EHS Benchmarks sections">
+    <a href="#benchmark" data-view="benchmark" role="tab" id="tab-benchmark" aria-controls="view-benchmark">Benchmark a site</a>
+    <a href="#findings" data-view="findings" role="tab" id="tab-findings" aria-controls="view-findings">Findings</a>
+    <a href="#company" data-view="company" role="tab" id="tab-company" aria-controls="view-company">Company search</a>
+    <a href="#patterns" data-view="patterns" role="tab" id="tab-patterns" aria-controls="view-patterns">Injury patterns</a>
+    <a href="#sectors" data-view="sectors" role="tab" id="tab-sectors" aria-controls="view-sectors">Sectors</a>
+    <a href="#method" data-view="method" role="tab" id="tab-method" aria-controls="view-method">Method</a>
   </div>
 </nav>
 
 <main class="wrap" id="main" tabindex="-1">
 
-<!-- ================= FINDINGS ================= -->
-<section class="view" id="view-findings" aria-labelledby="h-findings">
-  <div class="brief-intro">
-    <p class="kicker">The briefing &middot; four findings, one page</p>
-    <h2 id="h-findings">What the public injury data actually says</h2>
-    <p class="brief-lede">
-      OSHA publishes every establishment's injury summary. Used straight from the download, it tells
-      leaders the national rate is seven times better than it is, rewards small sites for luck,
-      and points prevention at the wrong hours and the wrong injuries. Each finding below is
-      computed from the primary filings, with the one question it should prompt in your next review.
-    </p>
-  </div>
-  <div id="briefing" class="loading-block"></div>
-</section>
-
 <!-- ================= BENCHMARK ================= -->
-<section class="view" id="view-benchmark" aria-labelledby="h-benchmark">
+<section class="view" id="view-benchmark" role="tabpanel" aria-labelledby="tab-benchmark">
   <div class="section-head">
-    <h2 id="h-benchmark">Benchmark my site</h2>
-    <span class="section-note">percentile against real peers</span>
+    <h2 id="h-benchmark">Benchmark a site</h2>
+    <span class="section-note">TRIR percentile among CY2025 peers</span>
   </div>
   <div class="prose">
     <p>
-      Enter one establishment's numbers for one calendar year. It is ranked against establishments
-      in the same NAICS industry and size band that filed for CY2025, not against a national
-      average. <strong>A lower percentile is better.</strong> The result updates as you type,
-      and the address bar keeps your inputs so the result can be shared.
+      Enter one establishment&rsquo;s numbers for one calendar year. Its TRIR is ranked against
+      CY2025 filers in the same NAICS code and size band, not an all-industry average.
+      <strong>A lower percentile is better.</strong> The address bar keeps your inputs, so the result can be shared.
     </p>
   </div>
 
@@ -111,11 +95,11 @@
     <fieldset>
       <legend><span class="step-no">1</span> Peer group</legend>
       <div class="field combo">
-        <label class="field-label" for="bm-naics-q">Industry: search by name or NAICS code</label>
+        <label class="field-label" for="bm-naics-q">Industry: type a name or a NAICS code</label>
         <div class="combo-box">
-          <input id="bm-naics-q" type="text" role="combobox" aria-expanded="false" aria-controls="bm-naics-list"
-                 aria-autocomplete="list" aria-describedby="bm-naics-note" spellcheck="false"
-                 placeholder="e.g. plastics, hospitals, 3252">
+          <input id="bm-naics-q" name="naics" type="text" role="combobox" aria-expanded="false" aria-controls="bm-naics-list"
+                 aria-autocomplete="list" aria-describedby="bm-naics-note" spellcheck="false" autocomplete="off"
+                 placeholder="e.g. plastics, hospitals, 3252&hellip;">
           <ul id="bm-naics-list" class="combo-list" role="listbox" aria-label="Matching industries" hidden></ul>
         </div>
         <p class="field-note" id="bm-naics-note">Loading industries&hellip;</p>
@@ -129,31 +113,62 @@
     <fieldset>
       <legend><span class="step-no">2</span> Your site, one calendar year</legend>
       <div class="form-grid">
-        <label class="field"><span class="field-label">Hours worked</span>
-          <input id="bm-hours" type="number" min="1" step="1000" value="625000" inputmode="numeric" required>
-        </label>
-        <label class="field"><span class="field-label">Recordable cases</span>
-          <input id="bm-cases" type="number" min="0" step="1" value="10" inputmode="numeric" required>
-        </label>
-        <label class="field"><span class="field-label">DART cases <em>optional</em></span>
-          <input id="bm-dart" type="number" min="0" step="1" placeholder="days away + restricted" inputmode="numeric">
-        </label>
-        <label class="field"><span class="field-label">Avg. employees <em>optional</em></span>
-          <input id="bm-emp" type="number" min="0" step="1" placeholder="checks the hours" inputmode="numeric">
-        </label>
+        <div class="field">
+          <label class="field-label" for="bm-hours">Hours worked</label>
+          <div class="unit-box"><input id="bm-hours" name="hours" type="text" value="625000" inputmode="numeric" autocomplete="off" required aria-describedby="bm-hours-help bm-hours-err"><span class="unit" aria-hidden="true">hours</span></div>
+          <p class="field-help" id="bm-hours-help">All employees, the whole year (Form 300A, total hours worked)</p>
+          <p class="field-error" id="bm-hours-err" hidden></p>
+        </div>
+        <div class="field">
+          <label class="field-label" for="bm-cases">Recordable cases</label>
+          <div class="unit-box"><input id="bm-cases" name="cases" type="text" value="10" inputmode="numeric" autocomplete="off" required aria-describedby="bm-cases-help bm-cases-err"><span class="unit" aria-hidden="true">cases</span></div>
+          <p class="field-help" id="bm-cases-help">Every OSHA recordable case (300A columns G + H + I + J)</p>
+          <p class="field-error" id="bm-cases-err" hidden></p>
+        </div>
+        <div class="field">
+          <label class="field-label" for="bm-dart">DART cases <em>optional</em></label>
+          <div class="unit-box"><input id="bm-dart" name="dart" type="text" inputmode="numeric" autocomplete="off" aria-describedby="bm-dart-help bm-dart-err"><span class="unit" aria-hidden="true">cases</span></div>
+          <p class="field-help" id="bm-dart-help">Days away plus job transfer or restriction (columns H + I)</p>
+          <p class="field-error" id="bm-dart-err" hidden></p>
+        </div>
+        <div class="field">
+          <label class="field-label" for="bm-emp">Average employees <em>optional</em></label>
+          <div class="unit-box"><input id="bm-emp" name="employees" type="text" inputmode="numeric" autocomplete="off" aria-describedby="bm-emp-help bm-emp-err"><span class="unit" aria-hidden="true">people</span></div>
+          <p class="field-help" id="bm-emp-help">Used to check the hours (100 to 4,000 per employee)</p>
+          <p class="field-error" id="bm-emp-err" hidden></p>
+        </div>
       </div>
-      <p class="field-note" id="bm-hint">
-        No hours figure? OSHA's full-time estimate is employees &times; 2,000.
-        <button type="button" class="linkbtn" id="bm-est">Estimate hours from employees</button>
-      </p>
+      <div class="form-foot">
+        <p class="field-note" id="bm-hint">
+          No hours figure? OSHA&rsquo;s full-time estimate is employees &times; 2,000.
+          <button type="button" class="linkbtn" id="bm-est">Estimate hours from employees</button>
+        </p>
+        <button type="button" class="btn btn-reset" id="bm-reset">Reset to the example</button>
+      </div>
     </fieldset>
   </form>
 
-  <div id="bm-result" aria-live="polite"></div>
+  <p class="sr-only" id="bm-live" role="status" aria-live="polite" aria-atomic="true"></p>
+  <div id="bm-result"></div>
+</section>
+
+<!-- ================= FINDINGS ================= -->
+<section class="view" id="view-findings" role="tabpanel" aria-labelledby="tab-findings">
+  <div class="brief-intro">
+    <p class="kicker">The briefing &middot; four findings, one page</p>
+    <h2 id="h-findings">What the public injury data actually says</h2>
+    <p class="brief-lede">
+      OSHA publishes every establishment's injury summary. Used straight from the download, it tells
+      leaders the all-filer injury rate is seven times better than it is, rewards small sites for luck,
+      and points prevention at the wrong hours and the wrong injuries. Each finding below is
+      computed from the primary filings, with the one question it should prompt in your next review.
+    </p>
+  </div>
+  <div id="briefing" class="loading-block"></div>
 </section>
 
 <!-- ================= COMPANY ================= -->
-<section class="view" id="view-company" aria-labelledby="h-company">
+<section class="view" id="view-company" role="tabpanel" aria-labelledby="tab-company">
   <div class="section-head">
     <h2 id="h-company">Company search</h2>
     <span class="section-note" id="company-count"></span>
@@ -182,10 +197,10 @@
 </section>
 
 <!-- ================= PATTERNS ================= -->
-<section class="view" id="view-patterns" aria-labelledby="h-patterns">
+<section class="view" id="view-patterns" role="tabpanel" aria-labelledby="tab-patterns">
   <div class="section-head">
     <h2 id="h-patterns">How people actually get hurt</h2>
-    <span class="section-note">688,367 OIICS-coded cases</span>
+    <span class="section-note">688,367 OIICS-coded cases &middot; CY2024 case detail</span>
   </div>
   <div class="prose">
     <p>
@@ -209,7 +224,7 @@
 </section>
 
 <!-- ================= SECTORS ================= -->
-<section class="view" id="view-sectors" aria-labelledby="h-sectors">
+<section class="view" id="view-sectors" role="tabpanel" aria-labelledby="tab-sectors">
   <div class="section-head">
     <h2 id="h-sectors">Sector rates and trend</h2>
     <span class="section-note">hours-weighted, CY2025</span>
@@ -226,15 +241,29 @@
 </section>
 
 <!-- ================= METHOD ================= -->
-<section class="view" id="view-method" aria-labelledby="h-method">
+<section class="view" id="view-method" role="tabpanel" aria-labelledby="tab-method">
   <div class="section-head"><h2 id="h-method">Method and limitations</h2></div>
   <div class="prose method" id="method-body"></div>
 </section>
+<script>
+/* Show the requested view before first paint, so the footer does not jump when app.js loads. */
+(function () {
+  var h = location.hash.slice(1).split('?')[0].replace(/^view-/, '');
+  if (/^(f-|monday)/.test(h)) h = 'findings';
+  var v = document.getElementById('view-' + h) || document.getElementById('view-benchmark');
+  v.classList.add('active');
+})();
+</script>
 
 </main>
+<p id="sr-status" class="sr-only" role="status" aria-live="polite"></p>
 
 <div class="wrap">
   <nav class="series-nav" aria-label="Report series">
+    <a class="sn-item sn-next" href="story.html">
+      <span class="sn-dir">Next step &middot; the story</span>
+      <span class="sn-t">Compared with whom: why the peer group decides the verdict &rarr;</span>
+    </a>
     <a class="sn-item" href="https://priyatham9.github.io/reports/verifiable-answers/">
       <span class="sn-dir">&larr; Previous &middot; RPT-004</span>
       <span class="sn-t">Verifiable Answers</span>
@@ -249,8 +278,9 @@
 <footer class="site">
   <div class="wrap">
     <p>
-      Source: U.S. OSHA Injury Tracking Application, establishment-specific 300A summary and
-      case detail files (CY2023&ndash;CY2025), retrieved from osha.gov. Public domain data.
+      Source: U.S. OSHA Injury Tracking Application (ITA): establishment-specific Form 300A summary
+      files for CY2023&ndash;CY2025 and the CY2024 case detail file (Forms 300 and 301), retrieved from
+      osha.gov. Public domain data.
       Analysis code MIT licensed:
       <a href="https://github.com/priyatham9/ehs-benchmarks">github.com/priyatham9/ehs-benchmarks</a>.
     </p>
@@ -275,8 +305,12 @@
   --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
 }
 /* QA fixes: AA contrast on active tab + so-what label */
-nav.tabs a[aria-current='page'],:root[data-theme='dark'] nav.tabs a[aria-current='page']{background:transparent!important;color:var(--ink)!important;box-shadow:inset 0 -3px 0 var(--green);font-weight:700}
+nav.tabs a[aria-selected='true'],:root[data-theme='dark'] nav.tabs a[aria-selected='true']{background:transparent!important;color:var(--ink)!important;box-shadow:inset 0 -3px 0 var(--green);font-weight:700}
 .so-what .so-k{color:var(--ink)}
+.pgm{font-size:12px!important;letter-spacing:.05em!important}
+#view-benchmark{padding-top:24px}
+#bm-naics-note{min-height:3.1em}
+#bm-band{min-height:44px}
 @media(max-width:600px){a.skip,#rs-theme,#theme-toggle,.st-way-btn,.pgm a,a.crumb,nav.tabs a,.chip{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}nav.st-way .st-way-btn{min-width:44px!important;min-height:44px!important}details.drill>summary{min-height:44px;display:flex;align-items:center}}
 </style>
 <style>/*STORY_CSS_START*/
