@@ -2074,33 +2074,7 @@ document.addEventListener('keydown', (e) => {
 
 (function boot() {
   if (location.hash.length > 1 && 'scrollRestoration' in history) history.scrollRestoration = 'manual';
-  let stored = null;
-  try { stored = localStorage.getItem('ehs-theme'); } catch (_) { /* storage blocked */ }
-  if (stored) document.documentElement.dataset.theme = stored;
-
-  const toggle = $('#theme-toggle');
-  const isDark = () => {
-    const set = document.documentElement.dataset.theme;
-    return set ? set === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-  };
-  // The icon shows the destination, so the label must say the action too —
-  // "Theme" tells a screen-reader user nothing about what the button does.
-  const labelToggle = () => {
-    const to = isDark() ? 'light' : 'dark';
-    toggle.setAttribute('aria-label', `Switch to ${to} mode`);
-    toggle.setAttribute('title', `Switch to ${to} mode`);
-  };
-  labelToggle();
-  toggle.addEventListener('click', () => {
-    const next = isDark() ? 'light' : 'dark';
-    document.documentElement.dataset.theme = next;
-    try { localStorage.setItem('ehs-theme', next); } catch (_) { /* storage blocked */ }
-    labelToggle();
-  });
-  // Follow the system if the visitor has never made an explicit choice.
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    if (!document.documentElement.dataset.theme) labelToggle();
-  });
+  // theme: the shared research header (#rs-theme) owns the toggle and storage
 
   // the programme bar scrolls sideways on a phone: start it at this project
   const cur = $('.pgm .cur');
