@@ -140,6 +140,19 @@ minHoursToDistinguish(5, 10);                       // ≈ 1.0 million hours PER
 
 Testing: reference limits were computed independently in Python without scipy (chi-square quantiles by bisection on the incomplete gamma function) and match published Garwood limits for 0, 1 and 10 events; exact power was checked against a brute-force joint-Poisson sum. `test/crosscheck-osha-analysis.test.ts` also checks agreement to 9 digits with the independent Python implementation and committed table `outputs/tables/detectability_by_size_band.csv` in [ehs-osha-analysis](https://github.com/priyatham9/ehs-osha-analysis) (commit 2f636ee).
 
+### Small establishments: shrinking toward the industry rate
+
+A raw rate from a few thousand hours is dominated by chance: one case can read as TRIR 10, zero cases reads as 0. `shrinkTrir` and `shrinkDart` give an empirical-Bayes (Gamma-Poisson) estimate that pulls a small establishment toward its peer-group rate, and pulls less the more hours it has. This sits alongside the Garwood interval, not in place of it.
+
+```ts
+import { fitGammaPoissonPrior, shrinkRate } from 'ehs-metrics';
+
+const prior = fitGammaPoissonPrior(peerSites);   // [{ cases, hours }, ...] for one industry / size band
+shrinkRate(1, 20_000, prior);                    // { raw: 10, shrunk, weight, lower, upper, ... }
+```
+
+For construction (NAICS 23, 24,194 single-establishment records, 2024: pooled TRIR 1.70) one case in 20,000 hours is a raw TRIR of 10.00 and shrinks to 2.88; five cases in 1,000,000 hours is 1.00 and shrinks to 1.08. Priors for every 2-digit sector with at least 300 establishments are in `outputs/shrinkage_by_naics2.csv` (regenerate with `npm run build && node scripts/shrinkage-by-industry.mjs`). Method, assumptions and caveats: [docs/method-shrinkage.md](docs/method-shrinkage.md). Tests include hand-calculated known answers, agreement with the Garwood reference limits, and a seeded simulation with known true rates (`test/shrinkage.test.ts`).
+
 ### API
 
 | Function | Returns |
@@ -153,6 +166,7 @@ Testing: reference limits were computed independently in Python without scipy (c
 | `trirInterval(cases, hours, opts?)` / `dartInterval(...)` / `rateInterval(n, hours, conf?)` | Exact (Garwood) confidence interval for a rate |
 | `poissonExactInterval(count, conf?)` / `casesForPrecision(maxRatio)` | Exact Poisson-mean interval; cases needed for a target upper/lower ratio |
 | `minHoursToDistinguish(rate1, rate2, opts?)` / `powerTwoRates(...)` | Hours per side to tell two rates apart; exact power |
+| `fitGammaPoissonPrior(sites)` / `shrinkRate(cases, hours, prior)` / `shrinkTrir` / `shrinkDart` | Empirical-Bayes peer-group prior and shrunken rate with credible interval |
 | `checkPlausibility(input)` / `isPublishable(flags)` | Data-quality screening |
 | `buildDistribution(rates, meta)` / `rankAgainst(rate, dist)` | Percentile construction and lookup |
 | `sizeBandFor(employees)` / `percentile(sorted, p)` | Peer-group helpers |
