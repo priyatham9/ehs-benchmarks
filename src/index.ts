@@ -78,3 +78,13 @@ export {
   type ShrunkRate,
   type SiteCounts,
 } from './shrinkage.js';
+
+export {
+  priorFromCsv,
+  selectPeerGroup,
+  whereDoIRank,
+  type PeerGroupChoice,
+  type RankInput,
+  type RankResult,
+  type StoredPeerGroup,
+} from './rank.js';
