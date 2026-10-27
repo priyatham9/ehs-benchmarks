@@ -19,7 +19,7 @@ MIT licensed. No API keys, no server, no database.
 
 - Status: superseded (see note above); MIT licensed, no API keys, no server, no database
 - Data: real, from OSHA's Injury Tracking Application (public establishment filings, CY2023-2025)
-- Tests: `npm test`, 106 tests (vitest)
+- Tests: `npm test`, 176 tests (vitest)
 - Quickstart: `npm install github:priyatham9/ehs-benchmarks`
 - Licence: MIT (see [LICENSE](LICENSE))
 
@@ -153,6 +153,21 @@ shrinkRate(1, 20_000, prior);                    // { raw: 10, shrunk, weight, l
 
 For construction (NAICS 23, 24,194 single-establishment records, 2024: pooled TRIR 1.70) one case in 20,000 hours is a raw TRIR of 10.00 and shrinks to 2.88; five cases in 1,000,000 hours is 1.00 and shrinks to 1.08. Priors for every 2-digit sector with at least 300 establishments are in `outputs/shrinkage_by_naics2.csv` (regenerate with `npm run build && node scripts/shrinkage-by-industry.mjs`). Method, assumptions and caveats: [docs/method-shrinkage.md](docs/method-shrinkage.md). Tests include hand-calculated known answers, agreement with the Garwood reference limits, and a seeded simulation with known true rates (`test/shrinkage.test.ts`).
 
+### Where do I rank? Percentile with an uncertainty range
+
+`whereDoIRank` takes an establishment's recordable cases and hours, shrinks its TRIR toward the industry rate (the empirical-Bayes module above), and places the result within a committed peer distribution. It returns the percentile (lower is better), the percentile of the credible-interval ends, the percentile of the exact Garwood interval ends (the range that uses no peer-group assumption), the raw-rate percentile for comparison, and a plain-language caveat. `selectPeerGroup` picks the most specific committed group (full NAICS code, then 4, 3 and 2 digits; size band matched first when employees are given) and says when it fell back. `priorFromCsv` reads the sector prior from `outputs/shrinkage_by_naics2.csv`.
+
+```bash
+npm run build
+node scripts/where-do-i-rank.mjs --naics 236220 --cases 5 --hours 1000000 --employees 480
+# Peer group: NAICS 236220, 250-499 (187 establishments)
+# Raw TRIR:     1.00  (exact 95% interval 0.32 to 2.33)
+# Shrunk TRIR:  1.07  (95% credible 0.40 to 2.09; 11% weight on industry rate)
+# Percentile:   54  (95% range 29 to 80; model-free range 26 to 83; raw-rate percentile 52)
+```
+
+Only committed data is read: `docs/data/benchmarks/<sector>.json` (CY2025 peer percentiles) and `outputs/shrinkage_by_naics2.csv` (2024 priors, so sectors with fewer than 300 establishments have none and the script says so). Add `--json` for machine-readable output. Limits, stated in every result: the shrunken rate is ranked against peers' raw rates, which are wider than the spread of true rates, so a small establishment lands nearer the middle than its raw rate would; the prior is rounded to the CSV's two decimals (a hand calculation from the README's NAICS 23 example gives 2.89 where the unrounded fit gives 2.88); the peer file stores only seven breakpoints, so the percentile is interpolated between them and anything above p99 reads as 99. A screening aid, not a safety rating. Tests (`test/rank.test.ts`) use hand-calculated answers on a built peer distribution and on the committed NAICS 23 file.
+
 ### API
 
 | Function | Returns |
@@ -167,6 +182,7 @@ For construction (NAICS 23, 24,194 single-establishment records, 2024: pooled TR
 | `poissonExactInterval(count, conf?)` / `casesForPrecision(maxRatio)` | Exact Poisson-mean interval; cases needed for a target upper/lower ratio |
 | `minHoursToDistinguish(rate1, rate2, opts?)` / `powerTwoRates(...)` | Hours per side to tell two rates apart; exact power |
 | `fitGammaPoissonPrior(sites)` / `shrinkRate(cases, hours, prior)` / `shrinkTrir` / `shrinkDart` | Empirical-Bayes peer-group prior and shrunken rate with credible interval |
+| `whereDoIRank({ cases, hours, prior, distribution })` / `selectPeerGroup(groups, naics, employees?)` / `priorFromCsv(csv, sector)` | Shrunken TRIR, percentile among committed peers, uncertainty ranges, caveat |
 | `checkPlausibility(input)` / `isPublishable(flags)` | Data-quality screening |
 | `buildDistribution(rates, meta)` / `rankAgainst(rate, dist)` | Percentile construction and lookup |
 | `sizeBandFor(employees)` / `percentile(sorted, p)` | Peer-group helpers |
@@ -178,7 +194,7 @@ For construction (NAICS 23, 24,194 single-establishment records, 2024: pooled TR
 
 ```bash
 npm install
-npm test          # 106 tests
+npm test          # 176 tests
 npm run build
 node scripts/build-benchmarks.mjs <rawDataDir>
 ```
