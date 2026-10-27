@@ -170,6 +170,14 @@ Only committed data is read: `docs/data/benchmarks/<sector>.json` (CY2025 peer p
 
 Browser version (no install, all client-side, nothing you type leaves the page): [docs/rank.html](docs/rank.html), live at https://priyatham9.github.io/ehs-benchmarks/rank.html. It imports the same `docs/lib` build and committed data as the script; `test/rank-page.test.ts` checks that. It is independent of, and not affiliated with, OSHA, and it is not a compliance tool.
 
+### Python port
+
+`python/` holds a Python port of the rate and data-quality functions (`trir`, `dart`, `ltir`, `fatality_rate`, `severity_rate`, `near_miss_ratio`, `check_plausibility`, `is_publishable`). Both implementations run the same vectors in `test/fixtures/rate-vectors.json`. It is not published to PyPI.
+
+```bash
+pip install -e "python[test]" && pytest python
+```
+
 ### API
 
 | Function | Returns |
