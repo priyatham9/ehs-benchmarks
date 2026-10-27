@@ -1,0 +1,76 @@
+{
+  "title": "ehs-benchmarks: open OSHA injury-rate benchmarks and the ehs-metrics TypeScript library",
+  "upload_type": "software",
+  "description": "Open OSHA injury-rate benchmarks and ehs-metrics, a tested TypeScript library for OSHA incident-rate calculation (TRIR, DART, LTIR, severity rate) with data-quality guards, together with a published benchmark dataset of TRIR and DART percentiles for NAICS by size-band peer groups derived from OSHA's public Injury Tracking Application filings. Superseded by ehs-osha-analysis for the CY2016-2024 panel.",
+  "creators": [
+    {
+      "name": "Chimmani, Priyatham"
+    }
+  ],
+  "license": "mit",
+  "keywords": [
+    "OSHA",
+    "EHS",
+    "TRIR",
+    "DART",
+    "occupational safety",
+    "injury tracking",
+    "benchmarking"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://priyatham9.github.io/grounded/",
+      "relation": "isPartOf",
+      "scheme": "url",
+      "resource_type": "other"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/grounded",
+      "relation": "isPartOf",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://priyatham9.github.io/ehs-benchmarks/",
+      "relation": "isDocumentedBy",
+      "scheme": "url",
+      "resource_type": "other"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-osha-analysis",
+      "relation": "isObsoletedBy",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-chemical-peers",
+      "relation": "references",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-ai-grounding-eval",
+      "relation": "references",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-human-factors-ontology",
+      "relation": "references",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-risk-sem",
+      "relation": "references",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-capitals-calculator",
+      "relation": "references",
+      "scheme": "url",
+      "resource_type": "software"
+    }
+  ]
+}
