@@ -122,6 +122,24 @@ checkPlausibility({ hours: 5_000, employees: 3 });
 
 `isPublishable(flags)` is false when any flag is an `error` — that single call is what the pipeline uses to decide inclusion, so the website's calculator and the published benchmark tables cannot disagree about what counts as a usable record.
 
+### Is a rate difference real? Exact intervals and exposure needed
+
+One site-year gives a handful of cases, so a TRIR is imprecise and the normal approximation is wrong at small counts. `trirInterval` and `dartInterval` return the exact (Garwood) interval, treating cases as Poisson over the hours worked.
+
+```ts
+import { trirInterval, casesForPrecision, minHoursToDistinguish } from 'ehs-metrics';
+
+trirInterval(cases, { employeeHours: 480_000 });   // { rate: 5, lower: 2.58…, upper: 8.73…, confidence: 0.95, … }
+casesForPrecision(2);                               // 35 cases for upper/lower <= 2
+minHoursToDistinguish(5, 10);                       // ≈ 1.0 million hours PER SIDE, 80% power, alpha 0.05
+```
+
+- Zero cases is not a rate of zero: with 0 cases the exact 95% upper limit is 3.689 cases, i.e. a TRIR below `3.689 x 200,000 / hours` is not ruled out.
+- `minHoursToDistinguish` finds the first hours value (1% steps) at which the exact conditional test of equal Poisson rates reaches the target power (default 80%, two-sided alpha 0.05), with equal hours on both sides. Counts are discrete, so power is not monotone in hours; the answer is accurate to about 1%.
+- Poisson is a best case. Real establishments are overdispersed (more variable than Poisson), so the true uncertainty and required hours are larger.
+
+Testing: reference limits were computed independently in Python without scipy (chi-square quantiles by bisection on the incomplete gamma function) and match published Garwood limits for 0, 1 and 10 events; exact power was checked against a brute-force joint-Poisson sum. `test/crosscheck-osha-analysis.test.ts` also checks agreement to 9 digits with the independent Python implementation and committed table `outputs/tables/detectability_by_size_band.csv` in [ehs-osha-analysis](https://github.com/priyatham9/ehs-osha-analysis) (commit 2f636ee).
+
 ### API
 
 | Function | Returns |
@@ -132,6 +150,9 @@ checkPlausibility({ hours: 5_000, employees: 3 });
 | `fatalityRate(cases, hours, opts?)` | Deaths per 100 FTE |
 | `severityRate(cases, hours, opts?)` | Lost **days**, not cases |
 | `nearMissRatio(nearMisses, recordables)` | Leading indicator, `null` if no recordables |
+| `trirInterval(cases, hours, opts?)` / `dartInterval(...)` / `rateInterval(n, hours, conf?)` | Exact (Garwood) confidence interval for a rate |
+| `poissonExactInterval(count, conf?)` / `casesForPrecision(maxRatio)` | Exact Poisson-mean interval; cases needed for a target upper/lower ratio |
+| `minHoursToDistinguish(rate1, rate2, opts?)` / `powerTwoRates(...)` | Hours per side to tell two rates apart; exact power |
 | `checkPlausibility(input)` / `isPublishable(flags)` | Data-quality screening |
 | `buildDistribution(rates, meta)` / `rankAgainst(rate, dist)` | Percentile construction and lookup |
 | `sizeBandFor(employees)` / `percentile(sorted, p)` | Peer-group helpers |

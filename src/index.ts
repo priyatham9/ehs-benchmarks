@@ -53,3 +53,16 @@ export {
   searchCompanies,
   type SearchScore,
 } from './search.js';
+
+export {
+  casesForPrecision,
+  dartInterval,
+  minHoursToDistinguish,
+  poissonExactInterval,
+  powerTwoRates,
+  rateInterval,
+  trirInterval,
+  type DistinguishOptions,
+  type IntervalOptions,
+  type RateInterval,
+} from './intervals.js';
