@@ -130,8 +130,8 @@ function interpret(rate, rank, dist) {
         return `${rate.toFixed(2)} is worse than the median for ${peer}; about ${ahead}% perform better.`;
     }
     if (rank >= 90) {
-    return `${rate.toFixed(2)} falls in the worst decile for ${peer}; about ${ahead}% perform better.`;
-  }
-  return `${rate.toFixed(2)} falls in the worst quartile for ${peer}; about ${ahead}% perform better.`;
+        return `${rate.toFixed(2)} falls in the worst decile for ${peer}; about ${ahead}% perform better.`;
+    }
+    return `${rate.toFixed(2)} falls in the worst quartile for ${peer}; about ${ahead}% perform better.`;
 }
 //# sourceMappingURL=benchmark.js.map

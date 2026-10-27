@@ -168,6 +168,8 @@ node scripts/where-do-i-rank.mjs --naics 236220 --cases 5 --hours 1000000 --empl
 
 Only committed data is read: `docs/data/benchmarks/<sector>.json` (CY2025 peer percentiles) and `outputs/shrinkage_by_naics2.csv` (2024 priors, so sectors with fewer than 300 establishments have none and the script says so). Add `--json` for machine-readable output. Limits, stated in every result: the shrunken rate is ranked against peers' raw rates, which are wider than the spread of true rates, so a small establishment lands nearer the middle than its raw rate would; the prior is rounded to the CSV's two decimals (a hand calculation from the README's NAICS 23 example gives 2.89 where the unrounded fit gives 2.88); the peer file stores only seven breakpoints, so the percentile is interpolated between them and anything above p99 reads as 99. A screening aid, not a safety rating. Tests (`test/rank.test.ts`) use hand-calculated answers on a built peer distribution and on the committed NAICS 23 file.
 
+Browser version (no install, all client-side, nothing you type leaves the page): [docs/rank.html](docs/rank.html), live at https://priyatham9.github.io/ehs-benchmarks/rank.html. It imports the same `docs/lib` build and committed data as the script; `test/rank-page.test.ts` checks that. It is independent of, and not affiliated with, OSHA, and it is not a compliance tool.
+
 ### API
 
 | Function | Returns |

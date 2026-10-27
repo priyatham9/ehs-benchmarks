@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where do I rank? - EHS Benchmarks</title>
+<meta name="description" content="Enter recordable cases, hours worked and a NAICS code to see a shrunken TRIR, its percentile among OSHA peers, and uncertainty ranges. Runs entirely in your browser.">
+<link rel="stylesheet" href="app.css">
+<link rel="canonical" href="https://priyatham9.github.io/ehs-benchmarks/rank.html" />
+<style>
+  .rk { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+  .rk h1 { margin: 0 0 8px; }
+  .rk form { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin: 24px 0; }
+  .rk dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 16px 0; }
+  .rk dt { color: var(--ink-3); }
+  .rk dd { margin: 0; font-variant-numeric: tabular-nums; }
+  .rk .disclaimer { border: 2px solid var(--rule); padding: 12px 16px; margin: 24px 0; font-size: 0.9rem; }
+  .rk .err { color: #B3261E; font-weight: 600; }
+  .rk [hidden] { display: none; }
+</style>
+</head>
+<body>
+<main class="rk" id="main">
+  <p><a href="index.html">&larr; EHS Benchmarks</a></p>
+  <h1>Where do I rank?</h1>
+  <p>Enter one year of recordable cases and hours worked. The page shrinks your TRIR toward the industry rate and places it among OSHA Injury Tracking Application peers, with ranges that show how noisy one year is.</p>
+  <p><strong>Private by design:</strong> the calculation runs in your browser. Your numbers are never sent anywhere. The page downloads only static, public peer data for the sector of your NAICS code.</p>
+
+  <form id="rank-form" novalidate>
+    <label class="field"><span class="field-label">Recordable cases</span><input id="cases" inputmode="numeric" required placeholder="e.g. 5"></label>
+    <label class="field"><span class="field-label">Employee hours worked</span><input id="hours" inputmode="decimal" required placeholder="e.g. 1000000"></label>
+    <label class="field"><span class="field-label">NAICS code (2 to 6 digits)</span><input id="naics" inputmode="numeric" required placeholder="e.g. 236220"></label>
+    <label class="field"><span class="field-label">Employees <em>optional</em></span><input id="employees" inputmode="numeric" placeholder="e.g. 480"></label>
+    <div><button class="btn btn-primary" type="submit">Calculate</button></div>
+  </form>
+
+  <p id="error" class="err" role="alert" hidden></p>
+  <section id="result" aria-live="polite" hidden>
+    <h2>Result</h2>
+    <p id="peer"></p>
+    <dl>
+      <dt>Raw TRIR</dt><dd id="raw"></dd>
+      <dt>Shrunken TRIR</dt><dd id="shrunk"></dd>
+      <dt>Percentile (lower is better)</dt><dd id="percentile"></dd>
+      <dt>95% credible range, TRIR</dt><dd id="credible"></dd>
+      <dt>95% range, percentile</dt><dd id="prange"></dd>
+      <dt>Exact interval, TRIR (no peer assumption)</dt><dd id="garwood"></dd>
+      <dt>Exact interval, percentile</dt><dd id="gprange"></dd>
+      <dt>Raw-rate percentile</dt><dd id="rawp"></dd>
+    </dl>
+    <p id="caveat"></p>
+  </section>
+
+  <p class="disclaimer">
+    This is an independent screening aid. It is not affiliated with, endorsed by or sponsored by OSHA, the U.S. Department of Labor or the Bureau of Labor Statistics. It is not a compliance tool: it does not determine recordkeeping, reporting or regulatory obligations, and it is not a safety rating. Peers are self-reported OSHA filings; see <a href="method-shrinkage.md">the method note</a> for limits.
+  </p>
+</main>
+<script type="module" src="rank.js"></script>
+</body>
+</html>

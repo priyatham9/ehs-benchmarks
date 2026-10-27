@@ -9,3 +9,6 @@ export { dart, dartCases, fatalityRate, ltir, nearMissRatio, severityRate, total
 export { MAX_HOURS_PER_EMPLOYEE, MIN_HOURS_PER_EMPLOYEE, MIN_MEANINGFUL_HOURS, checkPlausibility, isPublishable, type PlausibilityInput, } from './quality.js';
 export { buildDistribution, percentile, rankAgainst, sizeBandFor, } from './benchmark.js';
 export { normalizeName, scoreMatch, searchCompanies, type SearchScore, } from './search.js';
+export { casesForPrecision, dartInterval, minHoursToDistinguish, poissonExactInterval, powerTwoRates, rateInterval, trirInterval, type DistinguishOptions, type IntervalOptions, type RateInterval, } from './intervals.js';
+export { fitGammaPoissonPrior, gammaQuantile, shrinkDart, shrinkRate, shrinkTrir, type GammaPoissonPrior, type ShrinkOptions, type ShrunkRate, type SiteCounts, } from './shrinkage.js';
+export { priorFromCsv, selectPeerGroup, whereDoIRank, type PeerGroupChoice, type RankInput, type RankResult, type StoredPeerGroup, } from './rank.js';
