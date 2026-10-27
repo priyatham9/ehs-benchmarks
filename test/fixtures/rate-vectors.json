@@ -1,0 +1,38 @@
+{
+  "_comment": "Shared test vectors. Consumed by test/rates-vectors.test.ts (TypeScript) and python/tests/test_vectors.py (Python). Vectors are taken from test/rates.test.ts. A 'NaN' string stands for a NaN case count.",
+  "basis": 200000,
+  "rates": [
+    {"name": "textbook: 5 cases / 500,000 h = 2.0", "fn": "trir", "cases": {"otherRecordableCases": 5}, "hours": {"employeeHours": 500000}, "value": 2.0, "casesUsed": 5, "hoursUsed": 500000},
+    {"name": "cases equal hours/200000", "fn": "trir", "cases": {"otherRecordableCases": 1}, "hours": {"employeeHours": 200000}, "value": 1, "casesUsed": 1, "hoursUsed": 200000},
+    {"name": "deaths count in TRIR", "fn": "trir", "cases": {"deaths": 1}, "hours": {"employeeHours": 200000}, "value": 1},
+    {"name": "zero hours gives null and ZERO_HOURS", "fn": "trir", "cases": {"otherRecordableCases": 3}, "hours": {"employeeHours": 0}, "value": null, "hoursUsed": 0, "flagsInclude": ["ZERO_HOURS"]},
+    {"name": "zero cases over valid hours", "fn": "trir", "cases": {}, "hours": {"employeeHours": 200000}, "value": 0},
+    {"name": "NaN case count throws", "fn": "trir", "cases": {"otherRecordableCases": "NaN"}, "hours": {"employeeHours": 200000}, "throws": true},
+    {"name": "negative case count throws", "fn": "trir", "cases": {"otherRecordableCases": -1}, "hours": {"employeeHours": 200000}, "throws": true},
+    {"name": "contractor hours excluded by default", "fn": "trir", "cases": {"otherRecordableCases": 10}, "hours": {"employeeHours": 500000, "contractorHours": 500000}, "value": 4.0},
+    {"name": "contractor hours included when combined", "fn": "trir", "cases": {"otherRecordableCases": 10}, "hours": {"employeeHours": 500000, "contractorHours": 500000}, "options": {"contractorBasis": "combined"}, "value": 2.0},
+    {"name": "missing contractorHours is zero under combined", "fn": "trir", "cases": {"otherRecordableCases": 10}, "hours": {"employeeHours": 500000}, "options": {"contractorBasis": "combined"}, "value": 4.0},
+    {"name": "result metadata under combined basis", "fn": "trir", "cases": {"otherRecordableCases": 7}, "hours": {"employeeHours": 300000, "contractorHours": 100000}, "options": {"contractorBasis": "combined"}, "casesUsed": 7, "hoursUsed": 400000},
+    {"name": "DART counts days-away plus transfer", "fn": "dart", "cases": {"daysAwayCases": 3, "jobTransferCases": 2, "otherRecordableCases": 5}, "hours": {"employeeHours": 200000}, "value": 5},
+    {"name": "LTIR counts days-away only", "fn": "ltir", "cases": {"daysAwayCases": 3, "jobTransferCases": 2, "otherRecordableCases": 5}, "hours": {"employeeHours": 200000}, "value": 3},
+    {"name": "TRIR for the same mix", "fn": "trir", "cases": {"daysAwayCases": 3, "jobTransferCases": 2, "otherRecordableCases": 5}, "hours": {"employeeHours": 200000}, "value": 10},
+    {"name": "fatality rate counts deaths only", "fn": "fatalityRate", "cases": {"deaths": 2, "daysAwayCases": 50, "jobTransferCases": 50, "otherRecordableCases": 50}, "hours": {"employeeHours": 200000}, "value": 2},
+    {"name": "severity rate counts days lost", "fn": "severityRate", "cases": {"daysAwayCases": 1, "daysAway": 30, "daysRestricted": 10}, "hours": {"employeeHours": 200000}, "value": 40},
+    {"name": "severity rate errors without day counts", "fn": "severityRate", "cases": {"daysAwayCases": 1}, "hours": {"employeeHours": 200000}, "flagsInclude": ["MISSING_DAY_COUNTS"]},
+    {"name": "severity rate with only one day field", "fn": "severityRate", "cases": {"daysAway": 12}, "hours": {"employeeHours": 200000}, "value": 12, "flagsExclude": ["MISSING_DAY_COUNTS"]},
+    {"name": "partial period is not annualized", "fn": "trir", "cases": {"otherRecordableCases": 2}, "hours": {"employeeHours": 100000}, "options": {"monthsCovered": 6}, "value": 4, "flagsInclude": ["PARTIAL_PERIOD"]},
+    {"name": "full 12-month period not flagged", "fn": "trir", "cases": {"otherRecordableCases": 2}, "hours": {"employeeHours": 100000}, "options": {"monthsCovered": 12}, "value": 4, "flagsExclude": ["PARTIAL_PERIOD"]},
+    {"name": "README example TRIR", "fn": "trir", "cases": {"daysAwayCases": 3, "jobTransferCases": 2, "otherRecordableCases": 7}, "hours": {"employeeHours": 480000}, "value": 5.0},
+    {"name": "low hour base flag", "fn": "trir", "cases": {"otherRecordableCases": 1}, "hours": {"employeeHours": 5000}, "value": 40, "flagsInclude": ["LOW_HOUR_BASE"]},
+    {"name": "implausible hours per employee", "fn": "trir", "cases": {"otherRecordableCases": 1}, "hours": {"employeeHours": 20000}, "options": {"employees": 1000}, "flagsInclude": ["IMPLAUSIBLE_HOURS_PER_EMPLOYEE"]},
+    {"name": "cases exceed employees", "fn": "trir", "cases": {"otherRecordableCases": 12}, "hours": {"employeeHours": 20000}, "options": {"employees": 10}, "flagsInclude": ["CASES_EXCEED_EMPLOYEES"]}
+  ],
+  "aggregation": [
+    {"cases": {"deaths": 1, "daysAwayCases": 2, "jobTransferCases": 3, "otherRecordableCases": 4}, "totalRecordable": 10, "dart": 5}
+  ],
+  "nearMiss": [
+    {"nearMisses": 100, "recordables": 4, "value": 25},
+    {"nearMisses": 50, "recordables": 0, "value": null},
+    {"nearMisses": -1, "recordables": 5, "throws": true}
+  ]
+}

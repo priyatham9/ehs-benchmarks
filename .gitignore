@@ -6,3 +6,6 @@ coverage/
 # Raw OSHA downloads are large and re-derivable; only committed outputs are tracked.
 data/raw/
 *.zip
+__pycache__/
+*.egg-info/
+.pytest_cache/
