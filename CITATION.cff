@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software or the benchmark dataset, please cite it as below."
+type: software
+title: "ehs-benchmarks: open OSHA injury-rate benchmarks and the ehs-metrics TypeScript library"
+abstract: "Tested OSHA incident-rate calculations (TRIR, DART, LTIR, severity rate) and TRIR/DART percentiles for 3,842 NAICS x size-band peer groups derived from OSHA's public Injury Tracking Application filings (CY2023-2025)."
+authors:
+  - family-names: Chimmani
+    given-names: Priyatham
+    email: priyatham9@gmail.com
+repository-code: "https://github.com/priyatham9/ehs-benchmarks"
+url: "https://priyatham9.github.io/ehs-benchmarks/"
+license: MIT
+date-released: "2026-08-11"
+version: 0.1.0
+keywords:
+  - OSHA
+  - EHS
+  - TRIR
+  - DART
+  - occupational safety
+  - injury tracking
+  - benchmarking
