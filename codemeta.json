@@ -1,0 +1,31 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "ehs-benchmarks: open OSHA injury-rate benchmarks and the ehs-metrics TypeScript library",
+  "description": "Open OSHA injury-rate benchmarks and ehs-metrics, a tested TypeScript library for OSHA incident-rate calculation (TRIR, DART, LTIR, severity rate) with data-quality guards, together with a published benchmark dataset of TRIR and DART percentiles for NAICS by size-band peer groups derived from OSHA's public Injury Tracking Application filings. Superseded by ehs-osha-analysis for the CY2016-2024 panel.",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Priyatham",
+      "familyName": "Chimmani"
+    }
+  ],
+  "license": "https://spdx.org/licenses/MIT",
+  "codeRepository": "https://github.com/priyatham9/ehs-benchmarks",
+  "url": "https://priyatham9.github.io/ehs-benchmarks/",
+  "version": "0.1.0",
+  "programmingLanguage": [
+    "TypeScript",
+    "JavaScript"
+  ],
+  "keywords": [
+    "OSHA",
+    "EHS",
+    "TRIR",
+    "DART",
+    "occupational safety",
+    "injury tracking",
+    "benchmarking"
+  ],
+  "isPartOf": "https://priyatham9.github.io/grounded/"
+}
