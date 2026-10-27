@@ -125,7 +125,7 @@ function logBinomPmf(n: number, p: number): Float64Array {
   return out;
 }
 
-function logGamma(x: number): number {
+export function logGamma(x: number): number {
   // Lanczos approximation (g=7, n=9); only used for log(n!) at moderate n.
   const g = 7;
   const c = [

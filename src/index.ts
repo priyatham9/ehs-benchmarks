@@ -66,3 +66,15 @@ export {
   type IntervalOptions,
   type RateInterval,
 } from './intervals.js';
+
+export {
+  fitGammaPoissonPrior,
+  gammaQuantile,
+  shrinkDart,
+  shrinkRate,
+  shrinkTrir,
+  type GammaPoissonPrior,
+  type ShrinkOptions,
+  type ShrunkRate,
+  type SiteCounts,
+} from './shrinkage.js';
