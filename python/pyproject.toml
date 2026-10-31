@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ehs-metrics"
-version = "0.1.0"
-description = "Python port of the ehs-metrics OSHA incident-rate library (TRIR, DART, LTIR, severity)."
+version = "0.2.0"
+description = "Python port of the ehs-metrics OSHA incident-rate library (rates, exact Poisson intervals, empirical-Bayes shrinkage)."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
