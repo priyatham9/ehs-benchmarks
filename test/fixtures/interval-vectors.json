@@ -1,0 +1,681 @@
+{
+ "_comment": "Shared test vectors for intervals and shrinkage. Consumed by test/intervals-vectors.test.ts (TypeScript) and python/tests/test_interval_vectors.py (Python). Expected values were produced by running the TypeScript implementation (src/intervals.ts, src/shrinkage.ts); the 95% poissonExact values for counts 0,1,2,5,10,35,100 also match the independent references in test/intervals.test.ts. The string 'Infinity' stands for Infinity. Both suites compare to abs 1e-9.",
+ "poissonExact": [
+  {
+   "count": 0,
+   "confidence": 0.95,
+   "lower": 0,
+   "upper": 3.688879454113936
+  },
+  {
+   "count": 1,
+   "confidence": 0.95,
+   "lower": 0.025317807984289953,
+   "upper": 5.571643390938897
+  },
+  {
+   "count": 2,
+   "confidence": 0.95,
+   "lower": 0.24220927854396512,
+   "upper": 7.224687667723959
+  },
+  {
+   "count": 5,
+   "confidence": 0.95,
+   "lower": 1.6234863901184222,
+   "upper": 11.66833207932267
+  },
+  {
+   "count": 10,
+   "confidence": 0.95,
+   "lower": 4.795388696132436,
+   "upper": 18.39035604201777
+  },
+  {
+   "count": 35,
+   "confidence": 0.95,
+   "lower": 24.378782402519725,
+   "upper": 48.67652736908302
+  },
+  {
+   "count": 100,
+   "confidence": 0.95,
+   "lower": 81.36399125091802,
+   "upper": 121.62679379242607
+  },
+  {
+   "count": 3,
+   "confidence": 0.99,
+   "lower": 0.3378633887277349,
+   "upper": 10.977477495329765
+  },
+  {
+   "count": 3,
+   "confidence": 0.9,
+   "lower": 0.8176914471639531,
+   "upper": 7.753656527932726
+  },
+  {
+   "count": 0,
+   "confidence": 0.99,
+   "lower": 0,
+   "upper": 5.298317366548035
+  },
+  {
+   "count": 250,
+   "confidence": 0.95,
+   "lower": 219.96799563091685,
+   "upper": 282.9877050423139
+  }
+ ],
+ "poissonExactThrows": [
+  {
+   "count": -1
+  },
+  {
+   "count": 1.5
+  },
+  {
+   "count": 1,
+   "confidence": 1
+  },
+  {
+   "count": 1,
+   "confidence": 0
+  }
+ ],
+ "rateInterval": [
+  {
+   "cases": 10,
+   "hours": 400000,
+   "confidence": 0.95,
+   "rate": 5,
+   "lower": 2.397694348066218,
+   "upper": 9.195178021008886
+  },
+  {
+   "cases": 0,
+   "hours": 200000,
+   "confidence": 0.95,
+   "rate": 0,
+   "lower": 0,
+   "upper": 3.688879454113936
+  },
+  {
+   "cases": 3,
+   "hours": 150000,
+   "confidence": 0.9,
+   "rate": 4,
+   "lower": 1.0902552628852709,
+   "upper": 10.338208703910302
+  },
+  {
+   "cases": 7,
+   "hours": 1234567,
+   "confidence": 0.99,
+   "rate": 1.1340008278206044,
+   "lower": 0.3300489124850565,
+   "upper": 2.775644135784181
+  }
+ ],
+ "rateIntervalThrows": [
+  {
+   "cases": 1,
+   "hours": 0
+  },
+  {
+   "cases": 1,
+   "hours": -5
+  },
+  {
+   "cases": -1,
+   "hours": 100000
+  }
+ ],
+ "trirDart": [
+  {
+   "cases": {
+    "deaths": 0,
+    "daysAwayCases": 2,
+    "jobTransferCases": 3,
+    "otherRecordableCases": 5
+   },
+   "hours": {
+    "employeeHours": 480000
+   },
+   "options": {},
+   "trir": {
+    "rate": 4.166666666666667,
+    "lower": 1.998078623388515,
+    "upper": 7.662648350840738,
+    "hours": 480000
+   },
+   "dart": {
+    "rate": 2.0833333333333335,
+    "lower": 0.6764526625493427,
+    "upper": 4.861805033051113,
+    "hours": 480000
+   }
+  },
+  {
+   "cases": {
+    "deaths": 0,
+    "daysAwayCases": 2,
+    "jobTransferCases": 3,
+    "otherRecordableCases": 5
+   },
+   "hours": {
+    "employeeHours": 400000,
+    "contractorHours": 400000
+   },
+   "options": {},
+   "trir": {
+    "rate": 5,
+    "lower": 2.397694348066218,
+    "upper": 9.195178021008886,
+    "hours": 400000
+   },
+   "dart": {
+    "rate": 2.5,
+    "lower": 0.8117431950592111,
+    "upper": 5.834166039661335,
+    "hours": 400000
+   }
+  },
+  {
+   "cases": {
+    "deaths": 0,
+    "daysAwayCases": 2,
+    "jobTransferCases": 3,
+    "otherRecordableCases": 5
+   },
+   "hours": {
+    "employeeHours": 400000,
+    "contractorHours": 400000
+   },
+   "options": {
+    "contractorBasis": "combined"
+   },
+   "trir": {
+    "rate": 2.5,
+    "lower": 1.198847174033109,
+    "upper": 4.597589010504443,
+    "hours": 800000
+   },
+   "dart": {
+    "rate": 1.25,
+    "lower": 0.40587159752960555,
+    "upper": 2.9170830198306676,
+    "hours": 800000
+   }
+  },
+  {
+   "cases": {
+    "deaths": 0,
+    "daysAwayCases": 2,
+    "jobTransferCases": 3,
+    "otherRecordableCases": 5
+   },
+   "hours": {
+    "employeeHours": 480000
+   },
+   "options": {
+    "confidence": 0.9
+   },
+   "trir": {
+    "rate": 4.166666666666667,
+    "lower": 2.2605857071213697,
+    "upper": 7.0675913482174595,
+    "hours": 480000
+   },
+   "dart": {
+    "rate": 2.0833333333333335,
+    "lower": 0.8208956533581377,
+    "upper": 4.3804312119756394,
+    "hours": 480000
+   }
+  }
+ ],
+ "casesForPrecision": [
+  {
+   "maxRatio": 2,
+   "confidence": 0.95,
+   "value": 35
+  },
+  {
+   "maxRatio": 3,
+   "confidence": 0.95,
+   "value": 15
+  },
+  {
+   "maxRatio": 1.5,
+   "confidence": 0.95,
+   "value": 99
+  },
+  {
+   "maxRatio": 2,
+   "confidence": 0.99,
+   "value": 59
+  }
+ ],
+ "gammaQuantile": [
+  {
+   "p": 0.025,
+   "shape": 1,
+   "value": 0.02531780798428985
+  },
+  {
+   "p": 0.975,
+   "shape": 2,
+   "value": 5.571643390938895
+  },
+  {
+   "p": 0.5,
+   "shape": 1,
+   "value": 0.6931471805599445
+  },
+  {
+   "p": 0.5,
+   "shape": 0.5,
+   "value": 0.22746821155978603
+  },
+  {
+   "p": 0.975,
+   "shape": 11,
+   "value": 18.39035604201777
+  },
+  {
+   "p": 0.025,
+   "shape": 36.5,
+   "value": 25.632406636710925
+  },
+  {
+   "p": 0.9,
+   "shape": 150,
+   "value": 165.89425986227053
+  }
+ ],
+ "gammaQuantileThrows": [
+  {
+   "p": 0,
+   "shape": 1
+  },
+  {
+   "p": 1,
+   "shape": 1
+  },
+  {
+   "p": 0.5,
+   "shape": 0
+  }
+ ],
+ "prior": {
+  "dispersed": {
+   "sites": [
+    [
+     0,
+     200000
+    ],
+    [
+     4,
+     200000
+    ],
+    [
+     0,
+     200000
+    ],
+    [
+     4,
+     200000
+    ]
+   ],
+   "mean": 2,
+   "shape": 2,
+   "rate": 1,
+   "dispersion": 0.5,
+   "nSites": 4,
+   "totalCases": 8,
+   "totalHours": 800000
+  },
+  "mixed": {
+   "sites": [
+    [
+     3,
+     150000
+    ],
+    [
+     0,
+     80000
+    ],
+    [
+     7,
+     400000
+    ],
+    [
+     1,
+     60000
+    ],
+    [
+     12,
+     900000
+    ],
+    [
+     2,
+     120000
+    ],
+    [
+     0,
+     30000
+    ],
+    [
+     5,
+     250000
+    ]
+   ],
+   "mean": 3.0150753768844223,
+   "shape": "Infinity",
+   "rate": "Infinity",
+   "dispersion": 0,
+   "nSites": 8,
+   "totalCases": 30,
+   "totalHours": 1989999.9999999998
+  },
+  "pooled": {
+   "sites": [
+    [
+     1,
+     100000
+    ],
+    [
+     3,
+     200000
+    ],
+    [
+     0,
+     100000
+    ],
+    [
+     6,
+     400000
+    ]
+   ],
+   "mean": 2.5,
+   "shape": "Infinity",
+   "rate": "Infinity",
+   "dispersion": 0,
+   "nSites": 4,
+   "totalCases": 10,
+   "totalHours": 800000
+  }
+ },
+ "shrink": [
+  {
+   "prior": "dispersed",
+   "cases": 0,
+   "hours": 50000,
+   "confidence": 0.95,
+   "raw": 0,
+   "shrunk": 1.6,
+   "weight": 0.8,
+   "lower": 0.19376742283517207,
+   "upper": 4.457314712751116,
+   "priorMean": 2
+  },
+  {
+   "prior": "dispersed",
+   "cases": 7,
+   "hours": 50000,
+   "confidence": 0.95,
+   "raw": 28,
+   "shrunk": 7.2,
+   "weight": 0.8,
+   "lower": 3.292298477902668,
+   "upper": 12.610551376154643,
+   "priorMean": 2
+  },
+  {
+   "prior": "dispersed",
+   "cases": 2,
+   "hours": 200000,
+   "confidence": 0.9,
+   "raw": 2,
+   "shrunk": 2,
+   "weight": 0.5,
+   "lower": 0.6831591983749152,
+   "upper": 3.8768282639663623,
+   "priorMean": 2
+  },
+  {
+   "prior": "dispersed",
+   "cases": 15,
+   "hours": 1000000,
+   "confidence": 0.99,
+   "raw": 3,
+   "shrunk": 2.8333333333333335,
+   "weight": 0.16666666666666666,
+   "lower": 1.3751060396286985,
+   "upper": 4.913660489626612,
+   "priorMean": 2
+  },
+  {
+   "prior": "mixed",
+   "cases": 0,
+   "hours": 50000,
+   "confidence": 0.95,
+   "raw": 0,
+   "shrunk": 3.0150753768844223,
+   "weight": 1,
+   "lower": 3.0150753768844223,
+   "upper": 3.0150753768844223,
+   "priorMean": 3.0150753768844223
+  },
+  {
+   "prior": "mixed",
+   "cases": 7,
+   "hours": 50000,
+   "confidence": 0.95,
+   "raw": 28,
+   "shrunk": 3.0150753768844223,
+   "weight": 1,
+   "lower": 3.0150753768844223,
+   "upper": 3.0150753768844223,
+   "priorMean": 3.0150753768844223
+  },
+  {
+   "prior": "mixed",
+   "cases": 2,
+   "hours": 200000,
+   "confidence": 0.9,
+   "raw": 2,
+   "shrunk": 3.0150753768844223,
+   "weight": 1,
+   "lower": 3.0150753768844223,
+   "upper": 3.0150753768844223,
+   "priorMean": 3.0150753768844223
+  },
+  {
+   "prior": "mixed",
+   "cases": 15,
+   "hours": 1000000,
+   "confidence": 0.99,
+   "raw": 3,
+   "shrunk": 3.0150753768844223,
+   "weight": 1,
+   "lower": 3.0150753768844223,
+   "upper": 3.0150753768844223,
+   "priorMean": 3.0150753768844223
+  },
+  {
+   "prior": "pooled",
+   "cases": 0,
+   "hours": 50000,
+   "confidence": 0.95,
+   "raw": 0,
+   "shrunk": 2.5,
+   "weight": 1,
+   "lower": 2.5,
+   "upper": 2.5,
+   "priorMean": 2.5
+  },
+  {
+   "prior": "pooled",
+   "cases": 7,
+   "hours": 50000,
+   "confidence": 0.95,
+   "raw": 28,
+   "shrunk": 2.5,
+   "weight": 1,
+   "lower": 2.5,
+   "upper": 2.5,
+   "priorMean": 2.5
+  },
+  {
+   "prior": "pooled",
+   "cases": 2,
+   "hours": 200000,
+   "confidence": 0.9,
+   "raw": 2,
+   "shrunk": 2.5,
+   "weight": 1,
+   "lower": 2.5,
+   "upper": 2.5,
+   "priorMean": 2.5
+  },
+  {
+   "prior": "pooled",
+   "cases": 15,
+   "hours": 1000000,
+   "confidence": 0.99,
+   "raw": 3,
+   "shrunk": 2.5,
+   "weight": 1,
+   "lower": 2.5,
+   "upper": 2.5,
+   "priorMean": 2.5
+  }
+ ],
+ "shrinkTrirDart": [
+  {
+   "prior": "mixed",
+   "cases": {
+    "deaths": 0,
+    "daysAwayCases": 2,
+    "jobTransferCases": 3,
+    "otherRecordableCases": 5
+   },
+   "hours": {
+    "employeeHours": 480000
+   },
+   "options": {},
+   "trir": {
+    "raw": 4.166666666666667,
+    "shrunk": 3.0150753768844223,
+    "weight": 1,
+    "lower": 3.0150753768844223,
+    "upper": 3.0150753768844223,
+    "hours": 480000,
+    "cases": 10
+   },
+   "dart": {
+    "raw": 2.0833333333333335,
+    "shrunk": 3.0150753768844223,
+    "weight": 1,
+    "lower": 3.0150753768844223,
+    "upper": 3.0150753768844223,
+    "hours": 480000,
+    "cases": 5
+   }
+  },
+  {
+   "prior": "mixed",
+   "cases": {
+    "deaths": 0,
+    "daysAwayCases": 2,
+    "jobTransferCases": 3,
+    "otherRecordableCases": 5
+   },
+   "hours": {
+    "employeeHours": 400000,
+    "contractorHours": 400000
+   },
+   "options": {
+    "contractorBasis": "combined"
+   },
+   "trir": {
+    "raw": 2.5,
+    "shrunk": 3.0150753768844223,
+    "weight": 1,
+    "lower": 3.0150753768844223,
+    "upper": 3.0150753768844223,
+    "hours": 800000,
+    "cases": 10
+   },
+   "dart": {
+    "raw": 1.25,
+    "shrunk": 3.0150753768844223,
+    "weight": 1,
+    "lower": 3.0150753768844223,
+    "upper": 3.0150753768844223,
+    "hours": 800000,
+    "cases": 5
+   }
+  }
+ ],
+ "priorThrows": [
+  [
+   [
+    1,
+    200000
+   ]
+  ],
+  [
+   [
+    0,
+    200000
+   ],
+   [
+    0,
+    200000
+   ]
+  ],
+  [
+   [
+    1,
+    0
+   ],
+   [
+    1,
+    200000
+   ]
+  ],
+  [
+   [
+    1.5,
+    200000
+   ],
+   [
+    1,
+    200000
+   ]
+  ]
+ ],
+ "shrinkThrows": [
+  {
+   "cases": -1,
+   "hours": 100000
+  },
+  {
+   "cases": 1.5,
+   "hours": 100000
+  },
+  {
+   "cases": 1,
+   "hours": 0
+  },
+  {
+   "cases": 1,
+   "hours": 100000,
+   "confidence": 1
+  }
+ ]
+}
