@@ -1,0 +1,147 @@
+{
+ "_comment": "Shared test vectors for powerTwoRates and minHoursToDistinguish. Consumed by test/power-vectors.test.ts (TypeScript) and python/tests/test_power_vectors.py (Python). Expected values were produced by running the TypeScript implementation; the first four power rows are also pinned by an independent brute-force joint-Poisson sum in test/intervals.test.ts.",
+ "powerTwoRates": [
+  {
+   "rate1": 5,
+   "rate2": 10,
+   "hours": 50000,
+   "value": 0.013784590126113282
+  },
+  {
+   "rate1": 5,
+   "rate2": 10,
+   "hours": 100000,
+   "value": 0.06896067553865548
+  },
+  {
+   "rate1": 5,
+   "rate2": 10,
+   "hours": 200000,
+   "value": 0.1779709612880135
+  },
+  {
+   "rate1": 4.131574224094077,
+   "rate2": 8.263148448188154,
+   "hours": 595345.0369606849,
+   "value": 0.46528107413848535
+  },
+  {
+   "rate1": 10,
+   "rate2": 5,
+   "hours": 100000,
+   "value": 0.06896067553865547
+  },
+  {
+   "rate1": 2,
+   "rate2": 2.5,
+   "hours": 1000000,
+   "value": 0.052287337251226515
+  },
+  {
+   "rate1": 5,
+   "rate2": 10,
+   "hours": 100000,
+   "alpha": 0.1,
+   "value": 0.12121999565107938
+  },
+  {
+   "rate1": 5,
+   "rate2": 10,
+   "hours": 100000,
+   "alpha": 0.01,
+   "value": 0.014358144555105399
+  },
+  {
+   "rate1": 1,
+   "rate2": 3,
+   "hours": 20000,
+   "value": 7.099717345379156e-7
+  }
+ ],
+ "powerTwoRatesThrows": [
+  {
+   "rate1": 0,
+   "rate2": 5,
+   "hours": 100000
+  },
+  {
+   "rate1": 5,
+   "rate2": -1,
+   "hours": 100000
+  },
+  {
+   "rate1": 5,
+   "rate2": 10,
+   "hours": 0
+  }
+ ],
+ "minHoursToDistinguish": [
+  {
+   "rate1": 5,
+   "rate2": 10,
+   "options": {},
+   "value": 1003190.1627570037
+  },
+  {
+   "rate1": 10,
+   "rate2": 5,
+   "options": {},
+   "value": 1003190.1627570037
+  },
+  {
+   "rate1": 5,
+   "rate2": 7.5,
+   "options": {},
+   "value": 3278077.844515257
+  },
+  {
+   "rate1": 5,
+   "rate2": 10,
+   "options": {
+    "power": 0.9,
+    "alpha": 0.1
+   },
+   "value": 1083891.8444683792
+  },
+  {
+   "rate1": 3,
+   "rate2": 9,
+   "options": {
+    "power": 0.8
+   },
+   "value": 562901.1468803197
+  },
+  {
+   "rate1": 4.131574224094077,
+   "rate2": 8.263148448188154,
+   "options": {},
+   "value": 1214053.1772450146
+  }
+ ],
+ "minHoursToDistinguishThrows": [
+  {
+   "rate1": 5,
+   "rate2": 5,
+   "options": {}
+  },
+  {
+   "rate1": 0,
+   "rate2": 5,
+   "options": {}
+  },
+  {
+   "rate1": 5,
+   "rate2": 10,
+   "options": {
+    "power": 1
+   }
+  },
+  {
+   "rate1": 5,
+   "rate2": 10,
+   "options": {
+    "alpha": 0
+   }
+  }
+ ]
+}
