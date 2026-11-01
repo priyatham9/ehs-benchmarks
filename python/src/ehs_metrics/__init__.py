@@ -3,7 +3,9 @@ from .intervals import (
     cases_for_precision,
     dart_interval,
     log_gamma,
+    min_hours_to_distinguish,
     poisson_exact_interval,
+    power_two_rates,
     rate_interval,
     trir_interval,
 )
@@ -48,7 +50,7 @@ __all__ = [
     "dart", "dart_cases", "fatality_rate", "ltir", "near_miss_ratio",
     "severity_rate", "total_recordable_cases", "trir",
     "RateInterval", "cases_for_precision", "dart_interval", "log_gamma",
-    "poisson_exact_interval", "rate_interval", "trir_interval",
+    "min_hours_to_distinguish", "poisson_exact_interval", "power_two_rates", "rate_interval", "trir_interval",
     "GammaPoissonPrior", "ShrunkRate", "SiteCounts", "fit_gamma_poisson_prior",
     "gamma_quantile", "shrink_dart", "shrink_rate", "shrink_trir",
 ]
